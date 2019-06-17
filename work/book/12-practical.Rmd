@@ -1,0 +1,377 @@
+# Some practical forecasting issues {#ch-practical}
+
+In this final chapter, we address many practical issues that arise in forecasting, and discuss some possible solutions. Several of these sections are adapated from [Hyndsight blog posts](https://robjhyndman.com/hyndsight/).
+
+## Weekly, daily and sub-daily data {#weekly}
+
+Weekly, daily and sub-daily data can be challenging for forecasting, although for different reasons. 
+
+### Weekly data {-}
+
+Weekly data is difficult because the seasonal period (the number of weeks in a year) is both large and non-integer. The average number of weeks in a year is `r round(365.25/7, 2)`. Most of the methods we have considered require the seasonal period to be an integer. Even if we approximate it by 52, most of the methods will not handle such a large seasonal period efficiently.
+
+The simplest approach is to use a dynamic harmonic regression model, as discussed in Section \@ref(sec-dhr).  Here is an example using weekly data on US finished motor gasoline products supplied (in thousands of barrels per day) from February 1991 to May 2005. The number of Fourier terms was selected by minimizing the AICc. The order of the ARIMA model is also selected by minimizing the AICc, although that is done within the `auto.arima()` function.
+
+```{r gasweekly, message=FALSE}
+bestfit <- list(aicc=Inf)
+for(K in seq(25))
+{
+  fit <- auto.arima(gasoline, xreg=fourier(gasoline, K=K), seasonal=FALSE)
+  if(fit$aicc < bestfit$aicc)
+  {
+    bestfit <- fit
+    bestK <- K
+  }
+}
+fc <- forecast(bestfit, xreg=fourier(gasoline, K=bestK, h=104))
+autoplot(fc)
+```
+
+```{r gasstop, include=FALSE, dependson="gasweekly"}
+# if(length(coef(bestfit)) - 2L*bestK != 3L)
+#   stop("Gas model has changed")
+```
+
+The fitted model has `r bestK` pairs of Fourier terms and can be written as
+$$
+  y_t = bt + \sum_{j=1}^{`r bestK`} \left[ \alpha_j\sin\left(\frac{2\pi j t}{52.18}\right) + \beta_j\cos\left(\frac{2\pi j t}{52.18}\right) \right] + n_t
+$$
+where $n_t$ is an `r as.character(bestfit)` process. Because $n_t$ is non-stationary, the model is actually estimated on the differences of the variables on both sides of this equation. There are `r 2*bestK` parameters to capture the seasonality which is rather a lot, but apparently required according to the AICc selection.  The total number of degrees of freedom is `r length(coef(bestfit))` (the other three coming from the 2 MA parameters and the drift parameter).
+
+An alternative approach is the TBATS model introduced in Section \@ref(sec:complexseasonality). This was the subject of [Exercise 11.2](sec-ex-11.html). In this example, the forecasts are almost identical and there is little to differentiate the two models. The TBATS model is preferable when the seasonality changes over time. The ARIMA approach is preferable if there are covariates that are useful predictors as these can be added as additional regressors.
+
+### Daily and sub-daily data {-}
+
+Daily and sub-daily data are challenging for a different reason --- they often involve multiple seasonal patterns, and so we need to use a method that handles such complex seasonality.
+
+Of course, if the time series is relatively short so that only one type of seasonality is present, than it will be possible to use one of the single-seasonal methods we have discussed (e.g., ETS or seasonal ARIMA). But when the time series is long enough so that some of the longer seasonal periods become apparent, it will be necessary to use dynamic harmonic regression or TBATS, as discussed in Section \@ref(sec:complexseasonality).
+
+However, note that even these models only allow for regular seasonality. Capturing seasonality associated with moving events such as Easter, Id, or the Chinese New Year is more difficult. Even with monthly data, this can be tricky as the festivals can fall in either March or April (for Easter), in January or February (for the Chinese New Year), or at any time of the year (for Id).
+
+The best way to deal with moving holiday effects is to use dummy variables. However, neither ETS nor TBATS models allow for covariates. Amongst the models discussed in this book (and implemented in the forecast package for R), the only choice is a dynamic regression model, where the predictors include any dummy holiday effects (and possibly also the seasonality using Fourier terms).
+
+## Time series of counts {#counts}
+
+All of the methods discussed in this book assume that the data have a continuous sample space. But very often data comes in the form of counts. For example, we may wish to forecast the number of customers who enter a store each day. We could have 0, 1, 2, \dots, customers, but we cannot have 3.45693 customers.
+
+In practice, this rarely matters provided our counts are sufficiently large. If the minimum number of customers is at least 100, then the difference between a continuous sample space $[100,\infty)$ and the discrete sample space $\{100,101,102,\dots\}$ has no perceivable effect on our forecasts. However, if our data contains small counts $(0, 1, 2, \dots)$, then we need to use forecasting methods that are more appropriate for a sample space of non-negative integers.
+
+Such models are beyond the scope of this book. However, there is one simple method which gets used in this context, that we would like to mention. It is "Croston's method", named after its British inventor, John Croston, and first described in @Croston72. Actually, this method does not properly deal with the count nature of the data either, but it is used so often, that it is worth knowing about it.
+
+With Croston's method, we construct two new series from our original time series by noting which time periods contain zero values, and which periods contain non-zero values. Let $q_i$ be the $i$th non-zero quantity, and let $a_i$ be the time between $q_{i-1}$ and $q_i$. Croston's method involves separate simple exponential smoothing forecasts on the two new series $a$ and $q$. Because the method is usually applied to time series of demand for items, $q$ is often called the "demand" and $a$ the "inter-arrival time".
+
+If $\hat{q}_{i+1|i}$ and $\hat{a}_{i+1|i}$ are the one-step forecasts of the $(i+1)$th demand and inter-arrival time respectively, based on data up to demand $i$, then Croston's method gives
+\begin{align}
+\hat{q}_{i+1|i} & = (1-\alpha)\hat{q}_{i|i-1} + \alpha q_i, (\#eq:c2method1)\\
+\hat{a}_{i+1|i} & = (1-\alpha)\hat{a}_{i|i-1} + \alpha a_i. (\#eq:c2method2)
+\end{align}
+The smoothing parameter $\alpha$ takes values between 0 and 1 and is assumed to be the same for both equations. Let $j$ be the time for the last observed positive observation. Then the $h$-step ahead forecast for the demand at time $T+h$, is given by the ratio
+\begin{equation}\label{c2ratio}
+\hat{y}_{T+h|T} = q_{j+1|j}/a_{j+1|j}.
+\end{equation}
+
+There are no algebraic results allowing us to compute prediction intervals for this method, because the method does not correspond to any statistical model [@SH05]. 
+
+The `croston` function produces forecasts using Croston's method. In the following example, we apply the method to monthly sales of a lubricant that is rarely used. This data set was part of a consulting project that one of us did for an oil company several years ago.
+
+The data contain small counts, with many months registering no sales at all, and only small numbers of items sold in other months.
+
+```{r productC, echo=FALSE}
+productC %>% 
+  .preformat.ts() %>%
+  knitr::kable()
+```
+
+The demand and arrival series are computed from the above data.
+
+```{r crostondecomp, echo=FALSE}
+fit <- croston(productC)
+cbind(i=seq(length(fit$model$demand$x)),
+      q=fit$model$demand$x, 
+      a=fit$model$period$x) %>% 
+  knitr::kable()
+```
+
+The `croston` function simply uses $\alpha=0.1$ by default, and $\ell_0$ is set to be equal to the first observation in each of the series. This is consistent with the way Croston envisaged the method being used. This gives the demand forecast `r format(fit$model$demand$mean[1],digits=3,nsmall=3)` and the arrival forecast `r format(fit$model$period$mean[1],digits=3,nsmall=3)`. So the forecast of the original series is 
+$\hat{y}_{T+h|T} = `r format(fit$model$demand$mean[1],digits=3,nsmall=3)` /
+`r format(fit$model$period$mean[1],digits=3,nsmall=3)` =
+`r format(fit$model$demand$mean[1]/fit$model$period$mean[1], digits=3, nsmall=3)`$. In practice, R does these calculations for you: 
+
+```{r croston}
+productC %>% croston() %>% autoplot()
+```
+
+An implementation of Croston's method with more facilities (including parameter estimation) is available in the [tsintermittent](https://cran.r-project.org/package=tsintermittent) package for R.
+
+Forecasting models that deal more directly with the count nature of the data are described in @christou2015count.
+
+## Ensuring forecasts stay within limits {#limits}
+
+It is common to want forecasts to be positive, or to require them to be within some specified range $[a,b]$. Both of these situations are relatively easy to handle using transformations.
+
+### Positive forecasts {-}
+
+To impose a positivity constraint, simply work on the log scale, by specifying the Box-Cox parameter $\lambda=0$. For example, consider the real price of a dozen eggs (1900-1993; in cents):
+
+```{r positiveeggs}
+eggs %>%
+  ets(model="AAN", damped=FALSE, lambda=0) %>%
+  forecast(h=50, biasadj=TRUE) %>%
+  autoplot()
+```    
+
+Because we set `biasadj=TRUE`, the forecasts are the means of the forecast distributions.
+
+### Forecasts constrained to an interval {-}
+
+To see how to handle data constrained to an interval, imagine that the egg prices were constrained to lie within $a=50$ and $b=400$. Then we can transform the data using a scaled logit transform which maps $(a,b)$ to the whole real line:
+$$
+y = \log\left(\frac{x-a}{b-x}\right),
+$$
+where $x$ is on the original scale and $y$ is the transformed data. To reverse the transformation, we will use
+$$
+x  = \frac{(b-a)e^y}{1+e^y} + a.
+$$
+This is not a built-in transformation, so we will need to do more work.
+
+
+```{r constrained}
+    # Bounds
+    a <- 50
+    b <- 400
+    # Transform data and fit model
+    fit <- log((eggs-a)/(b-eggs)) %>%
+      ets(model="AAN", damped=FALSE)
+    fc <- forecast(fit, h=50)
+    # Back-transform forecasts
+    fc$mean <- (b-a)*exp(fc$mean)/(1+exp(fc$mean)) + a
+    fc$lower <- (b-a)*exp(fc$lower)/(1+exp(fc$lower)) + a
+    fc$upper <- (b-a)*exp(fc$upper)/(1+exp(fc$upper)) + a
+    fc$x <- eggs
+    # Plot result on original scale
+    autoplot(fc)
+```    
+
+No bias-adjustment has been used here, so the forecasts are the medians of the future distributions. The prediction intervals from these transformations have the same coverage probability as on the transformed scale, because quantiles are preserved under monotonically increasing transformations.
+
+The prediction intervals lie above 50 due to the transformation. As a result of this artificial (and unrealistic) constraint, the forecast distributions have become extremely skewed.
+
+## Forecast combinations {#combinations}
+
+An easy way to improve forecast accuracy is to use several different methods on the same time series, and to average the resulting forecasts. Nearly 50 years ago, John Bates and Clive Granger wrote a famous paper [@BatesGranger1969], showing that combining forecasts often leads to better forecast accuracy. Twenty years later, @Clemen89 wrote
+
+>The results have been virtually unanimous: combining multiple forecasts leads
+to increased forecast accuracy. \dots in many cases one can make dramatic performance improvements by simply averaging the forecasts. 
+
+While there has been considerable research on using weighted averages, or some other more complicated combination approach, using a simple average has proven hard to beat.
+
+Here is an example using monthly expenditure on eating out in Australia, from April 1982 to September 2017. We use forecast from the following models: ETS, ARIMA, STL-ETS, NNAR, and TBATS; and we compare the results using the last 5 years (60 months) of observations.
+
+```{r combine1, message=FALSE, warning=FALSE}
+train <- window(auscafe, end=c(2012,9))
+h <- length(auscafe) - length(train)
+ETS <- forecast(ets(train), h=h)
+ARIMA <- forecast(auto.arima(train, lambda=0, biasadj=TRUE), h=h)
+STL <- stlf(train, lambda=0, h=h, biasadj=TRUE)
+NNAR <- forecast(nnetar(train), h=h)
+TBATS <- forecast(tbats(train), h=h)
+Combination <- (ETS$mean + ARIMA$mean + STL$mean + NNAR$mean + TBATS$mean)/5
+```
+
+```{r combineplot, dependson="combine1"}
+autoplot(auscafe) +
+  forecast::autolayer(ETS$mean, series="ETS") +
+  forecast::autolayer(ARIMA$mean, series="ARIMA") +
+  forecast::autolayer(STL$mean, series="STL") +
+  forecast::autolayer(STL$mean, series="NNAR") +
+  forecast::autolayer(STL$mean, series="TBATS") +
+  forecast::autolayer(Combination, series="Combination") +
+  xlab("Year") + ylab("$ billion") +
+  ggtitle("Australian monthly expenditure on eating out")
+```
+
+```{r combineaccuracy, dependson="combine1"}
+c(ETS=accuracy(ETS, auscafe)["Test set","RMSE"],
+  ARIMA=accuracy(ARIMA, auscafe)["Test set","RMSE"],
+  `STL-ETS`=accuracy(STL, auscafe)["Test set","RMSE"],
+  NNAR=accuracy(NNAR, auscafe)["Test set","RMSE"],
+  TBATS=accuracy(TBATS, auscafe)["Test set","RMSE"],
+  Combination=accuracy(Combination, auscafe)["Test set","RMSE"])
+```
+
+TBATS does particularly well with this series, but the combination approach is not far behind. For other data, TBATS may be quite poor, while the combination approach is almost always close to, or better than, the best component method.
+
+## Prediction intervals for aggregates {#aggregates}
+
+A common problem is to forecast the aggregate of several time periods of data, using a model fitted to the disaggregated data. For example, you may have monthly data but wish to forecast the total for the next year. Or you may have weekly data, and want to forecast the total for the next four weeks.
+
+If the point forecasts are means, then adding them up will give a good estimate of the total. But prediction intervals are more tricky due to the correlations between forecast errors.
+
+A general solution is to use simulations. Here is an example using ETS models applied to Australian monthly gas production data, assuming we wish to forecast the aggregate gas demand in the next six months.
+
+```{r aggregates}
+# First fit a model to the data
+fit <- ets(gas/1000)
+
+# Forecast six months ahead
+fc <- forecast(fit, h=6)
+
+# Simulate 10000 future sample paths
+nsim <- 10000
+h <- 6 
+sim <- numeric(nsim)
+for(i in seq_len(nsim))
+  sim[i] <- sum(simulate(fit, future=TRUE, nsim=h))
+meanagg <- mean(sim)
+```
+
+The mean of the simulations is very close to the sum of the individual forecasts:
+
+```{r aggregates2, dependson="aggregates"}
+sum(fc$mean[1:6])
+meanagg
+```
+
+Prediction intervals are also easy to obtain:
+
+```{r aggregates3, dependson="aggregates"}
+#80% interval:
+quantile(sim, prob=c(0.1, 0.9))
+#95% interval:
+quantile(sim, prob=c(0.025, 0.975))
+```
+
+
+## Backcasting {#backcasting}
+
+Sometimes it is useful to "backcast" a time series --- that is, forecast in reverse time. Although there are no in-built R functions to do this, it is very easy to implement. The following functions reverse a `ts` object and a `forecast` object. 
+
+```{r backcasting_functions}
+# Function to reverse time
+reverse_ts <- function(y)
+{
+  ts(rev(y), start=tsp(y)[1L], frequency=frequency(y))
+}
+# Function to reverse a forecast
+reverse_forecast <- function(object)
+{
+  h <- length(object$mean)
+  f <- frequency(object$mean)
+  object$x <- reverse_ts(object$x)
+  object$mean <- ts(rev(object$mean), 
+                    end=tsp(object$x)[1L]-1/f, frequency=f)
+  object$lower <- object$lower[h:1L,]
+  object$upper <- object$upper[h:1L,]
+  return(object)
+}
+```
+
+Then we can apply these function to backcast any time series. Here is an example applied to quarterly retail trade in the Euro area. The data are from 1996-2011. We backcast to predict the years 1994-1995.
+
+```{r backcasting, dependson="backcasting_functions"}
+# Backcast example
+euretail %>%
+  reverse_ts() %>%
+  auto.arima() %>% 
+  forecast() %>%
+  reverse_forecast() -> bc
+autoplot(bc) + ggtitle(paste("Backcasts from",bc$method))
+```
+
+## Forecasting very short time series  {#short-ts}
+
+We often get asked how *few* data points can be used to fit a time series model. As with almost all sample size questions, there is no easy answer. It depends on the *number of model parameters to be estimated and the amount of randomness in the data*. The sample size required increases with the number of parameters to be estimated, and the amount of noise in the data.
+
+Some textbooks provide rules-of-thumb giving minimum sample sizes for various time series models. These are misleading and unsubstantiated in theory or practice. Further, they ignore the underlying variability of the data and often overlook the number of parameters to be estimated as well. There is, for example, no justification whatever for the magic number of 30 often given as a minimum for ARIMA modelling. The only theoretical limit is that you need more observations than there are parameters in your forecasting model. However, in practice, you usually need substantially more observations than that.
+
+Ideally, we would test if our chosen model performs well out-of-sample compared to some simpler approaches. However, with short series, there is not enough data to allow some observations to be withheld for testing purposes, and even time series cross validation can be difficult to apply. The AICc is particularly useful here, because it is a proxy for the one-step forecast out-of-sample MSE. Choosing the model with the minimum AICc value allows both the number of parameters and the amount of noise to be taken into account.
+
+```{r shortseries, include=FALSE}
+library(Mcomp)
+library(purrr)
+
+n <- map_int(M1, function(x){length(x$x)})
+M1[n < 20] %>%
+  map_int(function(u){
+    u$x %>%
+      auto.arima() %>%
+      coefficients() %>%
+      length()
+    }) %>%
+  table ->
+  nptable
+if(length(nptable) != 4L)
+  stop("Problem with table")
+```
+
+What tends to happen with short series is that the AIC suggests very simple models because anything with more than one or two parameters will produce poor forecasts due to the estimation error.  We applied the `auto.arima()` function to all the series from the M-competition with fewer than 20 observations. There were a total of `r sum(nptable)` series, of which `r nptable[1L]` had models with zero parameters (white noise and random walks), `r nptable[2L]` had models with one parameter, `r nptable[3L]` had models with two parameters and `r nptable[4L]` series had models with three parameters. Interested readers can carry out the same exercise using the following code.
+
+```r
+library(Mcomp)
+library(purrr)
+n <- map_int(M1, function(x) {length(x$x)})
+M1[n < 20] %>%
+  map_int(function(u) {
+    u$x %>%
+      auto.arima() %>%
+      coefficients() %>%
+      length()
+  }) %>%
+  table()
+```
+
+## Forecasting very long time series {#long-ts}
+
+Most time series models do not work well for very long time series. The problem is that real data do not come from the models we use. When the number of observations is not large (say up to about 200) the models often work well as an approximation to whatever process generated the data. But eventually you will have enough data that the difference between the true process and the model starts to become more obvious. An additional problem is that the optimization of the parameters becomes more time consuming because of the number of observations involved. 
+
+What to do about these issues depends on the purpose of the model. A more flexible and complicated model could be used, but this still assumes that the model structure will work over the whole period of the data. A better approach is usually to allow the model itself to change over time. ETS models are designed to handle this situation by allowing the trend and seasonal terms to evolve over time. ARIMA models with differencing have a similar property. But dynamic regression models do not allow any evolution of model components.
+
+If you are only interested in forecasting the next few observations, one simple approach is to throw away the earliest observations and only fit a model to the most recent observations.  Then an inflexible model can work well because there is not enough time for the relationships to change substantially.
+
+For example, we fitted a dynamic harmonic regression model to 26 years of weekly gasoline production in Section \@ref(weekly). It is, perhaps, unrealistic to assume that the seasonal pattern remains the same over nearly three decades. So we could simply fit a model to the most recent years instead.
+
+
+## One-step forecasts on test data {#oosos}
+
+It is common practice to fit a model using training data, and then to evaluate its performance on a test data set. The way this is usually done means the comparisions on the test data use different forecast horizons. For example, suppose we use the last twenty observations for the test data, and estimate our forecasting model on the training data. Then the forecast errors will be for 1-step, 2-steps, ..., 20-steps ahead. The forecast variance usually increases with the forecast horizon, so if we simply averaging the absolute or squared errors from the test set, we are combining results with different variances.
+
+One solution to this issue is to obtain 1-step errors on the test data. That is, we still use the training data to estimate any parameters, but when we compute forecasts on the test data, we use all of the data preceding each observation (both training and test data).  To be specific, suppose our training data are for times $1,2,\dots,T-20$. We estimate the model on these data, but then compute $\hat{y}_{T-20+h|T-21+h}$, for $h=1,\dots,T-1$. 
+Because the test data are not used to estimate the parameters, this still gives us a "fair" forecast. For the `ets`, `Arima`, `tbats` and `nnetar` functions, these calculations are easily carried out using the `model` argument. 
+
+In the following example, we apply an ARIMA model to the Australian "eating out" monthly expenditure. The last five years are used as the test set.
+
+```{r oosos}
+training <- subset(auscafe, end=length(auscafe)-61)
+test <- subset(auscafe, start=length(auscafe)-60)
+cafe.train <- Arima(training, order=c(2,1,1), seasonal=c(0,1,2), lambda=0)
+cafe.train %>% 
+  forecast(h=60) %>% 
+  autoplot() + forecast::autolayer(test)
+```
+
+Now we apply the same model to the test data.
+
+```{r oosos2}
+cafe.test <- Arima(test, model=cafe.train)
+accuracy(cafe.test)
+```
+
+Note that the second call to `Arima` does not involve the model being re-estimated. Instead, the model obtained in the first call is applied to the test data in the second call. 
+
+Because the model was not re-estimated, the "residuals" obtained here are actually one-step forecast errors. Consequently, the results produced from the `accuracy` command are actually on the test set (despite the output saying "Training set"). 
+
+## Multi-step forecasts on training data {#isms}
+
+Just as it is useful to obtain one-step forecasts on the test set, it is sometimes useful to compute multi-step forecasts on the training set. We normally define fitted values to be one-step forecasts on the training set (see Section \@ref(residuals)), but a similar idea can be used for multi-step forecasts. The `fitted()` function has an `h` argument to allow for $h$-step "fitted values" on the training set. 
+
+Here is a plot of 12-step (one year) forecasts on the training set used for the model of Australian eating-out expenditure in the previous section. Because the model involves both seasonal (lag 12) and first (lag 1) differencing, it is not possible to compute these forecasts for the first 25 observations.
+
+```{r isms, dependson="oosos", warning=FALSE}
+autoplot(training, series="Training data") +
+  forecast::autolayer(fitted(cafe.train, h=12), series="12-step fitted values")
+```
+
+## Dealing with missing values and outliers {#missing-outliers}
+
+## Bootstrapping and bagging {#bootstrap}
+

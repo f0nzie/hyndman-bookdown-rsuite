@@ -1,0 +1,468 @@
+# Dynamic regression models {#ch-dynamic}
+
+The time series models in the previous two chapters allow for the inclusion of information from past observations of a series, but not for the inclusion of other information that may also be relevant. For example, the effects of holidays, competitor activity, changes in the law, the wider economy, or other external variables may explain some of the historical variation and allow more accurate forecasts. On the other hand, the regression models in Chapter \@ref(ch-regression) allow for the inclusion of a lot of relevant information from predictor variables, but do not allow for the subtle time series dynamics that can be handled with ARIMA models.
+
+In this chapter, we consider how to extend ARIMA models in order to allow other information to be included in the models. We begin by simply combining regression models and ARIMA models to give a regression with ARIMA errors. These are then extended to the general class of dynamic regression models. In Chapter \@ref(ch-regression) we considered regression models of the form
+$$
+  y_t = \beta_0 + \beta_1 x_{1,t} + \dots + \beta_k x_{k,t} + e_t,
+$$
+where $y_t$ is a linear function of the $k$ predictor variables ($x_{1,t},\dots,x_{k,t}$), and $e_t$ is usually assumed to be an uncorrelated error term (i.e., it is white noise). We considered tests such as the Breusch-Godfrey test for assessing whether $e_t$ was significantly correlated.
+
+In this chapter, we will allow the errors from a regression to contain autocorrelation. To emphasise this change in perspective, we will replace $e_t$ with $n_t$ in the equation. The error series $n_t$ is assumed to follow an ARIMA model. For example, if $n_t$ follows an ARIMA(1,1,1) model, we can write
+\begin{align*}
+  y_t &= \beta_0 + \beta_1 x_{1,t} + \dots + \beta_k x_{k,t} + n_t,\\
+      & (1-\phi_1B)(1-B)n_t = (1+\theta_1B)e_t,
+\end{align*}
+where $e_t$ is a white noise series.
+
+Notice that the model has two error terms here --- the error from the regression model, which we denote by $n_t$, and the error from the ARIMA model, which we denote by $e_t$. Only the ARIMA model errors are assumed to be white noise.
+
+## Estimation
+
+When we estimate the parameters from the model, we need to minimise the sum of squared $e_t$ values. If we minimise the sum of squared $n_t$ values instead (which is what would happen if we estimated the regression model ignoring the autocorrelations in the errors), then several problems arise.
+
+  1. The estimated coefficients $\hat{\beta}_0,\dots,\hat{\beta}_k$ are no longer the best estimates, as some information has been ignored in the calculation;
+  2. Any statistical tests associated with the model (e.g., t-tests on the coefficients) will be incorrect.
+  3. The AICc values of the fitted models are no longer a good guide as to which is the best model for forecasting.
+  4. In most cases, the $p$-values associated with the coefficients will be too small, and so some predictor variables will appear to be important when they are not. This is known as "spurious regression".
+
+Minimising the sum of squared $e_t$ values avoids these problems. Alternatively, maximum likelihood estimation can be used; this will give very similar estimates of the coefficients.
+
+An important consideration when estimating a regression with ARMA errors is that all of the variables in the model must first be stationary. Thus, we first have to check that $y_t$ and all of the predictors $(x_{1,t},\dots,x_{k,t})$ appear to be stationary. If we estimate the model when any of these are non-stationary, the estimated coefficients will not be consistent estimates (and therefore may not be meaningful). One exception to this is the case where non-stationary variables are co-integrated. If there exists a linear combination of the non-stationary $y_t$ and the predictors that is stationary, then the estimated coefficients will be consistent.^[Forecasting with cointegrated models is discussed by @Harris03.]
+
+We therefore first difference the non-stationary variables in the model. It is often desirable to maintain the form of the relationship between $y_t$ and the predictors, and consequently it is common to difference all of the variables if any of them need differencing. The resulting model is then called a "model in differences", as distinct from a "model in levels", which is what is obtained when the original data are used without differencing.
+
+If all of the variables in the model are stationary, then we only need to consider ARMA errors for the residuals. It is easy to see that a regression model with ARIMA errors is equivalent to a regression model in differences with ARMA errors. For example, if the above regression model with ARIMA(1,1,1) errors is differenced we obtain the model
+\begin{align*}
+  y'_t &= \beta_1 x'_{1,t} + \dots + \beta_k x'_{k,t} + n'_t,\\
+       & (1-\phi_1B)n'_t = (1+\theta_1B)e_t,
+\end{align*}
+where $y'_t=y_t-y_{t-1}$, $x'_{t,i}=x_{t,i}-x_{t-1,i}$ and $n'_t=n_t-n_{t-1}$, which is a regression model in differences with ARMA errors.
+
+
+## Regression with ARIMA errors in R
+
+The R function `Arima()` will fit a regression model with ARIMA errors if the argument `xreg` is used. The `order` argument specifies the order of the ARIMA error model. If differencing is specified, then the differencing is applied to all variables in the regression model before the model is estimated. For example, the R command
+
+```r
+fit <- Arima(y, xreg=x, order=c(1,1,0))
+```
+
+will fit the model $y_t' = \beta_1 x'_t + n'_t$, where $n'_t = \phi_1 n'_{t-1} + e_t$ is an AR(1) error. This is equivalent to the model
+$$
+  y_t = \beta_0 + \beta_1 x_t + n_t,
+$$
+where $n_t$ is an ARIMA(1,1,0) error. Notice that the constant term disappears
+due to the differencing. To include a constant in the differenced
+model, specify `include.drift=TRUE`.
+
+The `auto.arima()` function will also handle regression terms via the `xreg` argument. The user must specify the predictor variables to include, but `auto.arima` will select the best ARIMA model for the errors.
+
+The AICc is calculated for the final model, and this value can be used to determine the best predictors. That is, the procedure should be repeated for all subsets of predictors to be considered, and the model with the lowest AICc value selected.
+
+
+### Example: US Personal Consumption and Income {-}
+
+Figure \@ref(fig:usconsump) shows the quarterly changes in personal consumption expenditure and personal disposable income from 1970 to 2010. We would like to forecast changes in expenditure based on changes in income. A change in income does not necessarily translate to an instant change in consumption (e.g., after the loss of a job, it may take a few months for expenses to be reduced to allow for the new circumstances). However, we will ignore this complexity in this example and try to measure the instantaneous effect of the average change of income on the average change of consumption expenditure.
+
+
+```{r usconsump, fig.cap="Percentage changes in quarterly personal consumption expenditure and personal disposable income for the USA, 1970 to 2010."}
+autoplot(uschange[,1:2], facets=TRUE) +
+  xlab("Year") + ylab("") + 
+  ggtitle("Quarterly changes in US consumption and personal income")
+```
+
+```{r usconsump2, fig.cap="Residuals ($e_t$) obtained from a regression of change in consumption expenditure on change in disposable income, assuming an ARIMA(1,0,2) error model."}
+(fit <- auto.arima(uschange[,"Consumption"], xreg=uschange[,"Income"]))
+```
+
+```{r usconsumpparam, echo=FALSE}
+phi1 <- coef(fit)['ar1']
+theta1 <- coef(fit)['ma1']
+theta2 <- coef(fit)['ma2']
+intercept <- coef(fit)['intercept']
+slope <- coef(fit)['uschange[, "Income"]']
+sigma2 <- fit$sigma2
+```
+
+The data are clearly already stationary (as we are considering percentage changes rather than raw expenditure and income), so there is no need for any differencing. The fitted model is
+\begin{align*}
+  y_t &= `r format(intercept, digits=2, nsmall=2)` +
+         `r format(slope, digits=2, nsmall=2)` x_t + n_t, \\
+  n_t &= `r format(phi1, digits=2, nsmall=2)` n_{t-1} + e_t
+        `r format(theta1, digits=2, nsmall=2)` e_{t-1} +
+        `r format(theta2, digits=2, nsmall=2)` e_{t-2},\\
+  e_t &\sim \text{NID}(0,`r format(sigma2, digits=3)`).
+\end{align*}
+
+We can recover both the $n_t$ and $e_t$ series using the `residuals()` function.
+
+```{r usconsumpres, fig.cap="Regression errors ($n_t$) and ARIMA errors ($e_t$) from the fitted model."}
+cbind("Regression Errors" = residuals(fit, type="regression"),
+      "ARIMA errors" = residuals(fit, type="innovation")) %>%
+  autoplot(facets=TRUE)
+```
+
+It is the ARIMA errors that should resemble a white noise series.
+
+<!--?? Should we change the test to BG test when reg argument is used in auto.arima? -->
+
+```{r usconsumpres2, fig.cap="The residuals (i.e., the ARIMA errors) are not significantly different from white noise."}
+checkresiduals(fit)
+```
+
+## Forecasting
+
+To forecast a regression model with ARIMA errors, we need to forecast the regression part of the model and the ARIMA part of the model, and combine the results. As with ordinary regression models, in order to obtain forecasts we first need to forecast the predictors. When the predictors are known into the future (e.g., calendar-related variables such as time, day-of-week, etc.), this is straightforward. But when the predictors are themselves unknown, we must either model them separately, or use assumed future values for each predictor.
+
+
+### Example: US Personal Consumption and Income {-}
+
+We will calculate forecasts for the next eight quarters assuming that the future percentage changes in personal disposable income will be equal to the mean percentage change from the last forty years.
+
+```{r usconsump3, fig.cap="Forecasts obtained from regressing the percentage change in consumption expenditure on the percentage change in disposable income, with an ARIMA(1,0,2) error model."}
+fcast <- forecast(fit, xreg=rep(mean(uschange[,2]),8))
+autoplot(fcast) + xlab("Year") +
+  ylab("Percentage change")
+```
+
+The prediction intervals for this model are narrower than those for the model developed in Section \@ref(sec:nonseasonalarima) because we are now able to explain some of the variation in the data using the income predictor.
+
+It is important to realise that the prediction intervals from regression models (with or without ARIMA errors) do not take into account the uncertainty in the forecasts of the predictors. So they should be interpreted as being conditional on the assumed (or estimated) future values of the predictor variables.
+
+### Example: Forecasting electricity demand {-}
+
+Daily electricity demand can be modelled as a function of temperature. As can be observed on an electricity bill, more electricity is used on cold days due to heating and hot days due to air conditioning. The higher demand on cold and hot days is reflected in the u-shape of Figure \@ref(fig:elecscatter), where daily demand is plotted versus daily maximum temperature. 
+
+```{r elecscatter, echo=FALSE, fig.cap="Daily electricity demand versus maximum daily temperature for the state of Victoria in Australia for 2014."}
+elecdaily %>%
+  as.data.frame() %>%
+  ggplot(aes(x=Temperature, y=Demand)) +
+    ylab("Electicity demand (GW)") +
+    xlab("Maximum daily temperature") +
+    geom_point() 
+```
+
+The data are stored as `elecdaily` including total daily demand, an indicator variable for workdays (a workday is represented with 1, and a non-workday is represented with 0), and daily maximum temperatures. Because there is weekly seasonality, the frequency has been set to 7. Figure \@ref(fig:electime) show the time series of both daily demand and daily maximum temperatures. The plots highlight the need for both a non-linear and also dynamic model. 
+
+```{r electime, echo=FALSE, fig.cap="Daily electricity demand and maximum daily temperature for the state of Victoria in Australia for 2014."}
+autoplot(elecdaily[,c("Demand","Temperature")],
+         facets = TRUE, colour = TRUE) +
+  ylab("") + guides(colour="none")
+```
+
+In this example, we fit a quadratic regression model with ARMA errors using the `auto.arima` function. Using the estimated model we forecast 14 days ahead starting from Thursday 1 January 2015 (a non-work-day being a public holiday for New Years Day). 
+
+In this case, we could obtain weather forecasts from the weather bureau for the next 14 days. But for the sake of illustration, we will use scenario based forecasting (as introduced in Section \@ref(Regr-ForeWithRegr)) where we set the temperature for the next 14 days to a constant 26 degrees. 
+
+```{r elecdailyfit}
+xreg <- cbind(MaxTemp = elecdaily[, "Temperature"], 
+              MaxTempSq = elecdaily[, "Temperature"]^2, 
+              Workday = elecdaily[, "WorkDay"])
+fit <- auto.arima(elecdaily[, "Demand"], xreg = xreg)
+checkresiduals(fit)
+```
+
+The model has some significant autocorrelation in the residuals, which means the prediction intervals may not provide accurate coverage. Also, the histogram of the residuals shows one positive outlier, which will also affect the coverage of the prediction intervals.
+
+```{r elecdailyf}
+autoplot(elecdaily[,'Demand'], series="Data") +
+  forecast::autolayer(fitted(fit), series="Fitted") +
+  ylab("") +
+  ggtitle("Daily electricity demand (GW)") +
+  guides(colour=guide_legend(title=" "))
+
+fcast <- forecast(fit, 
+  xreg = cbind(rep(26,14), rep(26^2,14), c(0,1,0,0,1,1,1,1,1,0,0,1,1,1)))
+autoplot(fcast) + ylab("Electicity demand (GW)") 
+```
+
+The point forecasts look reasonable for the first two weeks of 2015. The slow down in electricity demand at the end of 2014 has caused the forecasts for the next two weeks to show similarly low demand values.
+
+## Stochastic and deterministic trends
+
+There are two different ways of modelling a linear trend. A *deterministic trend* is obtained using the regression model
+$$
+  y_t = \beta_0 + \beta_1 t + n_t,
+$$
+where $n_t$ is an ARMA process. A *stochastic trend* is obtained using the model
+$$
+  y_t = \beta_0 + \beta_1 t + n_t,
+$$
+where $n_t$ is an ARIMA process with $d=1$. In that case, we can difference both sides so that $y_t' = \beta_1 + n_t'$, where $n_t'$ is an ARMA process. In other words,
+$$
+  y_t = y_{t-1} + \beta_1 + n_t'.
+$$
+This is very similar to a random walk with drift, but here the error term is an ARMA process rather than simply white noise.
+
+Although these models appear quite similar (they only differ in the number of differences that need to be applied to $n_t$), their forecasting characteristics are quite different.
+
+### Example: International visitors to Australia {-}
+
+```{r austa, fig.cap="Annual international visitors to Australia, 1980--2010."}
+autoplot(austa) + xlab("Year") +
+  ylab("millions of people") +
+  ggtitle("Total annual international visitors to Australia")
+```
+
+Figure \@ref(fig:austa) shows the total number of international visitors to Australia each year from 1980 to 2010. We will fit both a deterministic and a stochastic trend model to these data.
+
+The deterministic trend model is obtained as follows:
+
+```{r deterministictrend}
+trend <- seq_along(austa)
+(fit1 <- auto.arima(austa, d=0, xreg=trend))
+```
+
+```{r austaparams, echo=FALSE}
+phi1 <- coef(fit1)['ar1']
+phi2 <- coef(fit1)['ar2']
+intercept <- coef(fit1)['intercept']
+slope <- coef(fit1)['xreg']
+sigma2 <- fit1$sigma2
+```
+
+This model can be written as
+\begin{align*}
+  y_t &= `r format(intercept,digits=2)` + `r format(slope, digits=2)` t + n_t \\
+  n_t &= `r format(phi1, digits=3)` n_{t-1} `r format(phi2, digits=2)` n_{t-2} + e_t\\
+  e_t &\sim \text{NID}(0,`r format(sigma2, digits=3)`).
+\end{align*}
+
+The estimated growth in visitor numbers is `r format(slope, digits=2)` million people per year.
+
+
+Alternatively, the stochastic trend model can be estimated.
+
+```{r stochastictrend}
+(fit2 <- auto.arima(austa, d=1))
+```
+
+```{r austaparams2, echo=FALSE}
+drift <- coef(fit2)['drift']
+theta1 <- coef(fit2)['ma1']
+sigma2 <- fit2$sigma2
+```
+
+This model can be written as $y_t-y_{t-1} = `r format(drift, digits=2)` + n'_t$, or equivalently
+\begin{align*}
+  y_t &= y_0 + `r format(drift, digits=2)` t + n_t \\
+  n_t &= n_{t-1} + `r format(theta1,digits=2, nsmall=2)` e_{t-1} + e_{t}\\
+  e_t &\sim \text{NID}(0,`r format(sigma2, digits=3)`).
+\end{align*}
+
+In this case, the estimated growth in visitor numbers is also `r format(drift, digits=2)` million people per year. Although the growth estimates are similar, the prediction intervals are not, as Figure \@ref(fig:austaf) shows. In particular, stochastic trends have much wider prediction intervals because the errors are non-stationary.
+
+
+```{r austaf, fig.cap="Forecasts of annual international visitors to Australia using a deterministic trend model and a stochastic trend model.", message=FALSE}
+# fc1 <- forecast(fit1, xreg=data.frame(trend=length(austa)+1:10))
+# fc2 <- forecast(fit2, h=10)
+# autoplot(austa) +
+#   forecast::autolayer(fc2, series="Stochastic trend") +
+#   forecast::autolayer(fc1, series="Deterministic trend") +
+#   ggtitle("Forecasts from deterministic and stochastic trend models") +
+#   xlab("Year") + ylab("Visitors to Australia (millions)") +
+#   guides(colour=guide_legend(title="Forecast"))
+```
+
+There is an implicit assumption with deterministic trends that the slope of the trend is not going to change over time. On the other hand, stochastic trends can change, and the estimated growth is only assumed to be the average growth over the historical period, not necessarily the rate of growth that will be observed into the future. Consequently, it is safer to forecast with stochastic trends, especially for longer forecast horizons, as the prediction intervals allow for greater uncertainty in future growth.
+
+## Dynamic harmonic regression {#sec-dhr}
+
+When there are long seasonal periods, a dynamic regression with Fourier terms is often better than other models we have considered in this book.
+
+For example, daily data can have annual seasonality of length 365, weekly data has seasonal period of approximately 52, while half-hourly data can have several seasonal periods, the shortest of which is the daily pattern of period 48.
+
+Seasonal versions of ARIMA and ETS models are designed for shorter periods such as 12 for monthly data or 4 for quarterly data. The `ets()` function restricts seasonality to be a maximum period of 24 to allow hourly data but not data with a larger seasonal frequency. The problem is that there are $m-1$ parameters to be estimated for the initial seasonal states where $m$ is the seasonal period. So for large $m$, the estimation becomes almost impossible.
+
+The `Arima()` and `auto.arima()` functions will allow a seasonal period up to $m=350$, but in practice will usually run out of memory whenever the seasonal period is more than about 200. In any case, seasonal differencing of very high order does not make a lot of sense --- for daily data it involves comparing what happened today with what happened exactly a year ago and there is no constraint that the seasonal pattern is smooth.
+
+So for such time series, we prefer a harmonic regression approach where the seasonal pattern is modelled using Fourier terms with short-term time series dynamics handled by an ARMA error.
+
+The advantages of this approach are:
+
+   * it allows any length seasonality;
+   * for data with more than one seasonal period, you can include Fourier terms of different frequencies;
+   * the seasonal pattern is smooth for small values of $K$ (but more wiggly seasonality can be handled by increasing $K$);
+   * the short-term dynamics are easily handled with a simple ARMA error.
+
+
+The only real disadvantage (compared to a seasonal ARIMA model) is that the seasonality is assumed to be fixed --- the pattern is not allowed to change over time. But in practice, seasonality is usually remarkably constant so this is not a big disadvantage except for very long time series.
+
+### Example: Australian eating out expenditure {-}
+
+In this example we demonstrate combining Fourier terms for capturing seasonality with ARIMA errors capturing other dynamics in the data. We use `auscafe`, the total monthly expenditure on cafes, restaurants and takeaway food services in Australia (\$billion), starting in 2004 up to November 2016 and we forecast 24 months ahead. We vary the number of Fourier terms from 1 to 6 (which is equivalent to including seasonal dummies). Figure \@ref(fig:eatout) shows the seasonal pattern projected forward as $K$ increases. Notice that as $K$ increases the Fourier terms capture and project a more "wiggly" seasonal pattern and simpler ARIMA models are required to capture other dynamics. The AICc value is maximised for $K=5$, with a significant jump going from $K=4$ to $K=5$,  hence the forecasts generated from this model would be the ones used.
+
+```{r eatout, fig.width=10, fig.asp=0.8,fig.cap="Using Fourier terms and ARIMA errors for forecasting monthly expenditure on eating out in Australia."}
+cafe04 <- window(auscafe, start=2004)
+
+plots <- list()
+for (i in 1:6) {
+  fit <- auto.arima(cafe04, xreg = fourier(cafe04, K = i), seasonal = FALSE, lambda = 0)
+  plots[[i]] <- autoplot(forecast(fit,xreg=fourier(cafe04, K=i, h=24))) +
+    xlab(paste("K=",i,"   AICC=",round(fit$aicc,2)))+ylab("") + ylim(1.5,4.7) 
+}
+
+gridExtra::grid.arrange(plots[[1]],plots[[2]],plots[[3]],
+                        plots[[4]],plots[[5]],plots[[6]], nrow=3)
+  
+```
+
+
+## Lagged predictors
+
+Sometimes, the impact of a predictor which is included in a regression model will not be simple and immediate. For example, an advertising campaign may impact sales for some time beyond the end of the campaign, and sales in one month will depend on the advertising expenditure in each of the past few months. Similarly, a change in a company's safety policy may reduce accidents immediately, but have a diminishing effect over time as employees take less care when they become familiar with the new working conditions.
+
+In these situations, we need to allow for lagged effects of the predictor. Suppose that we have only one predictor in our model. Then a model which allows for lagged effects can be written as
+$$
+  y_t = \beta_0 + \gamma_0x_t + \gamma_1 x_{t-1} + \dots + \gamma_k x_{t-k} + n_t,
+$$
+where $n_t$ is an ARIMA process. The value of $k$ can be selected using the AICc, along with the values of $p$ and $q$ for the ARIMA error.
+
+### Example: TV advertising and insurance quotations {-}
+
+
+A US insurance company advertises on national television in an attempt to increase the number of insurance quotations provided (and consequently the number of new policies). Figure \@ref(fig:tvadvert) shows the number of quotations and the expenditure on television advertising for the company each month from January 2002 to April 2005.
+
+```{r tvadvert, fig.cap="Numbers of insurance quotations provided per month and the expenditure on advertising per month."}
+autoplot(insurance, facets=TRUE) +
+  xlab("Year") + ylab("") +
+  ggtitle("Insurance advertising and quotations")
+```
+
+We will consider including advertising expenditure for up to four months; that is, the model may include advertising expenditure in the current month, and the three months before that. When comparing models, it is important that they all use the same training set. In the following code, we exclude the first three months in order to make fair comparisons. The best model is the one with the smallest AICc value.
+
+```{r tvadvert2, fig.cap="ARIMA models for insurance quotations with advertising as a predictor variable."}
+# Lagged predictors. Test 0, 1, 2 or 3 lags.
+# Advert <- cbind(
+#   AdLag0 = insurance[,"TV.advert"],
+#   AdLag1 = lag(insurance[,"TV.advert"],-1),
+#   AdLag2 = lag(insurance[,"TV.advert"],-2),
+#   AdLag3 = lag(insurance[,"TV.advert"],-3))[1:NROW(insurance),]
+
+# Choose optimal lag length for advertising based on AICc
+# Restrict data so models use same fitting period
+# fit1 <- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1], d=0)
+# fit2 <- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:2], d=0)
+# fit3 <- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:3], d=0)
+# fit4 <- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:4], d=0)
+
+# Best model fitted to all data (based on AICc)
+# Refit using all data
+# (fit <- auto.arima(insurance[,1], xreg=Advert[,1:2], d=0))
+```
+
+```{r tvadvertparam, echo=FALSE}
+# Check previous model
+# if(fit1$aicc < fit2$aicc | fit3$aicc < fit2$aicc | fit4$aicc < fit2$aicc)
+#   stop("TV model not correct")
+
+# Store coefficients
+phi1 <- coef(fit)['ar1']
+phi2 <- coef(fit)['ar2']
+phi3 <- coef(fit)['ar3']
+intercept <- coef(fit)['intercept']
+gamma0 <- coef(fit)['AdLag0']
+gamma1 <- coef(fit)['AdLag1']
+```
+
+The chosen model includes advertising only in the current month and the previous month, and has AR(3) errors. The model can be written as
+$$
+  y_t = `r format(intercept, digits=3)` +
+         `r format(gamma0, digits=3)` x_t +
+         `r format(gamma1, digits=2)` x_{t-1} + n_t,
+$$
+where $y_t$ is the number of quotations provided in month $t$, $x_t$ is the advertising expenditure in month $t$,
+$$
+  n_t = `r format(phi1, digits=3)` n_{t-1}
+        `r format(phi2, digits=2)` n_{t-2} +
+        `r format(phi3, digits=2)` n_{t-3} + e_t,
+$$
+and $e_t$ is white noise.
+
+We can calculate forecasts using this model if we assume future values for the advertising variable. If we set the future monthly advertising to 8 units, we get the following forecasts.
+
+```{r tvadvertf8, fig.cap="Forecasts of monthly insurance quotes, assuming that the future advertising expenditure is 8 units in each future month."}
+# fc8 <- forecast(fit, h=20,
+#   xreg=cbind(AdLag0=rep(8,20), AdLag1=c(Advert[40,1],rep(8,19))))
+# autoplot(fc8) + ylab("Quotes") +
+#   ggtitle("Forecast quotes with future advertising set to 8")
+```
+
+<!-- ## Restaurant bookings
+
+## Online shopping?
+
+ -->
+
+## Exercises
+
+
+1.  Consider monthly sales and advertising data for an automotive parts company (data set `advert`).
+    a. Plot the data using `autoplot`. Why is it useful to set `facets=TRUE`?
+    b. Fit a standard regression model $y_t = a + b x_t + n_t$ where $y_t$ denotes sales and $x_t$ denotes advertising using the `tslm()` function.
+    c. Show that the residuals have significant autocorrelation.
+    d. What difference does it make you use the \verb|Arima| function instead:
+
+        ```r
+        Arima(advert[,"sales"], xreg=advert[,"advert"], order=c(0,0,0))
+        ```
+    e. Refit the model using `auto.arima()`. How much difference does the error model make to the estimated parameters? What ARIMA model for the errors is selected?
+    f. Check the residuals of the fitted model.
+    g. Assuming the advertising budget for the next six months is exactly 10 units per month, produce and plot sales forecasts with prediction intervals for the next six months.
+
+2.  This exercise uses data set `huron` giving the level of Lake Huron from 1875--1972.
+    a. Fit a piecewise linear trend model to the Lake Huron data with a knot at 1920 and an ARMA error structure.
+    b. Forecast the level for the next 30 years.
+
+3. This exercise concerns `motel`: the total monthly takings from accommodation and the total room nights occupied at hotels, motels, and guest houses in Victoria, Australia, between January 1980 and June 1995. Total monthly takings are in thousands of Australian dollars; total room nights occupied are in thousands.
+    a. Use the data to calculate the average cost of a night's accommodation in Victoria each month.
+    b. Estimate the monthly CPI.
+    c. Produce time series plots of both variables and explain why logarithms of both variables need to be taken before fitting any models.
+    d. Fit an appropriate regression model with ARIMA errors. Explain your reasoning in arriving at the final model.
+    e. Forecast the average price per room for the next twelve months using your fitted model. (Hint: You will need to produce forecasts of the CPI figures first.)
+
+4. We fitted a harmonic regression model to part of the `gasoline` series in Exercise 6 in Section \@ref(Regr-exercises). We will now revisit this model, and extend it to include more data and ARMA errors.
+    a. Using `tslm`, fit a harmonic regression with a piecewise linear time trend to the full `gasoline` series. Select the position of the knots in the trend and the appropriate number of Fourier terms to include by minimizing the AICc or CV value.
+    b. Now refit the model using `auto.arima` to allow for correlated errors, keeping the same predictor variables as you used with `tslm`.
+    c. Check the residuals of the final model using the `checkresiduals()` function. Do they look sufficiently like white noise to continue? If not, try modifying your model, or removing the first few years of data.
+    d. Once you have a model with white noise residuals, produce forecasts for the next year.
+
+5. Electricity consumption is often modelled as a function of temperature. Temperature is measured by daily heating degrees and cooling degrees. Heating degrees is $18^\circ$C minus the average daily temperature when the daily average is below $18^\circ$C; otherwise it is zero.  This provides a measure of our need to heat ourselves as temperature falls.  Cooling degrees measures our need to cool ourselves as the temperature rises.  It is defined as the average daily temperature minus $18^\circ$C when the daily average is above $18^\circ$C; otherwise it is zero.  Let $y_t$ denote the monthly total of kilowatt-hours of electricity used, let $x_{1,t}$ denote the monthly total of heating degrees, and let $x_{2,t}$ denote the monthly total of cooling degrees.
+
+    An analyst fits the following model to a set of such data:
+    $$y^*_t = b_1x^*_{1,t} + b_2x^*_{2,t} + n_t,$$
+    where
+    $$(1-B)(1-B^{12})n_t = \frac{1-\theta_1 B}{1-\phi_{12}B^{12} - \phi_{24}B^{24}}e_t$$
+    and $y^*_t = \log(Y_t)$, $x^*_{1,t} = \sqrt{x_{1,t}}$ and $x^*_{2,t}=\sqrt{x_{2,t}}$.
+
+    a. What sort of ARIMA model is identified for $N_t$?
+    b. The estimated coefficients are
+
+    |Year              | 1964| 1965| 1966| 1967| 1968|
+    |:-----------------|----:|----:|----:|----:|----:|
+    |Millions of tons  | 467 | 512 | 534 | 552 | 545 |
+
+    | Parameter   | Estimate   | s.e.       | $Z$        | $P$-value  |
+    | :---------- | :--------: | :--------: | :--------: | :--------: |
+    | $b_1$       | 0.0077     | 0.0015     | 4.98       | 0.000      |
+    | $b_2$       | 0.0208     | 0.0023     | 9.23       | 0.000      |
+    | $\theta_1$  | 0.5830     | 0.0720     | 8.10       | 0.000      |
+    | $\phi_{12}$ | -0.5373    | 0.0856     | -6.27      | 0.000      |
+    | $\phi_{24}$ | -0.4667    | 0.0862     | -5.41      | 0.000      |
+
+    Explain what the estimates of $b_1$ and $b_2$ tell us about electricity consumption.
+
+    c. Write the equation in a form more suitable for forecasting.
+    d. Describe how this model could be used to forecast electricity demand for the next 12 months.
+    e. Explain why the $N_t$ term should be modelled with an ARIMA model rather than modeling the data using a standard regression package.  In your discussion, comment on the properties of the estimates, the validity of the standard regression results, and the importance of the $N_t$ model in producing forecasts.
+
+6. For the retail time series considered in earlier chapters:
+    a. Develop an appropriate dynamic regression model with Fourier terms for the seasonality. Use the AIC to select the number of Fourier terms to include in the model. (You will probably need to use the same Box-Cox transformation you identified previously.)
+    b. Check the residuals of the fitted model. Does the residual series look like white noise?
+    c. Compare the forecasts with those you obtained earlier using alternative models.
+
+## Further reading
+
+A detailed discussion of dynamic regression models is provided in @Pankratz91. A generalization of dynamic regression models, known as "transfer function models", is discussed in @BJRL15.
+
