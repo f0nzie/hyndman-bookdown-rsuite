@@ -73,7 +73,7 @@ June 2019
 
 # Getting started {#ch-intro}
 
-Forecasting has fascinated people for thousands of years, sometimes being considered a sign of divine inspiration, and sometimes being seen as a criminal activity. The Jewish prophet Isaiah wrote in about 700 BC
+Forecasting has fascinated people for thousands of years, sometimes being considered a sign of divine inspiration, and sometimes being seen as a criminal activity. The Jewish prophet Isaiah wrote in about 700 BC.
 
 > *Tell us what the future holds, so we may know that you are gods.*<br>
 > (Isaiah 41:23)
@@ -796,6 +796,7 @@ Naïve forecasts are where all forecasts are simply set to be the value of the l
 $$
   \hat{y}_{T+h|T} = y_{T}.
 $$
+
 This method works remarkably well for many economic and financial time series.
 
 ```r
@@ -809,6 +810,7 @@ A similar method is useful for highly seasonal data. In this case, we set each f
 $$
    \hat{y}_{T+h|T} = y_{T+h-km},
 $$
+
 where $m=$ the seasonal period, $k=\lfloor (h-1)/m\rfloor+1$, and $\lfloor u \rfloor$ denotes the integer part of $u$. That looks more complicated than it really is. For example, with monthly data, the forecast for all future February values is equal to the last observed February value. With quarterly data, the forecast of all future Q2 values is equal to the last observed Q2 value (where Q2 means the second quarter). Similar rules apply for other months and quarters, and for other seasonal periods.
 
 ```r
@@ -5061,7 +5063,6 @@ ARIMA models provide another approach to time series forecasting. Exponential sm
 Before we introduce ARIMA models, we must first discuss the concept of stationarity and the technique of differencing time series.
 
 ## Stationarity and differencing
-
 **A stationary time series is one whose properties do not depend on the time at which the series is observed.**^[More precisely, if $\{y_t\}$ is a *stationary* time series, then for all $s$, the distribution of $(y_t,\dots,y_{t+s})$ does not depend on $t$.] Thus, time series with trends, or with seasonality, are not stationary --- the trend and seasonality will affect the value of the time series at different times. On the other hand, a white noise series is stationary --- it does not matter when you observe it, it should look much the same at any point in time.
 
 Some cases can be confusing --- a time series with cyclic behaviour (but with no trend or seasonality) is stationary. This is because the cycles are not of a fixed length, so before we observe the series we cannot be sure where the peaks and troughs of the cycles will be.
@@ -8223,6 +8224,7 @@ In this final chapter, we address many practical issues that arise in forecastin
 
 Weekly, daily and sub-daily data can be challenging for forecasting, although for different reasons. 
 
+
 ### Weekly data {-}
 
 Weekly data is difficult because the seasonal period (the number of weeks in a year) is both large and non-integer. The average number of weeks in a year is 52.18. Most of the methods we have considered require the seasonal period to be an integer. Even if we approximate it by 52, most of the methods will not handle such a large seasonal period efficiently.
@@ -8249,7 +8251,8 @@ autoplot(fc)
 
 
 
-The fitted model has 18 pairs of Fourier terms and can be written as
+The fitted model has 18 pairs of Fourier terms and can be written as:
+
 $$
   y_t = bt + \sum_{j=1}^{18} \left[ \alpha_j\sin\left(\frac{2\pi j t}{52.18}\right) + \beta_j\cos\left(\frac{2\pi j t}{52.18}\right) \right] + n_t
 $$

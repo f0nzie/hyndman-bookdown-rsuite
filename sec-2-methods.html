@@ -317,16 +317,16 @@ The notation <span class="math inline">\(\hat{y}_{T+h|T}\)</span> is a short-han
 <p>Naïve forecasts are where all forecasts are simply set to be the value of the last observation. That is,
 <span class="math display">\[
   \hat{y}_{T+h|T} = y_{T}.
-\]</span>
-This method works remarkably well for many economic and financial time series.</p>
+\]</span></p>
+<p>This method works remarkably well for many economic and financial time series.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">naive</span>(y, h)
 <span class="kw">rwf</span>(y, h) <span class="co"># Alternative</span></code></pre>
 <p>###Seasonal naïve method {-}</p>
 <p>A similar method is useful for highly seasonal data. In this case, we set each forecast to be equal to the last observed value from the same season of the year (e.g., the same month of the previous year). Formally, the forecast for time <span class="math inline">\(T+h\)</span> is written as
 <span class="math display">\[
    \hat{y}_{T+h|T} = y_{T+h-km},
-\]</span>
-where <span class="math inline">\(m=\)</span> the seasonal period, <span class="math inline">\(k=\lfloor (h-1)/m\rfloor+1\)</span>, and <span class="math inline">\(\lfloor u \rfloor\)</span> denotes the integer part of <span class="math inline">\(u\)</span>. That looks more complicated than it really is. For example, with monthly data, the forecast for all future February values is equal to the last observed February value. With quarterly data, the forecast of all future Q2 values is equal to the last observed Q2 value (where Q2 means the second quarter). Similar rules apply for other months and quarters, and for other seasonal periods.</p>
+\]</span></p>
+<p>where <span class="math inline">\(m=\)</span> the seasonal period, <span class="math inline">\(k=\lfloor (h-1)/m\rfloor+1\)</span>, and <span class="math inline">\(\lfloor u \rfloor\)</span> denotes the integer part of <span class="math inline">\(u\)</span>. That looks more complicated than it really is. For example, with monthly data, the forecast for all future February values is equal to the last observed February value. With quarterly data, the forecast of all future Q2 values is equal to the last observed Q2 value (where Q2 means the second quarter). Similar rules apply for other months and quarters, and for other seasonal periods.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">snaive</span>(y, h)</code></pre>
 <p>###Drift method {-}</p>
 <p>A variation on the naïve method is to allow the forecasts to increase or decrease over time, where the amount of change over time (called the “drift”) is set to be the average change seen in the historical data. Thus the forecast for time <span class="math inline">\(T+h\)</span> is given by
