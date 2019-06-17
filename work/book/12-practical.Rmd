@@ -6,6 +6,7 @@ In this final chapter, we address many practical issues that arise in forecastin
 
 Weekly, daily and sub-daily data can be challenging for forecasting, although for different reasons. 
 
+
 ### Weekly data {-}
 
 Weekly data is difficult because the seasonal period (the number of weeks in a year) is both large and non-integer. The average number of weeks in a year is `r round(365.25/7, 2)`. Most of the methods we have considered require the seasonal period to be an integer. Even if we approximate it by 52, most of the methods will not handle such a large seasonal period efficiently.
@@ -32,7 +33,8 @@ autoplot(fc)
 #   stop("Gas model has changed")
 ```
 
-The fitted model has `r bestK` pairs of Fourier terms and can be written as
+The fitted model has `r bestK` pairs of Fourier terms and can be written as:
+
 $$
   y_t = bt + \sum_{j=1}^{`r bestK`} \left[ \alpha_j\sin\left(\frac{2\pi j t}{52.18}\right) + \beta_j\cos\left(\frac{2\pi j t}{52.18}\right) \right] + n_t
 $$

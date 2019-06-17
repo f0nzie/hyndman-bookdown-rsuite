@@ -29,6 +29,7 @@ Naïve forecasts are where all forecasts are simply set to be the value of the l
 $$
   \hat{y}_{T+h|T} = y_{T}.
 $$
+
 This method works remarkably well for many economic and financial time series.
 
 ```r
@@ -42,6 +43,7 @@ A similar method is useful for highly seasonal data. In this case, we set each f
 $$
    \hat{y}_{T+h|T} = y_{T+h-km},
 $$
+
 where $m=$ the seasonal period, $k=\lfloor (h-1)/m\rfloor+1$, and $\lfloor u \rfloor$ denotes the integer part of $u$. That looks more complicated than it really is. For example, with monthly data, the forecast for all future February values is equal to the last observed February value. With quarterly data, the forecast of all future Q2 values is equal to the last observed Q2 value (where Q2 means the second quarter). Similar rules apply for other months and quarters, and for other seasonal periods.
 
 ```r
