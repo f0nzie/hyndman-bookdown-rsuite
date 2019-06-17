@@ -11,5 +11,5 @@
 !before-each-chapter.R
 !mathjax-config.html
 !Ch10Data/*
-
+!public/*
 

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8.11 Exercises | Forecasting: Principles and Practice</title>
+  <meta name="description" content="2nd edition" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8.11 Exercises | Forecasting: Principles and Practice" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://Otexts.org/fpp2/" />
+  <meta property="og:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+  <meta property="og:description" content="2nd edition" />
+  <meta name="github-repo" content="robjhyndman/fpp2" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8.11 Exercises | Forecasting: Principles and Practice" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="2nd edition" />
+  <meta name="twitter:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+
+<meta name="author" content="Rob J Hyndman" />
+<meta name="author" content="George Athanasopoulos" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="arima-vs-ets.html">
+<link rel="next" href="ch-dynamic.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="ch-intro.html"><a href="ch-intro.html"><i class="fa fa-check"></i><b>1</b> Getting started</a><ul>
+<li class="chapter" data-level="1.1" data-path="what-can-be-forecast.html"><a href="what-can-be-forecast.html"><i class="fa fa-check"></i><b>1.1</b> What can be forecast?</a></li>
+<li class="chapter" data-level="1.2" data-path="sec-1-2-ForPlanGoals.html"><a href="sec-1-2-ForPlanGoals.html"><i class="fa fa-check"></i><b>1.2</b> Forecasting, planning and goals</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> Determining what to forecast</a></li>
+<li class="chapter" data-level="1.4" data-path="Intro-DataAndMethods.html"><a href="Intro-DataAndMethods.html"><i class="fa fa-check"></i><b>1.4</b> Forecasting data and methods</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Some case studies</a></li>
+<li class="chapter" data-level="1.6" data-path="the-basic-steps-in-a-forecasting-task.html"><a href="the-basic-steps-in-a-forecasting-task.html"><i class="fa fa-check"></i><b>1.6</b> The basic steps in a forecasting task</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-perspective.html"><a href="sec-perspective.html"><i class="fa fa-check"></i><b>1.7</b> The statistical forecasting perspective</a></li>
+<li class="chapter" data-level="1.8" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+<li class="chapter" data-level="1.9" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>1.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-graphics.html"><a href="ch-graphics.html"><i class="fa fa-check"></i><b>2</b> Time series graphics</a><ul>
+<li class="chapter" data-level="2.1" data-path="ts-objects.html"><a href="ts-objects.html"><i class="fa fa-check"></i><b>2.1</b> <code>ts</code> objects</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots.html"><a href="time-plots.html"><i class="fa fa-check"></i><b>2.2</b> Time plots</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Time series patterns</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots.html"><a href="seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> Seasonal plots</a></li>
+<li class="chapter" data-level="2.5" data-path="seasonal-subseries-plots.html"><a href="seasonal-subseries-plots.html"><i class="fa fa-check"></i><b>2.5</b> Seasonal subseries plots</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots.html"><a href="scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> Scatterplots</a></li>
+<li class="chapter" data-level="2.7" data-path="lag-plots.html"><a href="lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> Lag plots</a></li>
+<li class="chapter" data-level="2.8" data-path="autocorrelation.html"><a href="autocorrelation.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelation</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise</a></li>
+<li class="chapter" data-level="2.10" data-path="ex-graphics.html"><a href="ex-graphics.html"><i class="fa fa-check"></i><b>2.10</b> Exercises</a></li>
+<li class="chapter" data-level="2.11" data-path="further-reading-1.html"><a href="further-reading-1.html"><i class="fa fa-check"></i><b>2.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch-toolbox.html"><a href="ch-toolbox.html"><i class="fa fa-check"></i><b>3</b> The forecaster’s toolbox</a><ul>
+<li class="chapter" data-level="3.1" data-path="sec-2-methods.html"><a href="sec-2-methods.html"><i class="fa fa-check"></i><b>3.1</b> Some simple forecasting methods</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-transformations.html"><a href="sec-transformations.html"><i class="fa fa-check"></i><b>3.2</b> Transformations and adjustments</a></li>
+<li class="chapter" data-level="3.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>3.3</b> Residual diagnostics</a></li>
+<li class="chapter" data-level="3.4" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>3.4</b> Evaluating forecast accuracy</a></li>
+<li class="chapter" data-level="3.5" data-path="sec-PI.html"><a href="sec-PI.html"><i class="fa fa-check"></i><b>3.5</b> Prediction intervals</a></li>
+<li class="chapter" data-level="3.6" data-path="the-forecast-package-in-r.html"><a href="the-forecast-package-in-r.html"><i class="fa fa-check"></i><b>3.6</b> The forecast package in R</a></li>
+<li class="chapter" data-level="3.7" data-path="ex-toolbox.html"><a href="ex-toolbox.html"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+<li class="chapter" data-level="3.8" data-path="further-reading-2.html"><a href="further-reading-2.html"><i class="fa fa-check"></i><b>3.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-judgmental.html"><a href="ch-judgmental.html"><i class="fa fa-check"></i><b>4</b> Judgmental forecasts</a><ul>
+<li class="chapter" data-level="4.1" data-path="sec-3-limitations.html"><a href="sec-3-limitations.html"><i class="fa fa-check"></i><b>4.1</b> Beware of limitations</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-3-Key-principles.html"><a href="sec-3-Key-principles.html"><i class="fa fa-check"></i><b>4.2</b> Key principles</a></li>
+<li class="chapter" data-level="4.3" data-path="sec-3-Delphi.html"><a href="sec-3-Delphi.html"><i class="fa fa-check"></i><b>4.3</b> The Delphi method</a></li>
+<li class="chapter" data-level="4.4" data-path="sec-3-Analogy.html"><a href="sec-3-Analogy.html"><i class="fa fa-check"></i><b>4.4</b> Forecasting by analogy</a></li>
+<li class="chapter" data-level="4.5" data-path="sec-3-Scenario.html"><a href="sec-3-Scenario.html"><i class="fa fa-check"></i><b>4.5</b> Scenario Forecasting</a></li>
+<li class="chapter" data-level="4.6" data-path="sec-3-NPF.html"><a href="sec-3-NPF.html"><i class="fa fa-check"></i><b>4.6</b> New product forecasting</a></li>
+<li class="chapter" data-level="4.7" data-path="sec-3-Adjustments.html"><a href="sec-3-Adjustments.html"><i class="fa fa-check"></i><b>4.7</b> Judgmental adjustments</a></li>
+<li class="chapter" data-level="4.8" data-path="further-reading-3.html"><a href="further-reading-3.html"><i class="fa fa-check"></i><b>4.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-regression.html"><a href="ch-regression.html"><i class="fa fa-check"></i><b>5</b> Linear regression models</a><ul>
+<li class="chapter" data-level="5.1" data-path="Regr-Intro.html"><a href="Regr-Intro.html"><i class="fa fa-check"></i><b>5.1</b> The linear model</a></li>
+<li class="chapter" data-level="5.2" data-path="Regr-LSprinciple.html"><a href="Regr-LSprinciple.html"><i class="fa fa-check"></i><b>5.2</b> Least squares estimation</a></li>
+<li class="chapter" data-level="5.3" data-path="Regr-UsefulPredictors.html"><a href="Regr-UsefulPredictors.html"><i class="fa fa-check"></i><b>5.3</b> Some useful predictors</a></li>
+<li class="chapter" data-level="5.4" data-path="Regr-EvaluatingSLR.html"><a href="Regr-EvaluatingSLR.html"><i class="fa fa-check"></i><b>5.4</b> Evaluating the regression model</a></li>
+<li class="chapter" data-level="5.5" data-path="Regr-SelectingPredictors.html"><a href="Regr-SelectingPredictors.html"><i class="fa fa-check"></i><b>5.5</b> Selecting predictors</a></li>
+<li class="chapter" data-level="5.6" data-path="Regr-ForeWithRegr.html"><a href="Regr-ForeWithRegr.html"><i class="fa fa-check"></i><b>5.6</b> Forecasting with regression</a></li>
+<li class="chapter" data-level="5.7" data-path="Regr-MatrixEquations.html"><a href="Regr-MatrixEquations.html"><i class="fa fa-check"></i><b>5.7</b> Matrix formulation</a></li>
+<li class="chapter" data-level="5.8" data-path="Regr-NonLinear.html"><a href="Regr-NonLinear.html"><i class="fa fa-check"></i><b>5.8</b> Nonlinear regression</a></li>
+<li class="chapter" data-level="5.9" data-path="Regr-MultiCol.html"><a href="Regr-MultiCol.html"><i class="fa fa-check"></i><b>5.9</b> Correlation, causation and forecasting</a></li>
+<li class="chapter" data-level="5.10" data-path="Regr-exercises.html"><a href="Regr-exercises.html"><i class="fa fa-check"></i><b>5.10</b> Exercises</a></li>
+<li class="chapter" data-level="5.11" data-path="further-reading-4.html"><a href="further-reading-4.html"><i class="fa fa-check"></i><b>5.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch-decomposition.html"><a href="ch-decomposition.html"><i class="fa fa-check"></i><b>6</b> Time series decomposition</a><ul>
+<li class="chapter" data-level="6.1" data-path="sec-6-1-TSpatterns.html"><a href="sec-6-1-TSpatterns.html"><i class="fa fa-check"></i><b>6.1</b> Time series components</a></li>
+<li class="chapter" data-level="6.2" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>6.2</b> Moving averages</a></li>
+<li class="chapter" data-level="6.3" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>6.3</b> Classical decomposition</a></li>
+<li class="chapter" data-level="6.4" data-path="x11-decomposition.html"><a href="x11-decomposition.html"><i class="fa fa-check"></i><b>6.4</b> X11 decomposition</a></li>
+<li class="chapter" data-level="6.5" data-path="seats-decomposition.html"><a href="seats-decomposition.html"><i class="fa fa-check"></i><b>6.5</b> SEATS decomposition</a></li>
+<li class="chapter" data-level="6.6" data-path="sec-6-stl.html"><a href="sec-6-stl.html"><i class="fa fa-check"></i><b>6.6</b> STL decomposition</a></li>
+<li class="chapter" data-level="6.7" data-path="forecasting-with-decomposition.html"><a href="forecasting-with-decomposition.html"><i class="fa fa-check"></i><b>6.7</b> Forecasting with decomposition</a></li>
+<li class="chapter" data-level="6.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+<li class="chapter" data-level="6.9" data-path="further-reading-5.html"><a href="further-reading-5.html"><i class="fa fa-check"></i><b>6.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-expsmooth.html"><a href="ch-expsmooth.html"><i class="fa fa-check"></i><b>7</b> Exponential smoothing</a><ul>
+<li class="chapter" data-level="7.1" data-path="sec-7-1-SES.html"><a href="sec-7-1-SES.html"><i class="fa fa-check"></i><b>7.1</b> Simple exponential smoothing</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-7-trendmethods.html"><a href="sec-7-trendmethods.html"><i class="fa fa-check"></i><b>7.2</b> Trend methods</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-7-Taxonomy.html"><a href="sec-7-Taxonomy.html"><i class="fa fa-check"></i><b>7.3</b> Holt-Winters’ seasonal method</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-7-6-Taxonomy.html"><a href="sec-7-6-Taxonomy.html"><i class="fa fa-check"></i><b>7.4</b> A taxonomy of exponential smoothing methods</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-7-ETS.html"><a href="sec-7-ETS.html"><i class="fa fa-check"></i><b>7.5</b> Innovations state space models for exponential smoothing</a></li>
+<li class="chapter" data-level="7.6" data-path="estimation-and-model-selection.html"><a href="estimation-and-model-selection.html"><i class="fa fa-check"></i><b>7.6</b> Estimation and model selection</a></li>
+<li class="chapter" data-level="7.7" data-path="forecasting-with-ets-models.html"><a href="forecasting-with-ets-models.html"><i class="fa fa-check"></i><b>7.7</b> Forecasting with ETS models</a></li>
+<li class="chapter" data-level="7.8" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>7.8</b> Exercises</a></li>
+<li class="chapter" data-level="7.9" data-path="further-reading-6.html"><a href="further-reading-6.html"><i class="fa fa-check"></i><b>7.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ch-arima.html"><a href="ch-arima.html"><i class="fa fa-check"></i><b>8</b> ARIMA models</a><ul>
+<li class="chapter" data-level="8.1" data-path="stationarity-and-differencing.html"><a href="stationarity-and-differencing.html"><i class="fa fa-check"></i><b>8.1</b> Stationarity and differencing</a></li>
+<li class="chapter" data-level="8.2" data-path="backshift-notation.html"><a href="backshift-notation.html"><i class="fa fa-check"></i><b>8.2</b> Backshift notation</a></li>
+<li class="chapter" data-level="8.3" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>8.3</b> Autoregressive models</a></li>
+<li class="chapter" data-level="8.4" data-path="sec-mamodels.html"><a href="sec-mamodels.html"><i class="fa fa-check"></i><b>8.4</b> Moving average models</a></li>
+<li class="chapter" data-level="8.5" data-path="sec-nonseasonalarima.html"><a href="sec-nonseasonalarima.html"><i class="fa fa-check"></i><b>8.5</b> Non-seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.6" data-path="estimation-and-order-selection.html"><a href="estimation-and-order-selection.html"><i class="fa fa-check"></i><b>8.6</b> Estimation and order selection</a></li>
+<li class="chapter" data-level="8.7" data-path="arima-modelling-in-r.html"><a href="arima-modelling-in-r.html"><i class="fa fa-check"></i><b>8.7</b> ARIMA modelling in R</a></li>
+<li class="chapter" data-level="8.8" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>8.8</b> Forecasting</a></li>
+<li class="chapter" data-level="8.9" data-path="sec-seasonal-arima.html"><a href="sec-seasonal-arima.html"><i class="fa fa-check"></i><b>8.9</b> Seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.10" data-path="arima-vs-ets.html"><a href="arima-vs-ets.html"><i class="fa fa-check"></i><b>8.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="8.11" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>8.11</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch-dynamic.html"><a href="ch-dynamic.html"><i class="fa fa-check"></i><b>9</b> Dynamic regression models</a><ul>
+<li class="chapter" data-level="9.1" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>9.1</b> Estimation</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-with-arima-errors-in-r.html"><a href="regression-with-arima-errors-in-r.html"><i class="fa fa-check"></i><b>9.2</b> Regression with ARIMA errors in R</a></li>
+<li class="chapter" data-level="9.3" data-path="forecasting-1.html"><a href="forecasting-1.html"><i class="fa fa-check"></i><b>9.3</b> Forecasting</a></li>
+<li class="chapter" data-level="9.4" data-path="stochastic-and-deterministic-trends.html"><a href="stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>9.4</b> Stochastic and deterministic trends</a></li>
+<li class="chapter" data-level="9.5" data-path="sec-dhr.html"><a href="sec-dhr.html"><i class="fa fa-check"></i><b>9.5</b> Dynamic harmonic regression</a></li>
+<li class="chapter" data-level="9.6" data-path="lagged-predictors.html"><a href="lagged-predictors.html"><i class="fa fa-check"></i><b>9.6</b> Lagged predictors</a></li>
+<li class="chapter" data-level="9.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
+<li class="chapter" data-level="9.8" data-path="further-reading-7.html"><a href="further-reading-7.html"><i class="fa fa-check"></i><b>9.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch-hierarchical.html"><a href="ch-hierarchical.html"><i class="fa fa-check"></i><b>10</b> Forecasting hierarchical or grouped time series</a><ul>
+<li class="chapter" data-level="10.1" data-path="Hier-hierarchical-ts.html"><a href="Hier-hierarchical-ts.html"><i class="fa fa-check"></i><b>10.1</b> Hierarchical time series</a></li>
+<li class="chapter" data-level="10.2" data-path="Hier-grouped-ts.html"><a href="Hier-grouped-ts.html"><i class="fa fa-check"></i><b>10.2</b> Grouped time series</a></li>
+<li class="chapter" data-level="10.3" data-path="Hier-base-coherent-forecasts.html"><a href="Hier-base-coherent-forecasts.html"><i class="fa fa-check"></i><b>10.3</b> Base and coherent forecasts</a></li>
+<li class="chapter" data-level="10.4" data-path="Hier-bu.html"><a href="Hier-bu.html"><i class="fa fa-check"></i><b>10.4</b> The bottom-up approach</a></li>
+<li class="chapter" data-level="10.5" data-path="Hier-td.html"><a href="Hier-td.html"><i class="fa fa-check"></i><b>10.5</b> Top-down approaches</a></li>
+<li class="chapter" data-level="10.6" data-path="Hier-mo.html"><a href="Hier-mo.html"><i class="fa fa-check"></i><b>10.6</b> Middle-out approach</a></li>
+<li class="chapter" data-level="10.7" data-path="Hier-projection.html"><a href="Hier-projection.html"><i class="fa fa-check"></i><b>10.7</b> The projection matrix</a></li>
+<li class="chapter" data-level="10.8" data-path="Hier-reconciliation.html"><a href="Hier-reconciliation.html"><i class="fa fa-check"></i><b>10.8</b> The optimal reconciliation approach</a></li>
+<li class="chapter" data-level="10.9" data-path="ex-hierarchical.html"><a href="ex-hierarchical.html"><i class="fa fa-check"></i><b>10.9</b> Exercises</a></li>
+<li class="chapter" data-level="10.10" data-path="further-reading-8.html"><a href="further-reading-8.html"><i class="fa fa-check"></i><b>10.10</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ch-advanced.html"><a href="ch-advanced.html"><i class="fa fa-check"></i><b>11</b> Advanced forecasting methods</a><ul>
+<li class="chapter" data-level="11.1" data-path="sec-complexseasonality.html"><a href="sec-complexseasonality.html"><i class="fa fa-check"></i><b>11.1</b> Complex seasonality</a></li>
+<li class="chapter" data-level="11.2" data-path="forecasting-counts.html"><a href="forecasting-counts.html"><i class="fa fa-check"></i><b>11.2</b> Forecasting counts</a></li>
+<li class="chapter" data-level="11.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>11.3</b> Vector autoregressions</a></li>
+<li class="chapter" data-level="11.4" data-path="sec-9-3-nnet.html"><a href="sec-9-3-nnet.html"><i class="fa fa-check"></i><b>11.4</b> Neural network models</a></li>
+<li class="chapter" data-level="11.5" data-path="sec-ex-11.html"><a href="sec-ex-11.html"><i class="fa fa-check"></i><b>11.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ch-practical.html"><a href="ch-practical.html"><i class="fa fa-check"></i><b>12</b> Some practical forecasting issues</a><ul>
+<li class="chapter" data-level="12.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>12.1</b> Weekly, daily and sub-daily data</a></li>
+<li class="chapter" data-level="12.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>12.2</b> Time series of counts</a></li>
+<li class="chapter" data-level="12.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>12.3</b> Ensuring forecasts stay within limits</a></li>
+<li class="chapter" data-level="12.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>12.4</b> Forecast combinations</a></li>
+<li class="chapter" data-level="12.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>12.5</b> Prediction intervals for aggregates</a></li>
+<li class="chapter" data-level="12.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>12.6</b> Backcasting</a></li>
+<li class="chapter" data-level="12.7" data-path="short-ts.html"><a href="short-ts.html"><i class="fa fa-check"></i><b>12.7</b> Forecasting very short time series</a></li>
+<li class="chapter" data-level="12.8" data-path="long-ts.html"><a href="long-ts.html"><i class="fa fa-check"></i><b>12.8</b> Forecasting very long time series</a></li>
+<li class="chapter" data-level="12.9" data-path="oosos.html"><a href="oosos.html"><i class="fa fa-check"></i><b>12.9</b> One-step forecasts on test data</a></li>
+<li class="chapter" data-level="12.10" data-path="isms.html"><a href="isms.html"><i class="fa fa-check"></i><b>12.10</b> Multi-step forecasts on training data</a></li>
+<li class="chapter" data-level="12.11" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>12.11</b> Dealing with missing values and outliers</a></li>
+<li class="chapter" data-level="12.12" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.12</b> Bootstrapping and bagging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="using-r.html"><a href="using-r.html"><i class="fa fa-check"></i>Using R</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.org" target="blank">Published by OTexts with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exercises-3" class="section level2">
+<h2><span class="header-section-number">8.11</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>Figure <a href="exercises-3.html#fig:wnacfplus">8.25</a> shows the ACFs for 36 random numbers, 360 random numbers and 1,000 random numbers.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Explain the differences among these figures. Do they all indicate that the data are white noise?</li>
+</ol>
+<pre><code>#&gt; Warning: Ignoring unknown parameters: ylim, main
+
+#&gt; Warning: Ignoring unknown parameters: ylim, main
+
+#&gt; Warning: Ignoring unknown parameters: ylim, main</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:wnacfplus"></span>
+<img src="fpp_files/figure-html/wnacfplus-1.png" alt="Left: ACF for a white noise series of 36 numbers. Middle: ACF for a white noise series of 360 numbers. Right: ACF for a white noise series of 1,000 numbers." width="90%" />
+<p class="caption">
+Figure 8.25: Left: ACF for a white noise series of 36 numbers. Middle: ACF for a white noise series of 360 numbers. Right: ACF for a white noise series of 1,000 numbers.
+</p>
+</div>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Why are the critical values at different distances from the mean of zero? Why are the autocorrelations different in each figure when they each refer to white noise?</li>
+</ol></li>
+<li><p>A classic example of a non-stationary series is the daily closing IBM stock price series (data set <code>ibmclose</code>). Use R to plot the daily closing prices for IBM stock and the ACF and PACF. Explain how each plot shows that the series is non-stationary and should be differenced.</p></li>
+<li><p>For the following series, find an appropriate Box-Cox transformation and order of differencing in order to obtain stationary data.</p>
+<ol style="list-style-type: lower-alpha">
+<li><code>usnetelec</code></li>
+<li><code>usgdp</code></li>
+<li><code>mcopper</code></li>
+<li><code>enplanements</code></li>
+<li><code>visitors</code></li>
+</ol></li>
+<li><p>For the <code>enplanements</code> data, write down the differences you chose above using backshift operator notation.</p></li>
+<li><p>For your retail data (from Exercise 3 in Section <a href="ex-graphics.html#ex-graphics">2.10</a>), find the appropriate order of differencing (after transformation if necessary) to obtain stationary data.</p></li>
+<li>Use R to simulate and plot some data from simple ARIMA models.
+<ol style="list-style-type: lower-alpha">
+<li>Use the following R code to generate data from an AR(1) model with <span class="math inline">\(\phi_{1} = 0.6\)</span> and <span class="math inline">\(\sigma^2=1\)</span>. The process starts with <span class="math inline">\(y_1=0\)</span>.</li>
+</ol>
+<pre class="sourceCode r"><code class="sourceCode r">    y &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">numeric</span>(<span class="dv">100</span>))
+    e &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)
+    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">100</span>)
+       y[i] &lt;-<span class="st"> </span><span class="fl">0.6</span><span class="op">*</span>y[i<span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span>e[i]</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Produce a time plot for the series. How does the plot change as you change <span class="math inline">\(\phi_1\)</span>?</li>
+<li>Write your own code to generate data from an MA(1) model with <span class="math inline">\(\theta_{1} = 0.6\)</span> and <span class="math inline">\(\sigma^2=1\)</span>.</li>
+<li>Produce a time plot for the series. How does the plot change as you change <span class="math inline">\(\theta_1\)</span>?</li>
+<li>Generate data from an ARMA(1,1) model with <span class="math inline">\(\phi_{1} = 0.6\)</span>, <span class="math inline">\(\theta_{1} = 0.6\)</span> and <span class="math inline">\(\sigma^2=1\)</span>.</li>
+<li>Generate data from an AR(2) model with <span class="math inline">\(\phi_{1} =-0.8\)</span>, <span class="math inline">\(\phi_{2} = 0.3\)</span> and <span class="math inline">\(\sigma^2=1\)</span>. (Note that these parameters will give a non-stationary series.)</li>
+<li>Graph the latter two series and compare them.</li>
+</ol></li>
+<li>Consider the number of women murdered each year (per 100,000 standard population) in the United States. (Data set <code>wmurders</code>).
+<ol style="list-style-type: lower-alpha">
+<li>By studying appropriate graphs of the series in R, find an appropriate ARIMA(<span class="math inline">\(p,d,q\)</span>) model for these data.</li>
+<li>Should you include a constant in the model? Explain.</li>
+<li>Write this model in terms of the backshift operator.</li>
+<li>Fit the model using R and examine the residuals. Is the model satisfactory?</li>
+<li>Forecast three times ahead. Check your forecasts by hand to make sure that you know how they have been calculated.</li>
+<li>Create a plot of the series with forecasts and prediction intervals for the next three periods shown.</li>
+<li>Does <code>auto.arima</code> give the same model you have chosen? If not, which model do you think is better?</li>
+</ol></li>
+<li>Consider the total international visitors to Australia (in millions) for the period 1980-2015. (Data set <code>austa</code>.)
+<ol style="list-style-type: lower-alpha">
+<li>Use <code>auto.arima</code> to find an appropriate ARIMA model. What model was selected. Check that the residuals look like white noise. Plot forecasts for the next 10 periods.</li>
+<li>Plot forecasts from an ARIMA(0,1,1) model with no drift and compare these to part (a). Remove the MA term and plot again.</li>
+<li>Plot forecasts from an ARIMA(2,1,3) model with drift. Remove the constant and see what happens.</li>
+<li>Plot forecasts from an ARIMA(0,0,1) model with a constant. Remove the MA term and plot again.</li>
+<li>Plot forecasts from an ARIMA(0,2,1) model with no constant.</li>
+</ol></li>
+<li>For the <code>usgdp</code> series:
+<ol style="list-style-type: lower-alpha">
+<li>if necessary, find a suitable Box-Cox transformation for the data;</li>
+<li>fit a suitable ARIMA model to the transformed data using <code>auto.arima()</code>;</li>
+<li>try some other plausible models by experimenting with the orders chosen;</li>
+<li>choose what you think is the best model and check the residual diagnostics;</li>
+<li>produce forecasts of your fitted model. Do the forecasts look reasonable?</li>
+<li>compare the results with what you would obtain using <code>ets()</code> (with no transformation).</li>
+</ol></li>
+<li>Consider <code>austourists</code>, the quarterly number of international tourists to Australia for the period 1999–2010. (Data set <code>austourists</code>.)
+<ol style="list-style-type: lower-alpha">
+<li>Describe the time plot.</li>
+<li>What can you learn from the ACF graph?</li>
+<li>What can you learn from the PACF graph?</li>
+<li>Produce plots of the seasonally differenced data <span class="math inline">\((1 - B^{4})Y_{t}\)</span>. What model do these graphs suggest?</li>
+<li>Does <code>auto.arima</code> give the same model that you chose? If not, which model do you think is better?</li>
+<li>Write the model in terms of the backshift operator, then without using the backshift operator.</li>
+</ol></li>
+<li>Consider the total net generation of electricity (in billion kilowatt hours) by the U.S. electric industry (monthly for the period January 1973 – June 2013). (Data set <code>usmelec</code>.) In general there are two peaks per year: in mid-summer and mid-winter.
+<ol style="list-style-type: lower-alpha">
+<li>Examine the 12-month moving average of this series to see what kind of trend is involved.</li>
+<li>Do the data need transforming? If so, find a suitable transformation.</li>
+<li>Are the data stationary? If not, find an appropriate differencing which yields stationary data.</li>
+<li>Identify a couple of ARIMA models that might be useful in describing the time series. Which of your models is the best according to their AIC values?</li>
+<li>Estimate the parameters of your best model and do diagnostic testing on the residuals. Do the residuals resemble white noise? If not, try to find another ARIMA model which fits better.</li>
+<li>Forecast the next 15 years of electricity generation by the U.S. electric industry. Get the latest figures from <a href="https://goo.gl/WZIItv" class="uri">https://goo.gl/WZIItv</a> to check the accuracy of your forecasts.</li>
+<li>How many years of forecasts do you think are sufficiently accurate to be usable?</li>
+</ol></li>
+<li>For the <code>mcopper</code> data:
+<ol style="list-style-type: lower-alpha">
+<li>if necessary, find a suitable Box-Cox transformation for the data;</li>
+<li>fit a suitable ARIMA model to the transformed data using <code>auto.arima()</code>;</li>
+<li>try some other plausible models by experimenting with the orders chosen;</li>
+<li>choose what you think is the best model and check the residual diagnostics;</li>
+<li>produce forecasts of your fitted model. Do the forecasts look reasonable?</li>
+<li>compare the results with what you would obtain using <code>ets()</code> (with no transformation).</li>
+</ol></li>
+<li>Choose one of the following seasonal time series: <code>hsales</code>, <code>auscafe</code>, <code>qauselec</code>, <code>qcement</code>, <code>qgas</code>.
+<ol style="list-style-type: lower-alpha">
+<li>Do the data need transforming? If so, find a suitable transformation.</li>
+<li>Are the data stationary? If not, find an appropriate differencing which yields stationary data.</li>
+<li>Identify a couple of ARIMA models that might be useful in describing the time series. Which of your models is the best according to their AIC values?</li>
+<li>Estimate the parameters of your best model and do diagnostic testing on the residuals. Do the residuals resemble white noise? If not, try to find another ARIMA model which fits better.</li>
+<li>Forecast the next 24 months of data using your preferred model.</li>
+<li>Compare the forecasts obtained using <code>ets()</code>.</li>
+</ol></li>
+<li><p>For the same time series you used in the previous exercise, try using a non-seasonal model applied to the seasonally adjusted data obtained from STL. The <code>stlf()</code> function will make the calculations easy (with <code>method=&quot;arima&quot;</code>). Compare the forecasts with those obtained in the previous exercise. Which do you think is the best approach?</p></li>
+<li>For your retail time series (Exercise 5 above):
+<ol style="list-style-type: lower-alpha">
+<li>develop an appropriate seasonal ARIMA model;</li>
+<li>compare the forecasts with those you obtained in earlier chapters;</li>
+<li>Obtain up-to-date retail data from the <a href="https://goo.gl/twfCyD">ABS website</a> (Cat 8501.0, Table 11), and compare your forecasts with the actual numbers. How good were the forecasts from the various models?</li>
+</ol></li>
+<li><ol style="list-style-type: lower-alpha">
+<li>Produce a time plot of the sheep population of England and Wales from 1867–1939 (data set <code>sheep</code>).</li>
+<li>Assume you decide to fit the following model:
+<span class="math display">\[
+   y_t = y_{t-1} + \phi_1(y_{t-1}-y_{t-2}) + \phi_2(y_{t-2}-y_{t-3}) + \phi_3(y_{t-3}-y_{t-4}) + e_t,
+ \]</span>
+where <span class="math inline">\(e_t\)</span> is a white noise series. What sort of ARIMA model is this (i.e., what are <span class="math inline">\(p\)</span>, <span class="math inline">\(d\)</span>, and <span class="math inline">\(q\)</span>)?</li>
+<li>By examining the ACF and PACF of the differenced data, explain why this model is appropriate.</li>
+<li><p>The last five values of the series are given below:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Year</th>
+<th align="right">1935</th>
+<th align="right">1936</th>
+<th align="right">1937</th>
+<th align="right">1938</th>
+<th align="right">1939</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Millions of sheep</td>
+<td align="right">1648</td>
+<td align="right">1665</td>
+<td align="right">1627</td>
+<td align="right">1791</td>
+<td align="right">1797</td>
+</tr>
+</tbody>
+</table>
+<p>The estimated parameters are
+<span class="math inline">\(\phi_1 = 0.42\)</span>,
+<span class="math inline">\(\phi_2 = -0.20\)</span>, and
+<span class="math inline">\(\phi_3 = -0.30\)</span>.
+Without using the <code>forecast</code> function, calculate forecasts for the next three years (1940–1942).</p></li>
+<li><p>Now fit the model in R and obtain the forecasts using <code>forecast</code>. How are they different from yours? Why?</p></li>
+</ol></li>
+<li><ol style="list-style-type: lower-alpha">
+<li>Plot the annual bituminous coal production in the United States from 1920 to 1968 (data set ).</li>
+<li>You decide to fit the following model to the series:
+<span class="math display">\[y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \phi_3 y_{t-3} + \phi_4 y_{t-4} + e_t\]</span>
+where <span class="math inline">\(y_t\)</span> is the coal production in year <span class="math inline">\(t\)</span> and <span class="math inline">\(e_t\)</span> is a white noise series.
+What sort of ARIMA model is this (i.e., what are <span class="math inline">\(p\)</span>, <span class="math inline">\(d\)</span>, and <span class="math inline">\(q\)</span>)?</li>
+<li>Explain why this model was chosen using the ACF and PACF.</li>
+<li><p>The last five values of the series are given below.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Year</th>
+<th align="right">1964</th>
+<th align="right">1965</th>
+<th align="right">1966</th>
+<th align="right">1967</th>
+<th align="right">1968</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Millions of tons</td>
+<td align="right">467</td>
+<td align="right">512</td>
+<td align="right">534</td>
+<td align="right">552</td>
+<td align="right">545</td>
+</tr>
+</tbody>
+</table>
+<p>The estimated parameters are
+<span class="math inline">\(c = 162.00\)</span>,
+<span class="math inline">\(\phi_1 = 0.83\)</span>,
+<span class="math inline">\(\phi_2 = -0.34\)</span>,
+<span class="math inline">\(\phi_3 = 0.55\)</span>, and
+<span class="math inline">\(\phi_4 = -0.38\)</span>.
+Without using the <code>forecast</code> function, calculate forecasts for the next three years (1969–1971).</p></li>
+<li><p>Now fit the model in R and obtain the forecasts from the same model. How are they different from yours? Why?</p></li>
+</ol></li>
+<li><ol style="list-style-type: lower-alpha">
+<li>Install the <strong>rdatamarket</strong> package in R using
+<code>r  install.packages(&quot;rdatamarket&quot;)</code></li>
+<li>Select a time series from <a href="http://datamarket.com/data/list/?q=pricing:free" class="uri">http://datamarket.com/data/list/?q=pricing:free</a>. Then copy its short URL and import the data using
+<code>r  x &lt;- ts(rdatamarket::dmseries(&quot;shorturl&quot;)[,1], start=??, frequency=??)</code>
+(Replace <code>??</code> with the appropriate values.)</li>
+<li>Plot graphs of the data, and try to identify an appropriate ARIMA model.</li>
+<li>Do residual diagnostic checking of your ARIMA model. Are the residuals white noise?</li>
+<li>Use your chosen ARIMA model to forecast the next four years.</li>
+<li>Now try to identify an appropriate ETS model.</li>
+<li>Do residual diagnostic checking of your ETS model. Are the residuals white noise?</li>
+<li>Use your chosen ETS model to forecast the next four years.</li>
+<li>Which of the two models do you prefer?</li>
+</ol></li>
+</ol>
+<p>##Further reading</p>
+<p>The classic text which popularized ARIMA modelling was <span class="citation">Box and Jenkins (<a href="#ref-BJ70">1970</a>)</span>. The most recent edition is <span class="citation">Box et al. (<a href="#ref-BJRL15">2015</a>)</span>, and it is still an excellent reference for all things ARIMA. <span class="citation">Brockwell and Davis (<a href="#ref-BDbook16">2016</a>)</span> provides a good introduction to the mathematical background to the models, while <span class="citation">Peña, Tiao, and Tsay (<a href="#ref-PTT01">2001</a>)</span> describes some alternative automatic algorithms to the one used by <code>auto.arima()</code>.</p>
+
+</div>
+<!-- </div> -->
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-BJ70">
+<p>Box, George E P, and Gwilym M Jenkins. 1970. <em>Time Series Analysis: Forecasting and Control</em>. San Francisco: Holden-Day.</p>
+</div>
+<div id="ref-BJRL15">
+<p>Box, George E P, Gwilym M Jenkins, Gregory C Reinsel, and Greta M Ljung. 2015. <em>Time Series Analysis: Forecasting and Control</em>. 5th ed. Hoboken, New Jersey: John Wiley &amp; Sons.</p>
+</div>
+<div id="ref-BDbook16">
+<p>Brockwell, Peter J, and Richard A Davis. 2016. <em>Introduction to Time Series and Forecasting</em>. 3rd ed. New York: Springer.</p>
+</div>
+<div id="ref-PTT01">
+<p>Peña, Daniel, George C Tiao, and Ruey S Tsay, eds. 2001. <em>A Course in Time Series Analysis</em>. New York: John Wiley &amp; Sons.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="arima-vs-ets.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ch-dynamic.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/robjhyndman/fpp2/edit/master/08-arima.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
