@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>10.8 The optimal reconciliation approach | Forecasting: Principles and Practice</title>
+  <meta name="description" content="2nd edition" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="10.8 The optimal reconciliation approach | Forecasting: Principles and Practice" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://Otexts.org/fpp2/" />
+  <meta property="og:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+  <meta property="og:description" content="2nd edition" />
+  <meta name="github-repo" content="robjhyndman/fpp2" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="10.8 The optimal reconciliation approach | Forecasting: Principles and Practice" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="2nd edition" />
+  <meta name="twitter:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+
+<meta name="author" content="Rob J Hyndman" />
+<meta name="author" content="George Athanasopoulos" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="Hier-projection.html">
+<link rel="next" href="ex-hierarchical.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="ch-intro.html"><a href="ch-intro.html"><i class="fa fa-check"></i><b>1</b> Getting started</a><ul>
+<li class="chapter" data-level="1.1" data-path="what-can-be-forecast.html"><a href="what-can-be-forecast.html"><i class="fa fa-check"></i><b>1.1</b> What can be forecast?</a></li>
+<li class="chapter" data-level="1.2" data-path="sec-1-2-ForPlanGoals.html"><a href="sec-1-2-ForPlanGoals.html"><i class="fa fa-check"></i><b>1.2</b> Forecasting, planning and goals</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> Determining what to forecast</a></li>
+<li class="chapter" data-level="1.4" data-path="Intro-DataAndMethods.html"><a href="Intro-DataAndMethods.html"><i class="fa fa-check"></i><b>1.4</b> Forecasting data and methods</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Some case studies</a></li>
+<li class="chapter" data-level="1.6" data-path="the-basic-steps-in-a-forecasting-task.html"><a href="the-basic-steps-in-a-forecasting-task.html"><i class="fa fa-check"></i><b>1.6</b> The basic steps in a forecasting task</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-perspective.html"><a href="sec-perspective.html"><i class="fa fa-check"></i><b>1.7</b> The statistical forecasting perspective</a></li>
+<li class="chapter" data-level="1.8" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+<li class="chapter" data-level="1.9" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>1.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-graphics.html"><a href="ch-graphics.html"><i class="fa fa-check"></i><b>2</b> Time series graphics</a><ul>
+<li class="chapter" data-level="2.1" data-path="ts-objects.html"><a href="ts-objects.html"><i class="fa fa-check"></i><b>2.1</b> <code>ts</code> objects</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots.html"><a href="time-plots.html"><i class="fa fa-check"></i><b>2.2</b> Time plots</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Time series patterns</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots.html"><a href="seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> Seasonal plots</a></li>
+<li class="chapter" data-level="2.5" data-path="seasonal-subseries-plots.html"><a href="seasonal-subseries-plots.html"><i class="fa fa-check"></i><b>2.5</b> Seasonal subseries plots</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots.html"><a href="scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> Scatterplots</a></li>
+<li class="chapter" data-level="2.7" data-path="lag-plots.html"><a href="lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> Lag plots</a></li>
+<li class="chapter" data-level="2.8" data-path="autocorrelation.html"><a href="autocorrelation.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelation</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise</a></li>
+<li class="chapter" data-level="2.10" data-path="ex-graphics.html"><a href="ex-graphics.html"><i class="fa fa-check"></i><b>2.10</b> Exercises</a></li>
+<li class="chapter" data-level="2.11" data-path="further-reading-1.html"><a href="further-reading-1.html"><i class="fa fa-check"></i><b>2.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch-toolbox.html"><a href="ch-toolbox.html"><i class="fa fa-check"></i><b>3</b> The forecaster’s toolbox</a><ul>
+<li class="chapter" data-level="3.1" data-path="sec-2-methods.html"><a href="sec-2-methods.html"><i class="fa fa-check"></i><b>3.1</b> Some simple forecasting methods</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-transformations.html"><a href="sec-transformations.html"><i class="fa fa-check"></i><b>3.2</b> Transformations and adjustments</a></li>
+<li class="chapter" data-level="3.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>3.3</b> Residual diagnostics</a></li>
+<li class="chapter" data-level="3.4" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>3.4</b> Evaluating forecast accuracy</a></li>
+<li class="chapter" data-level="3.5" data-path="sec-PI.html"><a href="sec-PI.html"><i class="fa fa-check"></i><b>3.5</b> Prediction intervals</a></li>
+<li class="chapter" data-level="3.6" data-path="the-forecast-package-in-r.html"><a href="the-forecast-package-in-r.html"><i class="fa fa-check"></i><b>3.6</b> The forecast package in R</a></li>
+<li class="chapter" data-level="3.7" data-path="ex-toolbox.html"><a href="ex-toolbox.html"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+<li class="chapter" data-level="3.8" data-path="further-reading-2.html"><a href="further-reading-2.html"><i class="fa fa-check"></i><b>3.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-judgmental.html"><a href="ch-judgmental.html"><i class="fa fa-check"></i><b>4</b> Judgmental forecasts</a><ul>
+<li class="chapter" data-level="4.1" data-path="sec-3-limitations.html"><a href="sec-3-limitations.html"><i class="fa fa-check"></i><b>4.1</b> Beware of limitations</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-3-Key-principles.html"><a href="sec-3-Key-principles.html"><i class="fa fa-check"></i><b>4.2</b> Key principles</a></li>
+<li class="chapter" data-level="4.3" data-path="sec-3-Delphi.html"><a href="sec-3-Delphi.html"><i class="fa fa-check"></i><b>4.3</b> The Delphi method</a></li>
+<li class="chapter" data-level="4.4" data-path="sec-3-Analogy.html"><a href="sec-3-Analogy.html"><i class="fa fa-check"></i><b>4.4</b> Forecasting by analogy</a></li>
+<li class="chapter" data-level="4.5" data-path="sec-3-Scenario.html"><a href="sec-3-Scenario.html"><i class="fa fa-check"></i><b>4.5</b> Scenario Forecasting</a></li>
+<li class="chapter" data-level="4.6" data-path="sec-3-NPF.html"><a href="sec-3-NPF.html"><i class="fa fa-check"></i><b>4.6</b> New product forecasting</a></li>
+<li class="chapter" data-level="4.7" data-path="sec-3-Adjustments.html"><a href="sec-3-Adjustments.html"><i class="fa fa-check"></i><b>4.7</b> Judgmental adjustments</a></li>
+<li class="chapter" data-level="4.8" data-path="further-reading-3.html"><a href="further-reading-3.html"><i class="fa fa-check"></i><b>4.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-regression.html"><a href="ch-regression.html"><i class="fa fa-check"></i><b>5</b> Linear regression models</a><ul>
+<li class="chapter" data-level="5.1" data-path="Regr-Intro.html"><a href="Regr-Intro.html"><i class="fa fa-check"></i><b>5.1</b> The linear model</a></li>
+<li class="chapter" data-level="5.2" data-path="Regr-LSprinciple.html"><a href="Regr-LSprinciple.html"><i class="fa fa-check"></i><b>5.2</b> Least squares estimation</a></li>
+<li class="chapter" data-level="5.3" data-path="Regr-UsefulPredictors.html"><a href="Regr-UsefulPredictors.html"><i class="fa fa-check"></i><b>5.3</b> Some useful predictors</a></li>
+<li class="chapter" data-level="5.4" data-path="Regr-EvaluatingSLR.html"><a href="Regr-EvaluatingSLR.html"><i class="fa fa-check"></i><b>5.4</b> Evaluating the regression model</a></li>
+<li class="chapter" data-level="5.5" data-path="Regr-SelectingPredictors.html"><a href="Regr-SelectingPredictors.html"><i class="fa fa-check"></i><b>5.5</b> Selecting predictors</a></li>
+<li class="chapter" data-level="5.6" data-path="Regr-ForeWithRegr.html"><a href="Regr-ForeWithRegr.html"><i class="fa fa-check"></i><b>5.6</b> Forecasting with regression</a></li>
+<li class="chapter" data-level="5.7" data-path="Regr-MatrixEquations.html"><a href="Regr-MatrixEquations.html"><i class="fa fa-check"></i><b>5.7</b> Matrix formulation</a></li>
+<li class="chapter" data-level="5.8" data-path="Regr-NonLinear.html"><a href="Regr-NonLinear.html"><i class="fa fa-check"></i><b>5.8</b> Nonlinear regression</a></li>
+<li class="chapter" data-level="5.9" data-path="Regr-MultiCol.html"><a href="Regr-MultiCol.html"><i class="fa fa-check"></i><b>5.9</b> Correlation, causation and forecasting</a></li>
+<li class="chapter" data-level="5.10" data-path="Regr-exercises.html"><a href="Regr-exercises.html"><i class="fa fa-check"></i><b>5.10</b> Exercises</a></li>
+<li class="chapter" data-level="5.11" data-path="further-reading-4.html"><a href="further-reading-4.html"><i class="fa fa-check"></i><b>5.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch-decomposition.html"><a href="ch-decomposition.html"><i class="fa fa-check"></i><b>6</b> Time series decomposition</a><ul>
+<li class="chapter" data-level="6.1" data-path="sec-6-1-TSpatterns.html"><a href="sec-6-1-TSpatterns.html"><i class="fa fa-check"></i><b>6.1</b> Time series components</a></li>
+<li class="chapter" data-level="6.2" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>6.2</b> Moving averages</a></li>
+<li class="chapter" data-level="6.3" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>6.3</b> Classical decomposition</a></li>
+<li class="chapter" data-level="6.4" data-path="x11-decomposition.html"><a href="x11-decomposition.html"><i class="fa fa-check"></i><b>6.4</b> X11 decomposition</a></li>
+<li class="chapter" data-level="6.5" data-path="seats-decomposition.html"><a href="seats-decomposition.html"><i class="fa fa-check"></i><b>6.5</b> SEATS decomposition</a></li>
+<li class="chapter" data-level="6.6" data-path="sec-6-stl.html"><a href="sec-6-stl.html"><i class="fa fa-check"></i><b>6.6</b> STL decomposition</a></li>
+<li class="chapter" data-level="6.7" data-path="forecasting-with-decomposition.html"><a href="forecasting-with-decomposition.html"><i class="fa fa-check"></i><b>6.7</b> Forecasting with decomposition</a></li>
+<li class="chapter" data-level="6.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+<li class="chapter" data-level="6.9" data-path="further-reading-5.html"><a href="further-reading-5.html"><i class="fa fa-check"></i><b>6.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-expsmooth.html"><a href="ch-expsmooth.html"><i class="fa fa-check"></i><b>7</b> Exponential smoothing</a><ul>
+<li class="chapter" data-level="7.1" data-path="sec-7-1-SES.html"><a href="sec-7-1-SES.html"><i class="fa fa-check"></i><b>7.1</b> Simple exponential smoothing</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-7-trendmethods.html"><a href="sec-7-trendmethods.html"><i class="fa fa-check"></i><b>7.2</b> Trend methods</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-7-Taxonomy.html"><a href="sec-7-Taxonomy.html"><i class="fa fa-check"></i><b>7.3</b> Holt-Winters’ seasonal method</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-7-6-Taxonomy.html"><a href="sec-7-6-Taxonomy.html"><i class="fa fa-check"></i><b>7.4</b> A taxonomy of exponential smoothing methods</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-7-ETS.html"><a href="sec-7-ETS.html"><i class="fa fa-check"></i><b>7.5</b> Innovations state space models for exponential smoothing</a></li>
+<li class="chapter" data-level="7.6" data-path="estimation-and-model-selection.html"><a href="estimation-and-model-selection.html"><i class="fa fa-check"></i><b>7.6</b> Estimation and model selection</a></li>
+<li class="chapter" data-level="7.7" data-path="forecasting-with-ets-models.html"><a href="forecasting-with-ets-models.html"><i class="fa fa-check"></i><b>7.7</b> Forecasting with ETS models</a></li>
+<li class="chapter" data-level="7.8" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>7.8</b> Exercises</a></li>
+<li class="chapter" data-level="7.9" data-path="further-reading-6.html"><a href="further-reading-6.html"><i class="fa fa-check"></i><b>7.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ch-arima.html"><a href="ch-arima.html"><i class="fa fa-check"></i><b>8</b> ARIMA models</a><ul>
+<li class="chapter" data-level="8.1" data-path="stationarity-and-differencing.html"><a href="stationarity-and-differencing.html"><i class="fa fa-check"></i><b>8.1</b> Stationarity and differencing</a></li>
+<li class="chapter" data-level="8.2" data-path="backshift-notation.html"><a href="backshift-notation.html"><i class="fa fa-check"></i><b>8.2</b> Backshift notation</a></li>
+<li class="chapter" data-level="8.3" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>8.3</b> Autoregressive models</a></li>
+<li class="chapter" data-level="8.4" data-path="sec-mamodels.html"><a href="sec-mamodels.html"><i class="fa fa-check"></i><b>8.4</b> Moving average models</a></li>
+<li class="chapter" data-level="8.5" data-path="sec-nonseasonalarima.html"><a href="sec-nonseasonalarima.html"><i class="fa fa-check"></i><b>8.5</b> Non-seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.6" data-path="estimation-and-order-selection.html"><a href="estimation-and-order-selection.html"><i class="fa fa-check"></i><b>8.6</b> Estimation and order selection</a></li>
+<li class="chapter" data-level="8.7" data-path="arima-modelling-in-r.html"><a href="arima-modelling-in-r.html"><i class="fa fa-check"></i><b>8.7</b> ARIMA modelling in R</a></li>
+<li class="chapter" data-level="8.8" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>8.8</b> Forecasting</a></li>
+<li class="chapter" data-level="8.9" data-path="sec-seasonal-arima.html"><a href="sec-seasonal-arima.html"><i class="fa fa-check"></i><b>8.9</b> Seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.10" data-path="arima-vs-ets.html"><a href="arima-vs-ets.html"><i class="fa fa-check"></i><b>8.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="8.11" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>8.11</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch-dynamic.html"><a href="ch-dynamic.html"><i class="fa fa-check"></i><b>9</b> Dynamic regression models</a><ul>
+<li class="chapter" data-level="9.1" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>9.1</b> Estimation</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-with-arima-errors-in-r.html"><a href="regression-with-arima-errors-in-r.html"><i class="fa fa-check"></i><b>9.2</b> Regression with ARIMA errors in R</a></li>
+<li class="chapter" data-level="9.3" data-path="forecasting-1.html"><a href="forecasting-1.html"><i class="fa fa-check"></i><b>9.3</b> Forecasting</a></li>
+<li class="chapter" data-level="9.4" data-path="stochastic-and-deterministic-trends.html"><a href="stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>9.4</b> Stochastic and deterministic trends</a></li>
+<li class="chapter" data-level="9.5" data-path="sec-dhr.html"><a href="sec-dhr.html"><i class="fa fa-check"></i><b>9.5</b> Dynamic harmonic regression</a></li>
+<li class="chapter" data-level="9.6" data-path="lagged-predictors.html"><a href="lagged-predictors.html"><i class="fa fa-check"></i><b>9.6</b> Lagged predictors</a></li>
+<li class="chapter" data-level="9.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
+<li class="chapter" data-level="9.8" data-path="further-reading-7.html"><a href="further-reading-7.html"><i class="fa fa-check"></i><b>9.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch-hierarchical.html"><a href="ch-hierarchical.html"><i class="fa fa-check"></i><b>10</b> Forecasting hierarchical or grouped time series</a><ul>
+<li class="chapter" data-level="10.1" data-path="Hier-hierarchical-ts.html"><a href="Hier-hierarchical-ts.html"><i class="fa fa-check"></i><b>10.1</b> Hierarchical time series</a></li>
+<li class="chapter" data-level="10.2" data-path="Hier-grouped-ts.html"><a href="Hier-grouped-ts.html"><i class="fa fa-check"></i><b>10.2</b> Grouped time series</a></li>
+<li class="chapter" data-level="10.3" data-path="Hier-base-coherent-forecasts.html"><a href="Hier-base-coherent-forecasts.html"><i class="fa fa-check"></i><b>10.3</b> Base and coherent forecasts</a></li>
+<li class="chapter" data-level="10.4" data-path="Hier-bu.html"><a href="Hier-bu.html"><i class="fa fa-check"></i><b>10.4</b> The bottom-up approach</a></li>
+<li class="chapter" data-level="10.5" data-path="Hier-td.html"><a href="Hier-td.html"><i class="fa fa-check"></i><b>10.5</b> Top-down approaches</a></li>
+<li class="chapter" data-level="10.6" data-path="Hier-mo.html"><a href="Hier-mo.html"><i class="fa fa-check"></i><b>10.6</b> Middle-out approach</a></li>
+<li class="chapter" data-level="10.7" data-path="Hier-projection.html"><a href="Hier-projection.html"><i class="fa fa-check"></i><b>10.7</b> The projection matrix</a></li>
+<li class="chapter" data-level="10.8" data-path="Hier-reconciliation.html"><a href="Hier-reconciliation.html"><i class="fa fa-check"></i><b>10.8</b> The optimal reconciliation approach</a></li>
+<li class="chapter" data-level="10.9" data-path="ex-hierarchical.html"><a href="ex-hierarchical.html"><i class="fa fa-check"></i><b>10.9</b> Exercises</a></li>
+<li class="chapter" data-level="10.10" data-path="further-reading-8.html"><a href="further-reading-8.html"><i class="fa fa-check"></i><b>10.10</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ch-advanced.html"><a href="ch-advanced.html"><i class="fa fa-check"></i><b>11</b> Advanced forecasting methods</a><ul>
+<li class="chapter" data-level="11.1" data-path="sec-complexseasonality.html"><a href="sec-complexseasonality.html"><i class="fa fa-check"></i><b>11.1</b> Complex seasonality</a></li>
+<li class="chapter" data-level="11.2" data-path="forecasting-counts.html"><a href="forecasting-counts.html"><i class="fa fa-check"></i><b>11.2</b> Forecasting counts</a></li>
+<li class="chapter" data-level="11.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>11.3</b> Vector autoregressions</a></li>
+<li class="chapter" data-level="11.4" data-path="sec-9-3-nnet.html"><a href="sec-9-3-nnet.html"><i class="fa fa-check"></i><b>11.4</b> Neural network models</a></li>
+<li class="chapter" data-level="11.5" data-path="sec-ex-11.html"><a href="sec-ex-11.html"><i class="fa fa-check"></i><b>11.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ch-practical.html"><a href="ch-practical.html"><i class="fa fa-check"></i><b>12</b> Some practical forecasting issues</a><ul>
+<li class="chapter" data-level="12.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>12.1</b> Weekly, daily and sub-daily data</a></li>
+<li class="chapter" data-level="12.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>12.2</b> Time series of counts</a></li>
+<li class="chapter" data-level="12.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>12.3</b> Ensuring forecasts stay within limits</a></li>
+<li class="chapter" data-level="12.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>12.4</b> Forecast combinations</a></li>
+<li class="chapter" data-level="12.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>12.5</b> Prediction intervals for aggregates</a></li>
+<li class="chapter" data-level="12.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>12.6</b> Backcasting</a></li>
+<li class="chapter" data-level="12.7" data-path="short-ts.html"><a href="short-ts.html"><i class="fa fa-check"></i><b>12.7</b> Forecasting very short time series</a></li>
+<li class="chapter" data-level="12.8" data-path="long-ts.html"><a href="long-ts.html"><i class="fa fa-check"></i><b>12.8</b> Forecasting very long time series</a></li>
+<li class="chapter" data-level="12.9" data-path="oosos.html"><a href="oosos.html"><i class="fa fa-check"></i><b>12.9</b> One-step forecasts on test data</a></li>
+<li class="chapter" data-level="12.10" data-path="isms.html"><a href="isms.html"><i class="fa fa-check"></i><b>12.10</b> Multi-step forecasts on training data</a></li>
+<li class="chapter" data-level="12.11" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>12.11</b> Dealing with missing values and outliers</a></li>
+<li class="chapter" data-level="12.12" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.12</b> Bootstrapping and bagging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="using-r.html"><a href="using-r.html"><i class="fa fa-check"></i>Using R</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.org" target="blank">Published by OTexts with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="Hier:reconciliation" class="section level2">
+<h2><span class="header-section-number">10.8</span> The optimal reconciliation approach</h2>
+<p>All the approaches we have considered so far in this chapter involve choosing a particular level in the aggregation structure, generating base forecasts for that level, and then either aggregating these up or disaggregating them down to generate coherent forecasts for the rest of the series. The above examples clearly reflect this through the <span class="math inline">\(\bm{P}\)</span> matrix.</p>
+<p>In this section we introduce an approach that instead involves generating base forecasts for each series in the aggregation structure. The base forecasts are then reconciled to generate a set of coherent forecasts that are as close as possible to the base forecasts. Therefore we describe the resulting set of coherent forecasts as optimally reconciled coherent forecasts.</p>
+<p>The general idea is derived from wanting to find a <span class="math inline">\(\bm{P}\)</span> matrix that minimises the forecast error of a set of coherent forecasts from forecasting each time series in the structure. In what follows we present a simplified summary of the approach. There are a few necessary steps that need to be followed in order to get a good flavour of the approach. These unfortunately complicate the presentation. However, following through these steps we get to the specification of <span class="math inline">\(\bm{P}\)</span> in equation <a href="Hier-reconciliation.html#eq:MinT">(10.7)</a> which is labelled the <em>MinT</em> estimator as it <em>Min</em>imises the <em>T</em>race of the forecast errors of the coherent forecasts across the whole structure. For further details and discussion please refer to <span class="citation">Wickramasuriya, Athanasopoulos, and Hyndman (<a href="#ref-Mint">2015</a>)</span>.</p>
+<p>Let <span class="math display">\[\bm{e}_{T+h}=\bm{y}_{T+h}-\tilde{\bm{y}}_h\]</span> be the forecast errors after having produced a set of coherent forecasts across the whole structure, stacked in the same order as the data. Note that this expression is a generalisation of a forecast error as defined in Section <a href="accuracy.html#accuracy">3.4</a> using matrix notation. It can be easily shown through Equation <a href="Hier-projection.html#eq:SP">(10.6)</a> that for a set of base forecasts that are unbiased,<a href="#fn21" class="footnote-ref" id="fnref21"><sup>21</sup></a> defining a <span class="math inline">\(\bm{P}\)</span> matrix such that <span class="math inline">\(\bm{S}\bm{P}\bm{S}=\bm{S}\)</span>, generates a set of coherent forecasts <span class="math inline">\(\bm{\tilde{y}}_h\)</span> that are also unbiased. Note that this will not hold for any top-down approach.</p>
+<p><span class="citation">Wickramasuriya, Athanasopoulos, and Hyndman (<a href="#ref-Mint">2015</a>)</span> show in Lemma 1 that
+<span class="math display">\[\begin{equation*}
+\text{Var}[\bm{y}_{T+h}-\tilde{\bm{y}}_h]=\bm{S}\bm{P}\bm{W}_h\bm{P}&#39;\bm{S}&#39;
+\end{equation*}\]</span>
+where <span class="math inline">\(\bm{W}_h=E[(\bm{y}_{T+h}-\hat{\bm{y}}_h)(\bm{y}_{T+h}-\hat{\bm{y}}_h)&#39;]\)</span> is the variance-covariance matrix of the <span class="math inline">\(h\)</span>-step-ahead base forecast errors. This is a very important result as it shows that the forecast error variance of the coherent forecasts is a function of the error variance of base forecasts <span class="math inline">\(\bm{W}_h\)</span>. The objective is to find a matrix <span class="math inline">\(\bm{P}\)</span> that minimises the error variance of the coherent forecasts. <span class="citation">Wickramasuriya, Athanasopoulos, and Hyndman (<a href="#ref-Mint">2015</a>)</span> show in Theorem 1 that the optimal matrix <span class="math inline">\(\bm{P}\)</span> that minimises the <span class="math inline">\(tr[\bm{S}\bm{P}\bm{W}_h\bm{P}&#39;\bm{S}&#39;]\)</span> such that <span class="math inline">\(\bm{S}\bm{P}\bm{S}=\bm{S}\)</span>, is given by
+<span class="math display" id="eq:MinT">\[\begin{equation}
+\bm{P}=(\bm{S}&#39;\bm{W}_h^{-1}\bm{S})^{-1}\bm{S}&#39;\bm{W}_h^{-1}
+\tag{10.7}
+\end{equation}\]</span>
+referred to as the <em>MinT</em> estimator.</p>
+<p>Note that the MinT estimator involves <span class="math inline">\(\bm{W}_h\)</span> the forecast error variance of the <span class="math inline">\(h\)</span>-step-ahead base forecasts. As this is challenging to estimate we provide below three simplifying specifications which have been shown to work well in both simulations and in practice.</p>
+<ol style="list-style-type: decimal">
+<li><p>Set <span class="math inline">\(\bm{W}_h=k_h\bm{I}\)</span> <span class="math inline">\(\forall h\)</span> where <span class="math inline">\(k_{h} &gt; 0\)</span>.<a href="#fn22" class="footnote-ref" id="fnref22"><sup>22</sup></a> This is the most simplifying assumption to make. Note that in this case <span class="math inline">\(\bm{P}\)</span> is independent of the data and no further estimation is required. The disadvantage is however that this specification does not account for the differences in the scale between the levels of the structure which naturally exist due to aggregation. The two specifications that follow do account for this. This approach is implemented in the <code>forecast</code> package by setting
+<code>r  forecast(..., method = &quot;comb&quot;, weights = &quot;ols&quot;, ...).</code>
+The weights here are referred to as the OLS (ordinary least squares) estimator as setting <span class="math inline">\(\bm{W}_h=k_h\bm{I}\)</span> in <a href="Hier-reconciliation.html#eq:MinT">(10.7)</a> gives the least squares estimator we introduced in Section <a href="Regr-MatrixEquations.html#Regr-MatrixEquations">5.7</a> with <span class="math inline">\(\bm{X}=\bm{S}\)</span> and <span class="math inline">\(\bm{y}=\hat{\bm{y}}\)</span>.</p></li>
+<li><p>Set <span class="math inline">\(\bm{W}_{h} = k_{h}\text{diag}(\hat{\bm{W}}_{1})\)</span> <span class="math inline">\(\forall h\)</span> where <span class="math inline">\(k_{h} &gt; 0\)</span> and
+<span class="math display">\[
+     \hat{\bm{W}}_{1} = \frac{1}{T}\sum_{t=1}^{T}\hat{\bm{e}}_{t}\hat{\bm{e}}_{t}&#39;
+ \]</span>
+where <span class="math inline">\(\hat{\bm{e}}_{t}\)</span> is an <span class="math inline">\(n\)</span>-dimensional vector of residuals of the models that generated the base forecasts stacked in the same order as the data. Each element in this vector is the same as defined in Section <a href="residuals.html#residuals">3.3</a>. The approach is implemented by setting
+<code>r  forecast(..., method = &quot;comb&quot;, weights = &quot;wls&quot;, ...).</code>
+This specification scales the base forecasts using the variance of the residuals and it is therefore referred to as the WLS (weighted least squares) estimator using <em>variance scaling</em>.</p></li>
+<li>Set <span class="math inline">\(\bm{W}_{h}=k_{h}\bm{\Lambda}\)</span>, <span class="math inline">\(\forall h\)</span> where <span class="math inline">\(k_{h} &gt; 0\)</span> and <span class="math inline">\(\bm{\Lambda}=\text{diag}(\bm{S}\bm{1})\)</span> where <span class="math inline">\(\bm{1}\)</span> is a unit column vector of dimension <span class="math inline">\(n\)</span>. This specification assumes that the bottom-level base forecast errors each have variance <span class="math inline">\(k_{h}\)</span> and are uncorrelated between nodes. Hence each element of the diagonal <span class="math inline">\(\bm{\Lambda}\)</span> matrix contains the number of forecast error variances contributing to that aggregation level. This estimator only depends on the structure of the hierarchy or the grouped time series. It is therefore referred to as the specification that applies <em>structural scaling</em>. Notice that the structural scaling assumes equivariant forecast errors only at the bottom-level of the structure and not across all levels which is unrealistically assumed by the first specification. Furthermore, applying the structural scaling specification is particularly useful in cases where residuals are not available and therefore variance scaling cannot be applied. For example, in cases where the base forecasts are generated by judgemental forecasting introduced in Chapter <a href="ch-judgmental.html#ch-judgmental">4</a>. This approach is implemented by setting
+<code>r  forecast(..., method = &quot;comb&quot;, weights = &quot;nseries&quot;, ...).</code></li>
+<li><p>An alterantive to the above simplifying specifications is to direclty estimate the full covariance matrix. The most obvious and simple way would be to use the sample covariance. This is implemented by setting
+<code>r  forecast(..., method = &quot;comb&quot;, weights = &quot;mint&quot;, covariance = &quot;sam&quot;, ...).</code></p>
+<p>However, for cases that <span class="math inline">\(m \ge T\)</span> this is not a good estimator. Instead we use a shrinkage estimator which shrinks the sample covariance to a diagonal matrix. This is implemented by setting
+<code>r  forecast(..., method = &quot;comb&quot;, weights = &quot;mint&quot;, covariance = &quot;shr&quot;, ...).</code>
+For more details on MinT please refer to <span class="citation">Wickramasuriya, Athanasopoulos, and Hyndman (<a href="#ref-Mint">2015</a>)</span>.</p></li>
+</ol>
+<p>In summary, unlike any other existing approach, the optimal reconciliation forecasts are generated using all the information available within a hierarchical or a grouped structure. This is very important as particular aggregation levels or groupings may reveal features of the data that are of interest to the user and are important to be modelled. These features may be completely hidden or not easily identifiable at other levels. For example, consider a hierarchical structure reflecting the geographical division of a country into states, regions, down to a very fine grid of statistical local areas. There are significant differences between the seasonal patterns in the number of tourists visiting a state or a region that is mainly seen as a summer destination versus a state or a region that caters for winter activities. These differences will be smoothed at the country level due to aggregation and on the other hand it may be extremely challenging to identify at the very bottom-level of a statistical local area due to noise. Another example for a grouped structure is the difference in the sales of clothes between genders. Such differences will be completely smoothed out at the very top-level of aggregation considering total sales, or may be very challenging to identify due to noise at the very bottom-level.</p>
+<div id="example-forecasting-australian-prison-population-continued" class="section level3 unnumbered">
+<h3>Example: Forecasting Australian prison population (continued)</h3>
+<p>Figure <a href="Hier-reconciliation.html#fig:prisonFcasts1">10.8</a> plots coherent forecasts generated by the optimal reconciliation approach with the WLS estimator using variance scaling.</p>
+<pre class="sourceCode r"><code class="sourceCode r">fcsts =<span class="st"> </span><span class="kw">forecast</span>(prison.gts, <span class="dt">h =</span> <span class="dv">8</span>, <span class="dt">method =</span> <span class="st">&quot;comb&quot;</span>, <span class="dt">weights =</span> <span class="st">&quot;wls&quot;</span>, <span class="dt">fmethod =</span> <span class="st">&quot;ets&quot;</span>)
+
+<span class="kw">plot</span>(fcsts,<span class="dt">levels =</span> <span class="dv">0</span>, <span class="dt">color_lab=</span><span class="ot">TRUE</span>)
+<span class="kw">title</span>(<span class="dt">main =</span> <span class="st">&quot;Total&quot;</span>)
+<span class="kw">plot</span>(fcsts,<span class="dt">levels =</span> <span class="dv">1</span>, <span class="dt">color_lab=</span><span class="ot">TRUE</span>)
+<span class="kw">title</span>(<span class="dt">main =</span> <span class="st">&quot;Grouped by state&quot;</span>)
+<span class="kw">plot</span>(fcsts,<span class="dt">levels =</span> <span class="dv">2</span>, <span class="dt">color_lab=</span><span class="ot">TRUE</span>)
+<span class="kw">title</span>(<span class="dt">main =</span> <span class="st">&quot;Grouped by leagal status&quot;</span>)
+<span class="kw">plot</span>(fcsts,<span class="dt">levels =</span> <span class="dv">3</span>, <span class="dt">color_lab=</span><span class="ot">TRUE</span>)
+<span class="kw">title</span>(<span class="dt">main =</span> <span class="st">&quot;Grouped by gender&quot;</span>)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:prisonFcasts1"></span>
+<img src="fpp_files/figure-html/prisonFcasts1-1.png" alt="Coherent forecasts for the total Australian adult prison population and for the population grouped by state, by legal status and by gender." width="50%" /><img src="fpp_files/figure-html/prisonFcasts1-2.png" alt="Coherent forecasts for the total Australian adult prison population and for the population grouped by state, by legal status and by gender." width="50%" /><img src="fpp_files/figure-html/prisonFcasts1-3.png" alt="Coherent forecasts for the total Australian adult prison population and for the population grouped by state, by legal status and by gender." width="50%" /><img src="fpp_files/figure-html/prisonFcasts1-4.png" alt="Coherent forecasts for the total Australian adult prison population and for the population grouped by state, by legal status and by gender." width="50%" />
+<p class="caption">
+Figure 10.8: Coherent forecasts for the total Australian adult prison population and for the population grouped by state, by legal status and by gender.
+</p>
+</div>
+<p>Figure <a href="Hier-reconciliation.html#fig:prisonFcasts2">10.9</a> plots the coherent forecasts for all the interactions of the attributes down to the bottom-level.</p>
+<div class="figure" style="text-align: center"><span id="fig:prisonFcasts2"></span>
+<img src="fpp_files/figure-html/prisonFcasts2-1.png" alt="Coherent forecasts for the Australian adult prison population grouped by all interactions of attributes." width="50%" /><img src="fpp_files/figure-html/prisonFcasts2-2.png" alt="Coherent forecasts for the Australian adult prison population grouped by all interactions of attributes." width="50%" /><img src="fpp_files/figure-html/prisonFcasts2-3.png" alt="Coherent forecasts for the Australian adult prison population grouped by all interactions of attributes." width="50%" /><img src="fpp_files/figure-html/prisonFcasts2-4.png" alt="Coherent forecasts for the Australian adult prison population grouped by all interactions of attributes." width="50%" />
+<p class="caption">
+Figure 10.9: Coherent forecasts for the Australian adult prison population grouped by all interactions of attributes.
+</p>
+</div>
+<p>The <code>accuracy.gts</code> comman is useful for evaluating the forecast accuracy across hierarchical or grouped structures. The following table summarises the accuracy of the bottom-up and the optimal reconciliation approaches, forecasting 2015 Q1 to 2016 Q4 as a test period.</p>
+<p>The results show that the optimal reconciliation approach generates more accurate forecasts especially for the top level. In general we find that as the optimal reconciliation approach uses information from all levels in the structure it generates more accurate coherent forecasts than the other tradiitonal alternatives which use limited information.</p>
+<pre class="sourceCode r"><code class="sourceCode r">train &lt;-<span class="st"> </span><span class="kw">window</span>(prison.gts,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2014</span>,<span class="dv">4</span>))
+test &lt;-<span class="st"> </span><span class="kw">window</span>(prison.gts,<span class="dt">start=</span><span class="dv">2015</span>)
+
+fcsts.opt =<span class="st"> </span><span class="kw">forecast</span>(train, <span class="dt">h =</span> <span class="dv">8</span>, <span class="dt">method =</span> <span class="st">&quot;comb&quot;</span>, <span class="dt">weights =</span> <span class="st">&quot;wls&quot;</span>, <span class="dt">fmethod =</span> <span class="st">&quot;ets&quot;</span>)
+fcsts.bu =<span class="st"> </span><span class="kw">forecast</span>(train, <span class="dt">h =</span> <span class="dv">8</span>, <span class="dt">method =</span> <span class="st">&quot;bu&quot;</span>, <span class="dt">fmethod =</span> <span class="st">&quot;ets&quot;</span>)
+
+tab &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>,<span class="dt">ncol=</span><span class="dv">4</span>,<span class="dt">nrow=</span><span class="dv">6</span>)
+<span class="kw">rownames</span>(tab) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Total&quot;</span>, <span class="st">&quot;State&quot;</span>, <span class="st">&quot;Legal status&quot;</span>, <span class="st">&quot;Gender&quot;</span>,<span class="st">&quot;Bottom&quot;</span>, <span class="st">&quot;All series&quot;</span>)
+<span class="kw">colnames</span>(tab) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Bottom-up MAPE&quot;</span>,<span class="st">&quot;Bottom-up MASE&quot;</span>,<span class="st">&quot;Optimal MAPE&quot;</span>,<span class="st">&quot;Optimal MASE&quot;</span>)
+
+tab[<span class="dv">1</span>,] &lt;-<span class="kw">c</span>(<span class="kw">accuracy.gts</span>(fcsts.bu,test,<span class="dt">levels =</span> <span class="dv">0</span>)[<span class="kw">c</span>(<span class="st">&quot;MAPE&quot;</span>,<span class="st">&quot;MASE&quot;</span>),<span class="st">&quot;Total&quot;</span>],
+            <span class="kw">accuracy.gts</span>(fcsts.opt,test,<span class="dt">levels =</span> <span class="dv">0</span>)[<span class="kw">c</span>(<span class="st">&quot;MAPE&quot;</span>,<span class="st">&quot;MASE&quot;</span>),<span class="st">&quot;Total&quot;</span>])
+
+j=<span class="dv">2</span>
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">7</span>)){
+tab[j,] &lt;-<span class="kw">c</span>(<span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.bu,test,<span class="dt">levels =</span> i)[<span class="st">&quot;MAPE&quot;</span>,]),
+            <span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.bu,test,<span class="dt">levels =</span> i)[<span class="st">&quot;MASE&quot;</span>,]),
+            <span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.opt,test,<span class="dt">levels =</span> i)[<span class="st">&quot;MAPE&quot;</span>,]),
+            <span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.opt,test,<span class="dt">levels =</span> i)[<span class="st">&quot;MASE&quot;</span>,]))
+j=j<span class="op">+</span><span class="dv">1</span>
+}
+
+tab[<span class="dv">6</span>,] &lt;-<span class="kw">c</span>(<span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.bu,test)[<span class="st">&quot;MAPE&quot;</span>,]),
+            <span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.bu,test)[<span class="st">&quot;MASE&quot;</span>,]),
+            <span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.opt,test)[<span class="st">&quot;MAPE&quot;</span>,]),
+            <span class="kw">mean</span>(<span class="kw">accuracy.gts</span>(fcsts.opt,test)[<span class="st">&quot;MASE&quot;</span>,]))
+
+knitr<span class="op">::</span><span class="kw">kable</span>(tab, <span class="dt">digits=</span><span class="dv">2</span>, <span class="dt">booktabs=</span><span class="ot">TRUE</span>)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Bottom-up MAPE</th>
+<th align="right">Bottom-up MASE</th>
+<th align="right">Optimal MAPE</th>
+<th align="right">Optimal MASE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Total</td>
+<td align="right">4.58</td>
+<td align="right">1.58</td>
+<td align="right">2.01</td>
+<td align="right">0.69</td>
+</tr>
+<tr class="even">
+<td>State</td>
+<td align="right">7.76</td>
+<td align="right">1.89</td>
+<td align="right">7.27</td>
+<td align="right">1.79</td>
+</tr>
+<tr class="odd">
+<td>Legal status</td>
+<td align="right">8.12</td>
+<td align="right">2.53</td>
+<td align="right">8.03</td>
+<td align="right">2.54</td>
+</tr>
+<tr class="even">
+<td>Gender</td>
+<td align="right">6.09</td>
+<td align="right">1.63</td>
+<td align="right">3.62</td>
+<td align="right">0.91</td>
+</tr>
+<tr class="odd">
+<td>Bottom</td>
+<td align="right">15.87</td>
+<td align="right">2.23</td>
+<td align="right">14.77</td>
+<td align="right">2.11</td>
+</tr>
+<tr class="even">
+<td>All series</td>
+<td align="right">12.43</td>
+<td align="right">2.14</td>
+<td align="right">11.53</td>
+<td align="right">2.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Mint">
+<p>Wickramasuriya, Shanika L, George Athanasopoulos, and Rob J Hyndman. 2015. “Forecasting Hierarchical and Grouped Time Series Through Trace Minimization.” Working paper 15/15. Monash University Econometrics &amp; Business Statistics.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="21">
+<li id="fn21"><p>All forecasting approaches used in this textbook generate unbiased forecasts.<a href="Hier-reconciliation.html#fnref21" class="footnote-back">↩</a></p></li>
+<li id="fn22"><p>Note that <span class="math inline">\(k_{h}\)</span> is a proportionality constant. It does not need to be estimated or specified here as it gets cancelled out in estimating <span class="math inline">\(\bm{P}\)</span> in <a href="Hier-reconciliation.html#eq:MinT">(10.7)</a>. We include it here for completeness.<a href="Hier-reconciliation.html#fnref22" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Hier-projection.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ex-hierarchical.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/robjhyndman/fpp2/edit/master/10-hierarchical-forecasting.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

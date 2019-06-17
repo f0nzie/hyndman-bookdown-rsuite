@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5.8 Nonlinear regression | Forecasting: Principles and Practice</title>
+  <meta name="description" content="2nd edition" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5.8 Nonlinear regression | Forecasting: Principles and Practice" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://Otexts.org/fpp2/" />
+  <meta property="og:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+  <meta property="og:description" content="2nd edition" />
+  <meta name="github-repo" content="robjhyndman/fpp2" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5.8 Nonlinear regression | Forecasting: Principles and Practice" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="2nd edition" />
+  <meta name="twitter:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+
+<meta name="author" content="Rob J Hyndman" />
+<meta name="author" content="George Athanasopoulos" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="Regr-MatrixEquations.html">
+<link rel="next" href="Regr-MultiCol.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="ch-intro.html"><a href="ch-intro.html"><i class="fa fa-check"></i><b>1</b> Getting started</a><ul>
+<li class="chapter" data-level="1.1" data-path="what-can-be-forecast.html"><a href="what-can-be-forecast.html"><i class="fa fa-check"></i><b>1.1</b> What can be forecast?</a></li>
+<li class="chapter" data-level="1.2" data-path="sec-1-2-ForPlanGoals.html"><a href="sec-1-2-ForPlanGoals.html"><i class="fa fa-check"></i><b>1.2</b> Forecasting, planning and goals</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> Determining what to forecast</a></li>
+<li class="chapter" data-level="1.4" data-path="Intro-DataAndMethods.html"><a href="Intro-DataAndMethods.html"><i class="fa fa-check"></i><b>1.4</b> Forecasting data and methods</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Some case studies</a></li>
+<li class="chapter" data-level="1.6" data-path="the-basic-steps-in-a-forecasting-task.html"><a href="the-basic-steps-in-a-forecasting-task.html"><i class="fa fa-check"></i><b>1.6</b> The basic steps in a forecasting task</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-perspective.html"><a href="sec-perspective.html"><i class="fa fa-check"></i><b>1.7</b> The statistical forecasting perspective</a></li>
+<li class="chapter" data-level="1.8" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+<li class="chapter" data-level="1.9" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>1.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-graphics.html"><a href="ch-graphics.html"><i class="fa fa-check"></i><b>2</b> Time series graphics</a><ul>
+<li class="chapter" data-level="2.1" data-path="ts-objects.html"><a href="ts-objects.html"><i class="fa fa-check"></i><b>2.1</b> <code>ts</code> objects</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots.html"><a href="time-plots.html"><i class="fa fa-check"></i><b>2.2</b> Time plots</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Time series patterns</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots.html"><a href="seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> Seasonal plots</a></li>
+<li class="chapter" data-level="2.5" data-path="seasonal-subseries-plots.html"><a href="seasonal-subseries-plots.html"><i class="fa fa-check"></i><b>2.5</b> Seasonal subseries plots</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots.html"><a href="scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> Scatterplots</a></li>
+<li class="chapter" data-level="2.7" data-path="lag-plots.html"><a href="lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> Lag plots</a></li>
+<li class="chapter" data-level="2.8" data-path="autocorrelation.html"><a href="autocorrelation.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelation</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise</a></li>
+<li class="chapter" data-level="2.10" data-path="ex-graphics.html"><a href="ex-graphics.html"><i class="fa fa-check"></i><b>2.10</b> Exercises</a></li>
+<li class="chapter" data-level="2.11" data-path="further-reading-1.html"><a href="further-reading-1.html"><i class="fa fa-check"></i><b>2.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch-toolbox.html"><a href="ch-toolbox.html"><i class="fa fa-check"></i><b>3</b> The forecaster’s toolbox</a><ul>
+<li class="chapter" data-level="3.1" data-path="sec-2-methods.html"><a href="sec-2-methods.html"><i class="fa fa-check"></i><b>3.1</b> Some simple forecasting methods</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-transformations.html"><a href="sec-transformations.html"><i class="fa fa-check"></i><b>3.2</b> Transformations and adjustments</a></li>
+<li class="chapter" data-level="3.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>3.3</b> Residual diagnostics</a></li>
+<li class="chapter" data-level="3.4" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>3.4</b> Evaluating forecast accuracy</a></li>
+<li class="chapter" data-level="3.5" data-path="sec-PI.html"><a href="sec-PI.html"><i class="fa fa-check"></i><b>3.5</b> Prediction intervals</a></li>
+<li class="chapter" data-level="3.6" data-path="the-forecast-package-in-r.html"><a href="the-forecast-package-in-r.html"><i class="fa fa-check"></i><b>3.6</b> The forecast package in R</a></li>
+<li class="chapter" data-level="3.7" data-path="ex-toolbox.html"><a href="ex-toolbox.html"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+<li class="chapter" data-level="3.8" data-path="further-reading-2.html"><a href="further-reading-2.html"><i class="fa fa-check"></i><b>3.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-judgmental.html"><a href="ch-judgmental.html"><i class="fa fa-check"></i><b>4</b> Judgmental forecasts</a><ul>
+<li class="chapter" data-level="4.1" data-path="sec-3-limitations.html"><a href="sec-3-limitations.html"><i class="fa fa-check"></i><b>4.1</b> Beware of limitations</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-3-Key-principles.html"><a href="sec-3-Key-principles.html"><i class="fa fa-check"></i><b>4.2</b> Key principles</a></li>
+<li class="chapter" data-level="4.3" data-path="sec-3-Delphi.html"><a href="sec-3-Delphi.html"><i class="fa fa-check"></i><b>4.3</b> The Delphi method</a></li>
+<li class="chapter" data-level="4.4" data-path="sec-3-Analogy.html"><a href="sec-3-Analogy.html"><i class="fa fa-check"></i><b>4.4</b> Forecasting by analogy</a></li>
+<li class="chapter" data-level="4.5" data-path="sec-3-Scenario.html"><a href="sec-3-Scenario.html"><i class="fa fa-check"></i><b>4.5</b> Scenario Forecasting</a></li>
+<li class="chapter" data-level="4.6" data-path="sec-3-NPF.html"><a href="sec-3-NPF.html"><i class="fa fa-check"></i><b>4.6</b> New product forecasting</a></li>
+<li class="chapter" data-level="4.7" data-path="sec-3-Adjustments.html"><a href="sec-3-Adjustments.html"><i class="fa fa-check"></i><b>4.7</b> Judgmental adjustments</a></li>
+<li class="chapter" data-level="4.8" data-path="further-reading-3.html"><a href="further-reading-3.html"><i class="fa fa-check"></i><b>4.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-regression.html"><a href="ch-regression.html"><i class="fa fa-check"></i><b>5</b> Linear regression models</a><ul>
+<li class="chapter" data-level="5.1" data-path="Regr-Intro.html"><a href="Regr-Intro.html"><i class="fa fa-check"></i><b>5.1</b> The linear model</a></li>
+<li class="chapter" data-level="5.2" data-path="Regr-LSprinciple.html"><a href="Regr-LSprinciple.html"><i class="fa fa-check"></i><b>5.2</b> Least squares estimation</a></li>
+<li class="chapter" data-level="5.3" data-path="Regr-UsefulPredictors.html"><a href="Regr-UsefulPredictors.html"><i class="fa fa-check"></i><b>5.3</b> Some useful predictors</a></li>
+<li class="chapter" data-level="5.4" data-path="Regr-EvaluatingSLR.html"><a href="Regr-EvaluatingSLR.html"><i class="fa fa-check"></i><b>5.4</b> Evaluating the regression model</a></li>
+<li class="chapter" data-level="5.5" data-path="Regr-SelectingPredictors.html"><a href="Regr-SelectingPredictors.html"><i class="fa fa-check"></i><b>5.5</b> Selecting predictors</a></li>
+<li class="chapter" data-level="5.6" data-path="Regr-ForeWithRegr.html"><a href="Regr-ForeWithRegr.html"><i class="fa fa-check"></i><b>5.6</b> Forecasting with regression</a></li>
+<li class="chapter" data-level="5.7" data-path="Regr-MatrixEquations.html"><a href="Regr-MatrixEquations.html"><i class="fa fa-check"></i><b>5.7</b> Matrix formulation</a></li>
+<li class="chapter" data-level="5.8" data-path="Regr-NonLinear.html"><a href="Regr-NonLinear.html"><i class="fa fa-check"></i><b>5.8</b> Nonlinear regression</a></li>
+<li class="chapter" data-level="5.9" data-path="Regr-MultiCol.html"><a href="Regr-MultiCol.html"><i class="fa fa-check"></i><b>5.9</b> Correlation, causation and forecasting</a></li>
+<li class="chapter" data-level="5.10" data-path="Regr-exercises.html"><a href="Regr-exercises.html"><i class="fa fa-check"></i><b>5.10</b> Exercises</a></li>
+<li class="chapter" data-level="5.11" data-path="further-reading-4.html"><a href="further-reading-4.html"><i class="fa fa-check"></i><b>5.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch-decomposition.html"><a href="ch-decomposition.html"><i class="fa fa-check"></i><b>6</b> Time series decomposition</a><ul>
+<li class="chapter" data-level="6.1" data-path="sec-6-1-TSpatterns.html"><a href="sec-6-1-TSpatterns.html"><i class="fa fa-check"></i><b>6.1</b> Time series components</a></li>
+<li class="chapter" data-level="6.2" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>6.2</b> Moving averages</a></li>
+<li class="chapter" data-level="6.3" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>6.3</b> Classical decomposition</a></li>
+<li class="chapter" data-level="6.4" data-path="x11-decomposition.html"><a href="x11-decomposition.html"><i class="fa fa-check"></i><b>6.4</b> X11 decomposition</a></li>
+<li class="chapter" data-level="6.5" data-path="seats-decomposition.html"><a href="seats-decomposition.html"><i class="fa fa-check"></i><b>6.5</b> SEATS decomposition</a></li>
+<li class="chapter" data-level="6.6" data-path="sec-6-stl.html"><a href="sec-6-stl.html"><i class="fa fa-check"></i><b>6.6</b> STL decomposition</a></li>
+<li class="chapter" data-level="6.7" data-path="forecasting-with-decomposition.html"><a href="forecasting-with-decomposition.html"><i class="fa fa-check"></i><b>6.7</b> Forecasting with decomposition</a></li>
+<li class="chapter" data-level="6.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+<li class="chapter" data-level="6.9" data-path="further-reading-5.html"><a href="further-reading-5.html"><i class="fa fa-check"></i><b>6.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-expsmooth.html"><a href="ch-expsmooth.html"><i class="fa fa-check"></i><b>7</b> Exponential smoothing</a><ul>
+<li class="chapter" data-level="7.1" data-path="sec-7-1-SES.html"><a href="sec-7-1-SES.html"><i class="fa fa-check"></i><b>7.1</b> Simple exponential smoothing</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-7-trendmethods.html"><a href="sec-7-trendmethods.html"><i class="fa fa-check"></i><b>7.2</b> Trend methods</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-7-Taxonomy.html"><a href="sec-7-Taxonomy.html"><i class="fa fa-check"></i><b>7.3</b> Holt-Winters’ seasonal method</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-7-6-Taxonomy.html"><a href="sec-7-6-Taxonomy.html"><i class="fa fa-check"></i><b>7.4</b> A taxonomy of exponential smoothing methods</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-7-ETS.html"><a href="sec-7-ETS.html"><i class="fa fa-check"></i><b>7.5</b> Innovations state space models for exponential smoothing</a></li>
+<li class="chapter" data-level="7.6" data-path="estimation-and-model-selection.html"><a href="estimation-and-model-selection.html"><i class="fa fa-check"></i><b>7.6</b> Estimation and model selection</a></li>
+<li class="chapter" data-level="7.7" data-path="forecasting-with-ets-models.html"><a href="forecasting-with-ets-models.html"><i class="fa fa-check"></i><b>7.7</b> Forecasting with ETS models</a></li>
+<li class="chapter" data-level="7.8" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>7.8</b> Exercises</a></li>
+<li class="chapter" data-level="7.9" data-path="further-reading-6.html"><a href="further-reading-6.html"><i class="fa fa-check"></i><b>7.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ch-arima.html"><a href="ch-arima.html"><i class="fa fa-check"></i><b>8</b> ARIMA models</a><ul>
+<li class="chapter" data-level="8.1" data-path="stationarity-and-differencing.html"><a href="stationarity-and-differencing.html"><i class="fa fa-check"></i><b>8.1</b> Stationarity and differencing</a></li>
+<li class="chapter" data-level="8.2" data-path="backshift-notation.html"><a href="backshift-notation.html"><i class="fa fa-check"></i><b>8.2</b> Backshift notation</a></li>
+<li class="chapter" data-level="8.3" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>8.3</b> Autoregressive models</a></li>
+<li class="chapter" data-level="8.4" data-path="sec-mamodels.html"><a href="sec-mamodels.html"><i class="fa fa-check"></i><b>8.4</b> Moving average models</a></li>
+<li class="chapter" data-level="8.5" data-path="sec-nonseasonalarima.html"><a href="sec-nonseasonalarima.html"><i class="fa fa-check"></i><b>8.5</b> Non-seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.6" data-path="estimation-and-order-selection.html"><a href="estimation-and-order-selection.html"><i class="fa fa-check"></i><b>8.6</b> Estimation and order selection</a></li>
+<li class="chapter" data-level="8.7" data-path="arima-modelling-in-r.html"><a href="arima-modelling-in-r.html"><i class="fa fa-check"></i><b>8.7</b> ARIMA modelling in R</a></li>
+<li class="chapter" data-level="8.8" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>8.8</b> Forecasting</a></li>
+<li class="chapter" data-level="8.9" data-path="sec-seasonal-arima.html"><a href="sec-seasonal-arima.html"><i class="fa fa-check"></i><b>8.9</b> Seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.10" data-path="arima-vs-ets.html"><a href="arima-vs-ets.html"><i class="fa fa-check"></i><b>8.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="8.11" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>8.11</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch-dynamic.html"><a href="ch-dynamic.html"><i class="fa fa-check"></i><b>9</b> Dynamic regression models</a><ul>
+<li class="chapter" data-level="9.1" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>9.1</b> Estimation</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-with-arima-errors-in-r.html"><a href="regression-with-arima-errors-in-r.html"><i class="fa fa-check"></i><b>9.2</b> Regression with ARIMA errors in R</a></li>
+<li class="chapter" data-level="9.3" data-path="forecasting-1.html"><a href="forecasting-1.html"><i class="fa fa-check"></i><b>9.3</b> Forecasting</a></li>
+<li class="chapter" data-level="9.4" data-path="stochastic-and-deterministic-trends.html"><a href="stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>9.4</b> Stochastic and deterministic trends</a></li>
+<li class="chapter" data-level="9.5" data-path="sec-dhr.html"><a href="sec-dhr.html"><i class="fa fa-check"></i><b>9.5</b> Dynamic harmonic regression</a></li>
+<li class="chapter" data-level="9.6" data-path="lagged-predictors.html"><a href="lagged-predictors.html"><i class="fa fa-check"></i><b>9.6</b> Lagged predictors</a></li>
+<li class="chapter" data-level="9.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
+<li class="chapter" data-level="9.8" data-path="further-reading-7.html"><a href="further-reading-7.html"><i class="fa fa-check"></i><b>9.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch-hierarchical.html"><a href="ch-hierarchical.html"><i class="fa fa-check"></i><b>10</b> Forecasting hierarchical or grouped time series</a><ul>
+<li class="chapter" data-level="10.1" data-path="Hier-hierarchical-ts.html"><a href="Hier-hierarchical-ts.html"><i class="fa fa-check"></i><b>10.1</b> Hierarchical time series</a></li>
+<li class="chapter" data-level="10.2" data-path="Hier-grouped-ts.html"><a href="Hier-grouped-ts.html"><i class="fa fa-check"></i><b>10.2</b> Grouped time series</a></li>
+<li class="chapter" data-level="10.3" data-path="Hier-base-coherent-forecasts.html"><a href="Hier-base-coherent-forecasts.html"><i class="fa fa-check"></i><b>10.3</b> Base and coherent forecasts</a></li>
+<li class="chapter" data-level="10.4" data-path="Hier-bu.html"><a href="Hier-bu.html"><i class="fa fa-check"></i><b>10.4</b> The bottom-up approach</a></li>
+<li class="chapter" data-level="10.5" data-path="Hier-td.html"><a href="Hier-td.html"><i class="fa fa-check"></i><b>10.5</b> Top-down approaches</a></li>
+<li class="chapter" data-level="10.6" data-path="Hier-mo.html"><a href="Hier-mo.html"><i class="fa fa-check"></i><b>10.6</b> Middle-out approach</a></li>
+<li class="chapter" data-level="10.7" data-path="Hier-projection.html"><a href="Hier-projection.html"><i class="fa fa-check"></i><b>10.7</b> The projection matrix</a></li>
+<li class="chapter" data-level="10.8" data-path="Hier-reconciliation.html"><a href="Hier-reconciliation.html"><i class="fa fa-check"></i><b>10.8</b> The optimal reconciliation approach</a></li>
+<li class="chapter" data-level="10.9" data-path="ex-hierarchical.html"><a href="ex-hierarchical.html"><i class="fa fa-check"></i><b>10.9</b> Exercises</a></li>
+<li class="chapter" data-level="10.10" data-path="further-reading-8.html"><a href="further-reading-8.html"><i class="fa fa-check"></i><b>10.10</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ch-advanced.html"><a href="ch-advanced.html"><i class="fa fa-check"></i><b>11</b> Advanced forecasting methods</a><ul>
+<li class="chapter" data-level="11.1" data-path="sec-complexseasonality.html"><a href="sec-complexseasonality.html"><i class="fa fa-check"></i><b>11.1</b> Complex seasonality</a></li>
+<li class="chapter" data-level="11.2" data-path="forecasting-counts.html"><a href="forecasting-counts.html"><i class="fa fa-check"></i><b>11.2</b> Forecasting counts</a></li>
+<li class="chapter" data-level="11.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>11.3</b> Vector autoregressions</a></li>
+<li class="chapter" data-level="11.4" data-path="sec-9-3-nnet.html"><a href="sec-9-3-nnet.html"><i class="fa fa-check"></i><b>11.4</b> Neural network models</a></li>
+<li class="chapter" data-level="11.5" data-path="sec-ex-11.html"><a href="sec-ex-11.html"><i class="fa fa-check"></i><b>11.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ch-practical.html"><a href="ch-practical.html"><i class="fa fa-check"></i><b>12</b> Some practical forecasting issues</a><ul>
+<li class="chapter" data-level="12.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>12.1</b> Weekly, daily and sub-daily data</a></li>
+<li class="chapter" data-level="12.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>12.2</b> Time series of counts</a></li>
+<li class="chapter" data-level="12.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>12.3</b> Ensuring forecasts stay within limits</a></li>
+<li class="chapter" data-level="12.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>12.4</b> Forecast combinations</a></li>
+<li class="chapter" data-level="12.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>12.5</b> Prediction intervals for aggregates</a></li>
+<li class="chapter" data-level="12.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>12.6</b> Backcasting</a></li>
+<li class="chapter" data-level="12.7" data-path="short-ts.html"><a href="short-ts.html"><i class="fa fa-check"></i><b>12.7</b> Forecasting very short time series</a></li>
+<li class="chapter" data-level="12.8" data-path="long-ts.html"><a href="long-ts.html"><i class="fa fa-check"></i><b>12.8</b> Forecasting very long time series</a></li>
+<li class="chapter" data-level="12.9" data-path="oosos.html"><a href="oosos.html"><i class="fa fa-check"></i><b>12.9</b> One-step forecasts on test data</a></li>
+<li class="chapter" data-level="12.10" data-path="isms.html"><a href="isms.html"><i class="fa fa-check"></i><b>12.10</b> Multi-step forecasts on training data</a></li>
+<li class="chapter" data-level="12.11" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>12.11</b> Dealing with missing values and outliers</a></li>
+<li class="chapter" data-level="12.12" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.12</b> Bootstrapping and bagging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="using-r.html"><a href="using-r.html"><i class="fa fa-check"></i>Using R</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.org" target="blank">Published by OTexts with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="Regr-NonLinear" class="section level2">
+<h2><span class="header-section-number">5.8</span> Nonlinear regression</h2>
+<p>Although the linear relationship assumed so far in this chapter is often adequate, there are many cases for which a nonlinear functional form is more suitable. To keep things simple in this section we assume that we only have one predictor <span class="math inline">\(x\)</span>.</p>
+<p>Simply transforming the forecast variable <span class="math inline">\(y\)</span> and/or the predictor variable <span class="math inline">\(x\)</span> and then estimating a regression model using the transformed variables is the simplest way of obtaining a nonlinear specification. We should note that these specifications and the specification that follow are still linear in the parameters. The most commonly used transformation is the (natural) logarithmic (see Section <a href="sec-transformations.html#sec-transformations">3.2</a>).</p>
+<p>A <strong>log-log</strong> functional form is specified as
+<span class="math display">\[
+  \log y=\beta_0+\beta_1 \log x +\varepsilon.
+\]</span>
+In this model, the slope <span class="math inline">\(\beta_1\)</span> is interpreted as an elasticity, <span class="math inline">\(\beta_1\)</span> is the average percentage change in <span class="math inline">\(y\)</span> resulting from a <span class="math inline">\(1\%\)</span> increase in <span class="math inline">\(x\)</span>. Other useful forms can also be specified. The <strong>log-linear</strong> form is specified by only transforming the forecast variable and the <strong>linear-log</strong> form is obtained by transforming the predictor.</p>
+<p>Recall that in order to perform a logarithmic transformation to a variable, all its observed values must be greater than zero. In the case that variable <span class="math inline">\(x\)</span> contains zeros we use the transformation <span class="math inline">\(\log(x+1)\)</span>, i.e., we add one to the value of the variable and then take logarithms. This has a similar effect to taking logarithms but avoids the problem of zeros. It also has the neat side-effect of zeros on the original scale remaining zeros on the transformed scale.</p>
+<p>There are cases for which simply transforming the data will not be adequate and a more general specification may be required. Then the model we use is
+<span class="math display">\[y=f(x) +\varepsilon\]</span>
+where <span class="math inline">\(f\)</span> is a nonlinear function. In standard (linear) regression, <span class="math inline">\(f(x)=\beta_{0} + \beta_{1} x\)</span>. In the specification of nonlinear regression that follows, we allow <span class="math inline">\(f\)</span> to be a more flexible nonlinear function of <span class="math inline">\(x\)</span>, compared to simply a logarithmic or other transformation.</p>
+<p>One of the simplest specifications is to make <span class="math inline">\(f\)</span> <strong>piecewise linear</strong>. That is, we introduce points where the slope of <span class="math inline">\(f\)</span> can change. These points are called “knots”. This can be achieved by letting <span class="math inline">\(x_{1,t}=x\)</span> and introducing variable <span class="math inline">\(x_{2,t}\)</span> such that
+<span class="math display">\[\begin{align*}
+  x_{2,t} = (x-c)_+ &amp;= \left\{
+             \begin{array}{ll}
+               0 &amp; x &lt; c\\
+               (x-c) &amp;  x \ge c
+             \end{array}\right.
+\end{align*}\]</span>
+The notation <span class="math inline">\((x-c)_+\)</span> means the value <span class="math inline">\(x-c\)</span>, if it is positive and 0 otherwise. This forces the slope to bend at point <span class="math inline">\(c\)</span>. Additional bends can be included in the relationship by adding further variables of the above form.</p>
+<p>An example of this follows by considering <span class="math inline">\(x=t\)</span> and fitting a piecewise linear trend to a times series.</p>
+<p>Piecewise linear relationships constructed in this way are a special case of <strong>regression splines</strong>. In general, a linear regression spline is obtained using
+<span class="math display">\[ x_{1}= x \quad x_{2} = (x-c_{1})_+ \quad\dots\quad x_{k} = (x-c_{k-1})_+\]</span>
+where <span class="math inline">\(c_{1},\dots,c_{k-1}\)</span> are the knots (the points at which the line can bend). Selecting the number of knots (<span class="math inline">\(k-1\)</span>) and where they should be positioned can be difficult and somewhat arbitrary. Some automatic knot selection algorithms are available in some software, but are not yet widely used.</p>
+<p>A smoother result is obtained using piecewise cubics rather than piecewise lines. These are constrained so they are continuous (they join up) and they are smooth (so there are no sudden changes of direction as we see with piecewise linear splines). In general, a cubic regression spline is written as
+<span class="math display">\[ x_{1}= x \quad x_{2}=x^2 \quad x_3=x^3 \quad x_4 = (x-c_{1})_+ \quad\dots\quad x_{k} = (x-c_{k-3})_+.\]</span>
+Cubic splines usually give a better fit to the data. However, forecasting values of <span class="math inline">\(y\)</span> when <span class="math inline">\(x\)</span> is outside the range of the historical data becomes very unreliable.</p>
+<div id="forecasting-with-a-nonlinear-trend" class="section level3 unnumbered">
+<h3>Forecasting with a nonlinear trend</h3>
+<p>In Section <a href="Regr-UsefulPredictors.html#Regr-UsefulPredictors">5.3</a> fitting a linear trend to a time series by setting <span class="math inline">\(x=t\)</span> was introduced. The simplest way of fitting a nonlinear trend is using quadratic or higher order trends obtained by specifying
+<span class="math display">\[
+  x_{1,t} =t,\quad x_{2,t}=t^2,\quad \ldots.
+\]</span>
+However, it is not recommended that quadratic or higher order trends are used in forecasting. When they are extrapolated, the resulting forecasts are often very unrealistic.</p>
+<p>A better approach is to use the piecewise specification introduced above and fit a piecwise linear trend which bends at some point in time. We can think of this as a nonlinear trend constructed of linear pieces. If the trend bends at time <span class="math inline">\(\tau\)</span>, then it can be specified by simply replacing <span class="math inline">\(x=t\)</span> and <span class="math inline">\(c=\tau\)</span> above such that we include the predictors,
+<span class="math display">\[\begin{align*}
+  x_{1,t} &amp; = t \\
+  x_{2,t} = (t-\tau)_+ &amp;= \left\{
+             \begin{array}{ll}
+               0 &amp; t &lt; \tau\\
+               (t-\tau) &amp;  t \ge \tau
+             \end{array}\right.
+\end{align*}\]</span>
+in the model. If the associated coefficients of <span class="math inline">\(x_{1,t}\)</span> and <span class="math inline">\(x_{2,t}\)</span> are <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>, then <span class="math inline">\(\beta_1\)</span> gives the slope of the trend before time <span class="math inline">\(\tau\)</span>, while the slope of the line after time <span class="math inline">\(\tau\)</span> is given by <span class="math inline">\(\beta_1+\beta_2\)</span>. Additional bends can be included in the relationship by adding further variables of the form <span class="math inline">\((t-\tau)_+\)</span> where <span class="math inline">\(\tau\)</span> is the “knot” or point in time at which the line should bend.</p>
+<div id="example-boston-marathon-winning-times" class="section level4 unnumbered">
+<h4>Example: Boston marathon winning times</h4>
+<p>Figure <a href="Regr-NonLinear.html#fig:marathonLinear">5.18</a> below in the left panel shows the Boston marathon winning times (in minutes) since it started in 1897. The time series shows a general downward trend as the winning times have been improving over the years. The panel on the right shows the residuals from fitting a linear trend to the data. The plot shows an obvious nonlinear pattern which has not been captured by the linear trend.</p>
+<div class="figure" style="text-align: center"><span id="fig:marathonLinear"></span>
+<img src="fpp_files/figure-html/marathonLinear-1.png" alt="Fitting a linear trend to the Boston marathon winning times is inadequate" width="90%" />
+<p class="caption">
+Figure 5.18: Fitting a linear trend to the Boston marathon winning times is inadequate
+</p>
+</div>
+<p>Fitting an exponential trend to the data can be achieved by transforming the <span class="math inline">\(y\)</span> variable so that the model to be fitted is,
+<span class="math display">\[\log y_t=\beta_0+\beta_1 t +\varepsilon_t.\]</span>
+The fitted exponential trend and forecasts are shown in Figure <a href="#fig:marathonNonlinear"><strong>??</strong></a> below. Although the exponential trend does not seem to fit the data much better than the linear trend, it gives a more sensible projection in that the winning times will decrease in the future but at a decaying rate rather than a linear non-changing rate.</p>
+<p>Simply eyeballing the winning times reveals three very different periods. There is a lot of volatility in the winning times from the beginning up to about 1940 with the winning times decreasing overall but with significant increases in the decade of the 1920s. The almost linear decrease in times after 1940 is then followed by a flattening out after the 1980s with almost an upturn towards the end of the sample. Following these observations we specify as knots the years 1940 and 1980. We should warn here that subjectively identifying suitable knots in the data can lead to overfitting which can be detrimental to the forecast performance of a model and should be performed with caution.</p>
+<pre class="sourceCode r"><code class="sourceCode r">
+h &lt;-<span class="st"> </span><span class="dv">10</span>
+
+fit.lin &lt;-<span class="st"> </span><span class="kw">tslm</span>(marathon <span class="op">~</span><span class="st"> </span>trend)
+fcasts.lin &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.lin, <span class="dt">h=</span>h)
+
+fit.exp &lt;-<span class="st"> </span><span class="kw">tslm</span>(marathon <span class="op">~</span><span class="st"> </span>trend, <span class="dt">lambda =</span> <span class="dv">0</span>)
+fcasts.exp &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.exp, <span class="dt">h=</span>h)
+
+t.break1 &lt;-<span class="st"> </span><span class="dv">1940</span>
+t.break2 &lt;-<span class="st"> </span><span class="dv">1980</span>
+
+t &lt;-<span class="st"> </span><span class="kw">time</span>(marathon)
+t1 &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">pmax</span>(<span class="dv">0</span>,t<span class="op">-</span>t.break1), <span class="dt">start=</span><span class="dv">1897</span>)
+t2 &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">pmax</span>(<span class="dv">0</span>,t<span class="op">-</span>t.break2), <span class="dt">start=</span><span class="dv">1897</span>)
+
+fit.pw &lt;-<span class="st"> </span><span class="kw">tslm</span>(marathon <span class="op">~</span><span class="st"> </span>t <span class="op">+</span><span class="st"> </span>t1 <span class="op">+</span><span class="st"> </span>t2)
+  t.new &lt;-<span class="st"> </span>t[<span class="kw">length</span>(t)]<span class="op">+</span><span class="kw">seq</span>(h)
+  t1.new &lt;-<span class="st"> </span>t1[<span class="kw">length</span>(t1)]<span class="op">+</span><span class="kw">seq</span>(h)
+  t2.new &lt;-<span class="st"> </span>t2[<span class="kw">length</span>(t2)]<span class="op">+</span><span class="kw">seq</span>(h)
+
+newdata &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">t=</span>t.new,<span class="dt">t1=</span>t1.new,<span class="dt">t2=</span>t2.new)<span class="op">%&gt;%</span><span class="kw">as.data.frame</span>()
+fcasts.pw &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.pw,<span class="dt">newdata =</span> newdata)
+
+<span class="co"># autoplot(marathon) +</span>
+<span class="co">#   forecast::autolayer(fitted(fit.lin), series = &quot;Linear&quot;) +</span>
+<span class="co">#   forecast::autolayer(fitted(fit.exp), series=&quot;Exponential&quot;) +</span>
+<span class="co">#   forecast::autolayer(fitted(fit.pw), series = &quot;Piecewise&quot;) +</span>
+<span class="co">#   forecast::autolayer(fcasts.pw, series=&quot;Piecewise&quot;) +</span>
+<span class="co">#   forecast::autolayer(fcasts.lin$mean, series = &quot;Linear&quot;) +</span>
+<span class="co">#   forecast::autolayer(fcasts.exp$mean, series=&quot;Exponential&quot;) +</span>
+<span class="co">#   xlab(&quot;Year&quot;) +  ylab(&quot;Winning times in minutes&quot;) +</span>
+<span class="co">#   ggtitle(&quot;Boston Marathon&quot;) +</span>
+<span class="co">#   guides(colour=guide_legend(title=&quot; &quot;))</span>
+
+  <span class="co">## </span><span class="al">TODO</span><span class="co">: Add cubic spline</span></code></pre>
+<p>Figure <a href="#fig:marathonNonlinear"><strong>??</strong></a> above shows the fitted lines and forecasts from linear, exponential and piecewise linear trends. The piecewise linear trend fits the data better than both the exponential and linear trends and seems to return sensible forecasts. The residuals plotted in the Figure <a href="Regr-NonLinear.html#fig:residPiecewise">5.19</a> below show that the model has mostly captured the trend well although there is some autocorrelation remaining (we will deal with this in Chapter <a href="ch-advanced.html#ch-advanced">11</a>). We should however again warn here that the projection forward from the piecewise linear trend can be very sensitive to the choice of location of the knots, especially the ones located towards the end of the sample. For example moving the knot placed at 1980 even five years forward will reveal very different forecasts. The wide prediction interval associated with the forecasts form the piecewise linear trend reflects the volatility observed in the historical winning times.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(fit.pw)</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:residPiecewise"></span>
+<img src="fpp_files/figure-html/residPiecewise-1.png" alt="Residuals from the piecewise trend." width="90%" />
+<p class="caption">
+Figure 5.19: Residuals from the piecewise trend.
+</p>
+</div>
+<pre><code>#&gt; 
+#&gt;  Breusch-Godfrey test for serial correlation of order up to 10
+#&gt; 
+#&gt; data:  Residuals from Linear regression model
+#&gt; LM test = 22, df = 10, p-value = 0.02</code></pre>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Regr-MatrixEquations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Regr-MultiCol.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/robjhyndman/fpp2/edit/master/05-regression.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

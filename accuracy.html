@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3.4 Evaluating forecast accuracy | Forecasting: Principles and Practice</title>
+  <meta name="description" content="2nd edition" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3.4 Evaluating forecast accuracy | Forecasting: Principles and Practice" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://Otexts.org/fpp2/" />
+  <meta property="og:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+  <meta property="og:description" content="2nd edition" />
+  <meta name="github-repo" content="robjhyndman/fpp2" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3.4 Evaluating forecast accuracy | Forecasting: Principles and Practice" />
+  <meta name="twitter:site" content="@robjhyndman" />
+  <meta name="twitter:description" content="2nd edition" />
+  <meta name="twitter:image" content="http://Otexts.org/fpp2/fppcover.jpg" />
+
+<meta name="author" content="Rob J Hyndman" />
+<meta name="author" content="George Athanasopoulos" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="residuals.html">
+<link rel="next" href="sec-PI.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+    equationNumbers: { autoNumber: "AMS" } ,
+    Macros: {
+      bm: ["\\boldsymbol{#1}",1],
+      y:    ["y_{\\text{#1},#2}",2],
+      yhat: ["\\hat{y}_{\\text{#1},#2}",2],
+      ytilde: ["\\tilde{y}_{\\text{#1},#2}",2],
+      Shat: ["\\hat{S}_{\\text{#1},#2}^{(#3)}",3]
+    }
+  }
+});
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Forecasting: Principles and Practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a></li>
+<li class="chapter" data-level="1" data-path="ch-intro.html"><a href="ch-intro.html"><i class="fa fa-check"></i><b>1</b> Getting started</a><ul>
+<li class="chapter" data-level="1.1" data-path="what-can-be-forecast.html"><a href="what-can-be-forecast.html"><i class="fa fa-check"></i><b>1.1</b> What can be forecast?</a></li>
+<li class="chapter" data-level="1.2" data-path="sec-1-2-ForPlanGoals.html"><a href="sec-1-2-ForPlanGoals.html"><i class="fa fa-check"></i><b>1.2</b> Forecasting, planning and goals</a></li>
+<li class="chapter" data-level="1.3" data-path="determining-what-to-forecast.html"><a href="determining-what-to-forecast.html"><i class="fa fa-check"></i><b>1.3</b> Determining what to forecast</a></li>
+<li class="chapter" data-level="1.4" data-path="Intro-DataAndMethods.html"><a href="Intro-DataAndMethods.html"><i class="fa fa-check"></i><b>1.4</b> Forecasting data and methods</a></li>
+<li class="chapter" data-level="1.5" data-path="case-studies.html"><a href="case-studies.html"><i class="fa fa-check"></i><b>1.5</b> Some case studies</a></li>
+<li class="chapter" data-level="1.6" data-path="the-basic-steps-in-a-forecasting-task.html"><a href="the-basic-steps-in-a-forecasting-task.html"><i class="fa fa-check"></i><b>1.6</b> The basic steps in a forecasting task</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-perspective.html"><a href="sec-perspective.html"><i class="fa fa-check"></i><b>1.7</b> The statistical forecasting perspective</a></li>
+<li class="chapter" data-level="1.8" data-path="exercises.html"><a href="exercises.html"><i class="fa fa-check"></i><b>1.8</b> Exercises</a></li>
+<li class="chapter" data-level="1.9" data-path="further-reading.html"><a href="further-reading.html"><i class="fa fa-check"></i><b>1.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="ch-graphics.html"><a href="ch-graphics.html"><i class="fa fa-check"></i><b>2</b> Time series graphics</a><ul>
+<li class="chapter" data-level="2.1" data-path="ts-objects.html"><a href="ts-objects.html"><i class="fa fa-check"></i><b>2.1</b> <code>ts</code> objects</a></li>
+<li class="chapter" data-level="2.2" data-path="time-plots.html"><a href="time-plots.html"><i class="fa fa-check"></i><b>2.2</b> Time plots</a></li>
+<li class="chapter" data-level="2.3" data-path="tspatterns.html"><a href="tspatterns.html"><i class="fa fa-check"></i><b>2.3</b> Time series patterns</a></li>
+<li class="chapter" data-level="2.4" data-path="seasonal-plots.html"><a href="seasonal-plots.html"><i class="fa fa-check"></i><b>2.4</b> Seasonal plots</a></li>
+<li class="chapter" data-level="2.5" data-path="seasonal-subseries-plots.html"><a href="seasonal-subseries-plots.html"><i class="fa fa-check"></i><b>2.5</b> Seasonal subseries plots</a></li>
+<li class="chapter" data-level="2.6" data-path="scatterplots.html"><a href="scatterplots.html"><i class="fa fa-check"></i><b>2.6</b> Scatterplots</a></li>
+<li class="chapter" data-level="2.7" data-path="lag-plots.html"><a href="lag-plots.html"><i class="fa fa-check"></i><b>2.7</b> Lag plots</a></li>
+<li class="chapter" data-level="2.8" data-path="autocorrelation.html"><a href="autocorrelation.html"><i class="fa fa-check"></i><b>2.8</b> Autocorrelation</a></li>
+<li class="chapter" data-level="2.9" data-path="wn.html"><a href="wn.html"><i class="fa fa-check"></i><b>2.9</b> White noise</a></li>
+<li class="chapter" data-level="2.10" data-path="ex-graphics.html"><a href="ex-graphics.html"><i class="fa fa-check"></i><b>2.10</b> Exercises</a></li>
+<li class="chapter" data-level="2.11" data-path="further-reading-1.html"><a href="further-reading-1.html"><i class="fa fa-check"></i><b>2.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="ch-toolbox.html"><a href="ch-toolbox.html"><i class="fa fa-check"></i><b>3</b> The forecaster’s toolbox</a><ul>
+<li class="chapter" data-level="3.1" data-path="sec-2-methods.html"><a href="sec-2-methods.html"><i class="fa fa-check"></i><b>3.1</b> Some simple forecasting methods</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-transformations.html"><a href="sec-transformations.html"><i class="fa fa-check"></i><b>3.2</b> Transformations and adjustments</a></li>
+<li class="chapter" data-level="3.3" data-path="residuals.html"><a href="residuals.html"><i class="fa fa-check"></i><b>3.3</b> Residual diagnostics</a></li>
+<li class="chapter" data-level="3.4" data-path="accuracy.html"><a href="accuracy.html"><i class="fa fa-check"></i><b>3.4</b> Evaluating forecast accuracy</a></li>
+<li class="chapter" data-level="3.5" data-path="sec-PI.html"><a href="sec-PI.html"><i class="fa fa-check"></i><b>3.5</b> Prediction intervals</a></li>
+<li class="chapter" data-level="3.6" data-path="the-forecast-package-in-r.html"><a href="the-forecast-package-in-r.html"><i class="fa fa-check"></i><b>3.6</b> The forecast package in R</a></li>
+<li class="chapter" data-level="3.7" data-path="ex-toolbox.html"><a href="ex-toolbox.html"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+<li class="chapter" data-level="3.8" data-path="further-reading-2.html"><a href="further-reading-2.html"><i class="fa fa-check"></i><b>3.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ch-judgmental.html"><a href="ch-judgmental.html"><i class="fa fa-check"></i><b>4</b> Judgmental forecasts</a><ul>
+<li class="chapter" data-level="4.1" data-path="sec-3-limitations.html"><a href="sec-3-limitations.html"><i class="fa fa-check"></i><b>4.1</b> Beware of limitations</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-3-Key-principles.html"><a href="sec-3-Key-principles.html"><i class="fa fa-check"></i><b>4.2</b> Key principles</a></li>
+<li class="chapter" data-level="4.3" data-path="sec-3-Delphi.html"><a href="sec-3-Delphi.html"><i class="fa fa-check"></i><b>4.3</b> The Delphi method</a></li>
+<li class="chapter" data-level="4.4" data-path="sec-3-Analogy.html"><a href="sec-3-Analogy.html"><i class="fa fa-check"></i><b>4.4</b> Forecasting by analogy</a></li>
+<li class="chapter" data-level="4.5" data-path="sec-3-Scenario.html"><a href="sec-3-Scenario.html"><i class="fa fa-check"></i><b>4.5</b> Scenario Forecasting</a></li>
+<li class="chapter" data-level="4.6" data-path="sec-3-NPF.html"><a href="sec-3-NPF.html"><i class="fa fa-check"></i><b>4.6</b> New product forecasting</a></li>
+<li class="chapter" data-level="4.7" data-path="sec-3-Adjustments.html"><a href="sec-3-Adjustments.html"><i class="fa fa-check"></i><b>4.7</b> Judgmental adjustments</a></li>
+<li class="chapter" data-level="4.8" data-path="further-reading-3.html"><a href="further-reading-3.html"><i class="fa fa-check"></i><b>4.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="ch-regression.html"><a href="ch-regression.html"><i class="fa fa-check"></i><b>5</b> Linear regression models</a><ul>
+<li class="chapter" data-level="5.1" data-path="Regr-Intro.html"><a href="Regr-Intro.html"><i class="fa fa-check"></i><b>5.1</b> The linear model</a></li>
+<li class="chapter" data-level="5.2" data-path="Regr-LSprinciple.html"><a href="Regr-LSprinciple.html"><i class="fa fa-check"></i><b>5.2</b> Least squares estimation</a></li>
+<li class="chapter" data-level="5.3" data-path="Regr-UsefulPredictors.html"><a href="Regr-UsefulPredictors.html"><i class="fa fa-check"></i><b>5.3</b> Some useful predictors</a></li>
+<li class="chapter" data-level="5.4" data-path="Regr-EvaluatingSLR.html"><a href="Regr-EvaluatingSLR.html"><i class="fa fa-check"></i><b>5.4</b> Evaluating the regression model</a></li>
+<li class="chapter" data-level="5.5" data-path="Regr-SelectingPredictors.html"><a href="Regr-SelectingPredictors.html"><i class="fa fa-check"></i><b>5.5</b> Selecting predictors</a></li>
+<li class="chapter" data-level="5.6" data-path="Regr-ForeWithRegr.html"><a href="Regr-ForeWithRegr.html"><i class="fa fa-check"></i><b>5.6</b> Forecasting with regression</a></li>
+<li class="chapter" data-level="5.7" data-path="Regr-MatrixEquations.html"><a href="Regr-MatrixEquations.html"><i class="fa fa-check"></i><b>5.7</b> Matrix formulation</a></li>
+<li class="chapter" data-level="5.8" data-path="Regr-NonLinear.html"><a href="Regr-NonLinear.html"><i class="fa fa-check"></i><b>5.8</b> Nonlinear regression</a></li>
+<li class="chapter" data-level="5.9" data-path="Regr-MultiCol.html"><a href="Regr-MultiCol.html"><i class="fa fa-check"></i><b>5.9</b> Correlation, causation and forecasting</a></li>
+<li class="chapter" data-level="5.10" data-path="Regr-exercises.html"><a href="Regr-exercises.html"><i class="fa fa-check"></i><b>5.10</b> Exercises</a></li>
+<li class="chapter" data-level="5.11" data-path="further-reading-4.html"><a href="further-reading-4.html"><i class="fa fa-check"></i><b>5.11</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="ch-decomposition.html"><a href="ch-decomposition.html"><i class="fa fa-check"></i><b>6</b> Time series decomposition</a><ul>
+<li class="chapter" data-level="6.1" data-path="sec-6-1-TSpatterns.html"><a href="sec-6-1-TSpatterns.html"><i class="fa fa-check"></i><b>6.1</b> Time series components</a></li>
+<li class="chapter" data-level="6.2" data-path="moving-averages.html"><a href="moving-averages.html"><i class="fa fa-check"></i><b>6.2</b> Moving averages</a></li>
+<li class="chapter" data-level="6.3" data-path="classical-decomposition.html"><a href="classical-decomposition.html"><i class="fa fa-check"></i><b>6.3</b> Classical decomposition</a></li>
+<li class="chapter" data-level="6.4" data-path="x11-decomposition.html"><a href="x11-decomposition.html"><i class="fa fa-check"></i><b>6.4</b> X11 decomposition</a></li>
+<li class="chapter" data-level="6.5" data-path="seats-decomposition.html"><a href="seats-decomposition.html"><i class="fa fa-check"></i><b>6.5</b> SEATS decomposition</a></li>
+<li class="chapter" data-level="6.6" data-path="sec-6-stl.html"><a href="sec-6-stl.html"><i class="fa fa-check"></i><b>6.6</b> STL decomposition</a></li>
+<li class="chapter" data-level="6.7" data-path="forecasting-with-decomposition.html"><a href="forecasting-with-decomposition.html"><i class="fa fa-check"></i><b>6.7</b> Forecasting with decomposition</a></li>
+<li class="chapter" data-level="6.8" data-path="exercises-1.html"><a href="exercises-1.html"><i class="fa fa-check"></i><b>6.8</b> Exercises</a></li>
+<li class="chapter" data-level="6.9" data-path="further-reading-5.html"><a href="further-reading-5.html"><i class="fa fa-check"></i><b>6.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ch-expsmooth.html"><a href="ch-expsmooth.html"><i class="fa fa-check"></i><b>7</b> Exponential smoothing</a><ul>
+<li class="chapter" data-level="7.1" data-path="sec-7-1-SES.html"><a href="sec-7-1-SES.html"><i class="fa fa-check"></i><b>7.1</b> Simple exponential smoothing</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-7-trendmethods.html"><a href="sec-7-trendmethods.html"><i class="fa fa-check"></i><b>7.2</b> Trend methods</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-7-Taxonomy.html"><a href="sec-7-Taxonomy.html"><i class="fa fa-check"></i><b>7.3</b> Holt-Winters’ seasonal method</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-7-6-Taxonomy.html"><a href="sec-7-6-Taxonomy.html"><i class="fa fa-check"></i><b>7.4</b> A taxonomy of exponential smoothing methods</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-7-ETS.html"><a href="sec-7-ETS.html"><i class="fa fa-check"></i><b>7.5</b> Innovations state space models for exponential smoothing</a></li>
+<li class="chapter" data-level="7.6" data-path="estimation-and-model-selection.html"><a href="estimation-and-model-selection.html"><i class="fa fa-check"></i><b>7.6</b> Estimation and model selection</a></li>
+<li class="chapter" data-level="7.7" data-path="forecasting-with-ets-models.html"><a href="forecasting-with-ets-models.html"><i class="fa fa-check"></i><b>7.7</b> Forecasting with ETS models</a></li>
+<li class="chapter" data-level="7.8" data-path="exercises-2.html"><a href="exercises-2.html"><i class="fa fa-check"></i><b>7.8</b> Exercises</a></li>
+<li class="chapter" data-level="7.9" data-path="further-reading-6.html"><a href="further-reading-6.html"><i class="fa fa-check"></i><b>7.9</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ch-arima.html"><a href="ch-arima.html"><i class="fa fa-check"></i><b>8</b> ARIMA models</a><ul>
+<li class="chapter" data-level="8.1" data-path="stationarity-and-differencing.html"><a href="stationarity-and-differencing.html"><i class="fa fa-check"></i><b>8.1</b> Stationarity and differencing</a></li>
+<li class="chapter" data-level="8.2" data-path="backshift-notation.html"><a href="backshift-notation.html"><i class="fa fa-check"></i><b>8.2</b> Backshift notation</a></li>
+<li class="chapter" data-level="8.3" data-path="autoregressive-models.html"><a href="autoregressive-models.html"><i class="fa fa-check"></i><b>8.3</b> Autoregressive models</a></li>
+<li class="chapter" data-level="8.4" data-path="sec-mamodels.html"><a href="sec-mamodels.html"><i class="fa fa-check"></i><b>8.4</b> Moving average models</a></li>
+<li class="chapter" data-level="8.5" data-path="sec-nonseasonalarima.html"><a href="sec-nonseasonalarima.html"><i class="fa fa-check"></i><b>8.5</b> Non-seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.6" data-path="estimation-and-order-selection.html"><a href="estimation-and-order-selection.html"><i class="fa fa-check"></i><b>8.6</b> Estimation and order selection</a></li>
+<li class="chapter" data-level="8.7" data-path="arima-modelling-in-r.html"><a href="arima-modelling-in-r.html"><i class="fa fa-check"></i><b>8.7</b> ARIMA modelling in R</a></li>
+<li class="chapter" data-level="8.8" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>8.8</b> Forecasting</a></li>
+<li class="chapter" data-level="8.9" data-path="sec-seasonal-arima.html"><a href="sec-seasonal-arima.html"><i class="fa fa-check"></i><b>8.9</b> Seasonal ARIMA models</a></li>
+<li class="chapter" data-level="8.10" data-path="arima-vs-ets.html"><a href="arima-vs-ets.html"><i class="fa fa-check"></i><b>8.10</b> ARIMA vs ETS</a></li>
+<li class="chapter" data-level="8.11" data-path="exercises-3.html"><a href="exercises-3.html"><i class="fa fa-check"></i><b>8.11</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ch-dynamic.html"><a href="ch-dynamic.html"><i class="fa fa-check"></i><b>9</b> Dynamic regression models</a><ul>
+<li class="chapter" data-level="9.1" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>9.1</b> Estimation</a></li>
+<li class="chapter" data-level="9.2" data-path="regression-with-arima-errors-in-r.html"><a href="regression-with-arima-errors-in-r.html"><i class="fa fa-check"></i><b>9.2</b> Regression with ARIMA errors in R</a></li>
+<li class="chapter" data-level="9.3" data-path="forecasting-1.html"><a href="forecasting-1.html"><i class="fa fa-check"></i><b>9.3</b> Forecasting</a></li>
+<li class="chapter" data-level="9.4" data-path="stochastic-and-deterministic-trends.html"><a href="stochastic-and-deterministic-trends.html"><i class="fa fa-check"></i><b>9.4</b> Stochastic and deterministic trends</a></li>
+<li class="chapter" data-level="9.5" data-path="sec-dhr.html"><a href="sec-dhr.html"><i class="fa fa-check"></i><b>9.5</b> Dynamic harmonic regression</a></li>
+<li class="chapter" data-level="9.6" data-path="lagged-predictors.html"><a href="lagged-predictors.html"><i class="fa fa-check"></i><b>9.6</b> Lagged predictors</a></li>
+<li class="chapter" data-level="9.7" data-path="exercises-4.html"><a href="exercises-4.html"><i class="fa fa-check"></i><b>9.7</b> Exercises</a></li>
+<li class="chapter" data-level="9.8" data-path="further-reading-7.html"><a href="further-reading-7.html"><i class="fa fa-check"></i><b>9.8</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="ch-hierarchical.html"><a href="ch-hierarchical.html"><i class="fa fa-check"></i><b>10</b> Forecasting hierarchical or grouped time series</a><ul>
+<li class="chapter" data-level="10.1" data-path="Hier-hierarchical-ts.html"><a href="Hier-hierarchical-ts.html"><i class="fa fa-check"></i><b>10.1</b> Hierarchical time series</a></li>
+<li class="chapter" data-level="10.2" data-path="Hier-grouped-ts.html"><a href="Hier-grouped-ts.html"><i class="fa fa-check"></i><b>10.2</b> Grouped time series</a></li>
+<li class="chapter" data-level="10.3" data-path="Hier-base-coherent-forecasts.html"><a href="Hier-base-coherent-forecasts.html"><i class="fa fa-check"></i><b>10.3</b> Base and coherent forecasts</a></li>
+<li class="chapter" data-level="10.4" data-path="Hier-bu.html"><a href="Hier-bu.html"><i class="fa fa-check"></i><b>10.4</b> The bottom-up approach</a></li>
+<li class="chapter" data-level="10.5" data-path="Hier-td.html"><a href="Hier-td.html"><i class="fa fa-check"></i><b>10.5</b> Top-down approaches</a></li>
+<li class="chapter" data-level="10.6" data-path="Hier-mo.html"><a href="Hier-mo.html"><i class="fa fa-check"></i><b>10.6</b> Middle-out approach</a></li>
+<li class="chapter" data-level="10.7" data-path="Hier-projection.html"><a href="Hier-projection.html"><i class="fa fa-check"></i><b>10.7</b> The projection matrix</a></li>
+<li class="chapter" data-level="10.8" data-path="Hier-reconciliation.html"><a href="Hier-reconciliation.html"><i class="fa fa-check"></i><b>10.8</b> The optimal reconciliation approach</a></li>
+<li class="chapter" data-level="10.9" data-path="ex-hierarchical.html"><a href="ex-hierarchical.html"><i class="fa fa-check"></i><b>10.9</b> Exercises</a></li>
+<li class="chapter" data-level="10.10" data-path="further-reading-8.html"><a href="further-reading-8.html"><i class="fa fa-check"></i><b>10.10</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ch-advanced.html"><a href="ch-advanced.html"><i class="fa fa-check"></i><b>11</b> Advanced forecasting methods</a><ul>
+<li class="chapter" data-level="11.1" data-path="sec-complexseasonality.html"><a href="sec-complexseasonality.html"><i class="fa fa-check"></i><b>11.1</b> Complex seasonality</a></li>
+<li class="chapter" data-level="11.2" data-path="forecasting-counts.html"><a href="forecasting-counts.html"><i class="fa fa-check"></i><b>11.2</b> Forecasting counts</a></li>
+<li class="chapter" data-level="11.3" data-path="VAR.html"><a href="VAR.html"><i class="fa fa-check"></i><b>11.3</b> Vector autoregressions</a></li>
+<li class="chapter" data-level="11.4" data-path="sec-9-3-nnet.html"><a href="sec-9-3-nnet.html"><i class="fa fa-check"></i><b>11.4</b> Neural network models</a></li>
+<li class="chapter" data-level="11.5" data-path="sec-ex-11.html"><a href="sec-ex-11.html"><i class="fa fa-check"></i><b>11.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ch-practical.html"><a href="ch-practical.html"><i class="fa fa-check"></i><b>12</b> Some practical forecasting issues</a><ul>
+<li class="chapter" data-level="12.1" data-path="weekly.html"><a href="weekly.html"><i class="fa fa-check"></i><b>12.1</b> Weekly, daily and sub-daily data</a></li>
+<li class="chapter" data-level="12.2" data-path="counts.html"><a href="counts.html"><i class="fa fa-check"></i><b>12.2</b> Time series of counts</a></li>
+<li class="chapter" data-level="12.3" data-path="limits.html"><a href="limits.html"><i class="fa fa-check"></i><b>12.3</b> Ensuring forecasts stay within limits</a></li>
+<li class="chapter" data-level="12.4" data-path="combinations.html"><a href="combinations.html"><i class="fa fa-check"></i><b>12.4</b> Forecast combinations</a></li>
+<li class="chapter" data-level="12.5" data-path="aggregates.html"><a href="aggregates.html"><i class="fa fa-check"></i><b>12.5</b> Prediction intervals for aggregates</a></li>
+<li class="chapter" data-level="12.6" data-path="backcasting.html"><a href="backcasting.html"><i class="fa fa-check"></i><b>12.6</b> Backcasting</a></li>
+<li class="chapter" data-level="12.7" data-path="short-ts.html"><a href="short-ts.html"><i class="fa fa-check"></i><b>12.7</b> Forecasting very short time series</a></li>
+<li class="chapter" data-level="12.8" data-path="long-ts.html"><a href="long-ts.html"><i class="fa fa-check"></i><b>12.8</b> Forecasting very long time series</a></li>
+<li class="chapter" data-level="12.9" data-path="oosos.html"><a href="oosos.html"><i class="fa fa-check"></i><b>12.9</b> One-step forecasts on test data</a></li>
+<li class="chapter" data-level="12.10" data-path="isms.html"><a href="isms.html"><i class="fa fa-check"></i><b>12.10</b> Multi-step forecasts on training data</a></li>
+<li class="chapter" data-level="12.11" data-path="missing-outliers.html"><a href="missing-outliers.html"><i class="fa fa-check"></i><b>12.11</b> Dealing with missing values and outliers</a></li>
+<li class="chapter" data-level="12.12" data-path="bootstrap.html"><a href="bootstrap.html"><i class="fa fa-check"></i><b>12.12</b> Bootstrapping and bagging</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="using-r.html"><a href="using-r.html"><i class="fa fa-check"></i>Using R</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://OTexts.org" target="blank">Published by OTexts with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Forecasting: Principles and Practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="accuracy" class="section level2">
+<h2><span class="header-section-number">3.4</span> Evaluating forecast accuracy</h2>
+<div id="training-and-test-sets" class="section level3 unnumbered">
+<h3>Training and test sets</h3>
+<p>It is important to evaluate forecast accuracy using genuine forecasts. Consequently, the size of the residuals is not a reliable indication of how large true forecast errors are likely to be. The accuracy of forecasts can only be determined by considering how well a model performs on new data that were not used when fitting the model.</p>
+<p>When choosing models, it is common practice to separate the available data into two portions, training and test data, where the training data is used to estimate any parameters of a forecasting method and the test data is used to evaluate its accuracy. Because the test data is not used in determining the forecasts, it should provide a reliable indication of how well the model is likely to forecast on new data.</p>
+<p><img src="fpp_files/figure-html/traintest-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>The size of the test set is typically about 20% of the total sample, although this value depends on how long the sample is and how far ahead you want to forecast. The test set should ideally be at least as large as the maximum forecast horizon required. The following points should be noted.</p>
+<ul>
+<li>A model which fits the training data well will not necessarily forecast well.</li>
+<li>A perfect fit can always be obtained by using a model with enough parameters.</li>
+<li>Over-fitting a model to data is just as bad as failing to identify a systematic pattern in the data.</li>
+</ul>
+<p>Some references describe the test set as the “hold-out set” because these data are “held out” of the data used for fitting. Other references call the training set the “in-sample data” and the test set the “out-of-sample data”. We prefer to use “training data” and “test data” in this book.</p>
+</div>
+<div id="functions-to-subset-a-time-series" class="section level3 unnumbered">
+<h3>Functions to subset a time series</h3>
+<p>The <code>window</code> function introduced in Chapter <a href="ch-graphics.html#ch-graphics">2</a> is very useful when extracting a portion of a time series, such as we need when creating training and test sets. In the <code>window</code> function, we specify the start and/or end of the portion of time series required using time values. For example,</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1995</span>)</code></pre>
+<p>extracts all data from 1995 onwards.</p>
+<p>Another useful function is <code>subset</code> which allows for more types of subsetting. A great advantage of this function is that it allows the use of indices to choose a subset. For example,</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(ausbeer, <span class="dt">start=</span><span class="kw">length</span>(ausbeer)<span class="op">-</span><span class="dv">4</span><span class="op">*</span><span class="dv">5</span>)</code></pre>
+<p>extracts the last 5 years of observations from <code>ausbeer</code>. It also allows extracting all values for a specific season. For example,</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(ausbeer, <span class="dt">quarter =</span> <span class="dv">1</span>)</code></pre>
+<p>extracts the first quarters for all years.</p>
+<p>Finally, <code>head</code> and <code>tail</code> are useful for extracting the first few or last few observations. For example, the last 5 years of <code>ausbeer</code> can also be obtained using</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(ausbeer, <span class="dv">4</span><span class="op">*</span><span class="dv">5</span>)</code></pre>
+</div>
+<div id="forecast-errors" class="section level3 unnumbered">
+<h3>Forecast errors</h3>
+<p>A forecast “error” is the difference between an observed value and its forecast. Here “error” does not mean a mistake, it means the unpredictable part of an observation. It can be written as
+<span class="math display">\[
+  e_{T+h} = y_{T+h} - \hat{y}_{T+h|T},
+\]</span>
+where the training data is given by <span class="math inline">\(\{y_1,\dots,y_T\}\)</span> and the test data is given by <span class="math inline">\(\{y_{T+1},y_{T+2},\dots\}\)</span>.</p>
+<p>Note that forecast errors are different from residuals in two ways. First, residuals are calculated on the <em>training</em> set while forecast errors are calculated on the <em>test</em> set. Second, residuals are based on <em>one-step</em> forecasts while forecast errors can involve <em>multi-step</em> forecasts.</p>
+<p>We can measure forecast accuracy by summarising the forecast errors in different ways.</p>
+</div>
+<div id="scale-dependent-errors" class="section level3 unnumbered">
+<h3>Scale-dependent errors</h3>
+<p>The forecast errors are on the same scale as the data. Accuracy measures that are based only on <span class="math inline">\(e_{t}\)</span> are therefore scale-dependent and cannot be used to make comparisons between series that involve different units.</p>
+<p>The two most commonly used scale-dependent measures are based on the absolute errors or squared errors:
+<span class="math display">\[\begin{align*}
+  \text{Mean absolute error: MAE} &amp; = \text{mean}(|e_{t}|),\\
+  \text{Root mean squared error: RMSE} &amp; = \sqrt{\text{mean}(e_{t}^2)}.
+\end{align*}\]</span>
+When comparing forecast methods applied to a single time series, or to several time series with the same units, the MAE is popular as it is easy to both understand and compute. A forecast method that minimizes the MAE will lead to forecasts of the median, while minimizing the RMSE will lead to forecasts of the mean. Consequently, the RMSE is also widely used, despite being more difficult to interpret.</p>
+</div>
+<div id="percentage-errors" class="section level3 unnumbered">
+<h3>Percentage errors</h3>
+<p>The percentage error is given by <span class="math inline">\(p_{t} = 100 e_{t}/y_{t}\)</span>. Percentage errors have the advantage of being unit-free, and so are frequently used to compare forecast performances between data sets. The most commonly used measure is:
+<span class="math display">\[
+  \text{Mean absolute percentage error: MAPE} = \text{mean}(|p_{t}|).
+\]</span>
+Measures based on percentage errors have the disadvantage of being infinite or undefined if <span class="math inline">\(y_{t}=0\)</span> for any <span class="math inline">\(t\)</span> in the period of interest, and having extreme values if any <span class="math inline">\(y_{t}\)</span> is close to zero. Another problem with percentage errors that is often overlooked is that they assume the unit of measurement has a meaningful zero.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> For example, a percentage error makes no sense when measuring the accuracy of temperature forecasts on either the Fahrenheit or Celsius scales, because temperature has an arbitrary zero point.</p>
+<p>They also have the disadvantage that they put a heavier penalty on negative errors than on positive errors. This observation led to the use of the so-called “symmetric” MAPE (sMAPE) proposed by <span class="citation">Armstrong (<a href="#ref-Armstrong85">1985</a>, 348)</span>, which was used in the M3 forecasting competition. It is defined by
+<span class="math display">\[
+  \text{sMAPE} = \text{mean}\left(200|y_{t} - \hat{y}_{t}|/(y_{t}+\hat{y}_{t})\right).
+\]</span>
+However, if <span class="math inline">\(y_{t}\)</span> is close to zero, <span class="math inline">\(\hat{y}_{t}\)</span> is also likely to be close to zero. Thus, the measure still involves division by a number close to zero, making the calculation unstable. Also, the value of sMAPE can be negative, so it is not really a measure of “absolute percentage errors” at all.</p>
+<p><span class="citation">Hyndman and Koehler (<a href="#ref-HK06">2006</a>)</span> recommend that the sMAPE not be used. It is included here only because it is widely used, although we will not use it in this book.</p>
+</div>
+<div id="scaled-errors" class="section level3 unnumbered">
+<h3>Scaled errors</h3>
+<p>Scaled errors were proposed by <span class="citation">Hyndman and Koehler (<a href="#ref-HK06">2006</a>)</span> as an alternative to using percentage errors when comparing forecast accuracy across series with different units. They proposed scaling the errors based on the <em>training</em> MAE from a simple forecast method.</p>
+<p>For a non-seasonal time series, a useful way to define a scaled error uses naïve forecasts:
+<span class="math display">\[
+  q_{j} = \frac{\displaystyle e_{j}}
+    {\displaystyle\frac{1}{T-1}\sum_{t=2}^T |y_{t}-y_{t-1}|}.
+\]</span>
+Because the numerator and denominator both involve values on the scale of the original data, <span class="math inline">\(q_{j}\)</span> is independent of the scale of the data. A scaled error is less than one if it arises from a better forecast than the average naïve forecast computed on the training data. Conversely, it is greater than one if the forecast is worse than the average naïve forecast computed on the training data.</p>
+<p>For seasonal time series, a scaled error can be defined using seasonal naïve forecasts:
+<span class="math display">\[
+  q_{j} = \frac{\displaystyle e_{j}}
+    {\displaystyle\frac{1}{T-m}\sum_{t=m+1}^T |y_{t}-y_{t-m}|}.
+\]</span></p>
+<p>The <em>mean absolute scaled error</em> is simply
+<span class="math display">\[
+  \text{MASE} = \text{mean}(|q_{j}|).
+\]</span>
+Similarly, the <em>mean squared scaled error</em> (MSSE) can be defined where the errors (on both the training data and test data) are squared instead of using absolute values.</p>
+<p>###Examples {-}</p>
+<pre class="sourceCode r"><code class="sourceCode r">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))
+beerfit1 &lt;-<span class="st"> </span><span class="kw">meanf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
+beerfit2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
+beerfit3 &lt;-<span class="st"> </span><span class="kw">snaive</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
+<span class="kw">autoplot</span>(<span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)) <span class="op">+</span>
+<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span>
+<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span>
+<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit3<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Seasonal naïve&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Megalitres&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Forecasts for quarterly beer production&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:beeraccuracy"></span>
+<img src="fpp_files/figure-html/beeraccuracy-1.png" alt="Forecasts of Australian quarterly beer production using data up to the end of 2007." width="90%" />
+<p class="caption">
+Figure 3.8: Forecasts of Australian quarterly beer production using data up to the end of 2007.
+</p>
+</div>
+<p>Figure <a href="accuracy.html#fig:beeraccuracy">3.8</a> shows three forecast methods applied to the quarterly Australian beer production using data only to the end of 2007. The actual values for the period 2008–2010 are also shown. We compute the forecast accuracy measures for this period.</p>
+<pre class="sourceCode r"><code class="sourceCode r">beer3 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">2008</span>)
+<span class="kw">accuracy</span>(beerfit1, beer3)
+<span class="kw">accuracy</span>(beerfit2, beer3)
+<span class="kw">accuracy</span>(beerfit3, beer3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">RMSE</th>
+<th align="right">MAE</th>
+<th align="right">MAPE</th>
+<th align="right">MASE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mean method</td>
+<td align="right">38.5</td>
+<td align="right">34.8</td>
+<td align="right">8.28</td>
+<td align="right">2.44</td>
+</tr>
+<tr class="even">
+<td>Naïve method</td>
+<td align="right">62.7</td>
+<td align="right">57.4</td>
+<td align="right">14.18</td>
+<td align="right">4.01</td>
+</tr>
+<tr class="odd">
+<td>Seasonal naïve method</td>
+<td align="right">14.3</td>
+<td align="right">13.4</td>
+<td align="right">3.17</td>
+<td align="right">0.94</td>
+</tr>
+</tbody>
+</table>
+<p>It is obvious from the graph that the seasonal naïve method is best for these data, although it can still be improved, as we will discover later. Sometimes, different accuracy measures will lead to different results as to which forecast method is best. However, in this case, all of the results point to the seasonal naïve method as the best of these three methods for this data set.</p>
+<p>To take a non-seasonal example, consider the Dow Jones Index. The following graph shows the 250 observations ending on 15 July 1994, along with forecasts of the next 42 days obtained from three different methods.</p>
+<pre class="sourceCode r"><code class="sourceCode r">dj2 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">end=</span><span class="dv">250</span>)
+djfc1 &lt;-<span class="st"> </span><span class="kw">meanf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)
+djfc2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)
+djfc3 &lt;-<span class="st"> </span><span class="kw">rwf</span>(dj2, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">42</span>)
+<span class="kw">autoplot</span>(dj) <span class="op">+</span>
+<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span>
+<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span>
+<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc3<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Drift&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Dow Jones Index (daily ending 15 Jul 94)&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</code></pre>
+<div class="figure" style="text-align: center"><span id="fig:djfc"></span>
+<img src="fpp_files/figure-html/djfc-1.png" alt="Forecasts of the Dow Jones Index from 16 July 1994." width="90%" />
+<p class="caption">
+Figure 3.9: Forecasts of the Dow Jones Index from 16 July 1994.
+</p>
+</div>
+<pre class="sourceCode r"><code class="sourceCode r">dj3 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">start=</span><span class="dv">251</span>)
+<span class="kw">accuracy</span>(djfc1, dj3)
+<span class="kw">accuracy</span>(djfc2, dj3)
+<span class="kw">accuracy</span>(djfc3, dj3)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">RMSE</th>
+<th align="right">MAE</th>
+<th align="right">MAPE</th>
+<th align="right">MASE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mean method</td>
+<td align="right">148.2</td>
+<td align="right">142.4</td>
+<td align="right">3.66</td>
+<td align="right">8.70</td>
+</tr>
+<tr class="even">
+<td>Naïve method</td>
+<td align="right">62.0</td>
+<td align="right">54.4</td>
+<td align="right">1.40</td>
+<td align="right">3.32</td>
+</tr>
+<tr class="odd">
+<td>Drift method</td>
+<td align="right">53.7</td>
+<td align="right">45.7</td>
+<td align="right">1.18</td>
+<td align="right">2.79</td>
+</tr>
+</tbody>
+</table>
+<p>Here, the best method is the drift method (regardless of which accuracy measure is used).</p>
+<p>###Time series cross-validation {-}</p>
+<p>A more sophisticated version of training/test sets is time series cross-validation. In this procedure, there are a series of test sets, each consisting of a single observation. The corresponding training set consists only of observations that occurred <em>prior</em> to the observation that forms the test set. Thus, no future observations can be used in constructing the forecast. Since it is not possible to obtain a reliable forecast based on a very small training set, the earliest observations are not considered as test sets.</p>
+<p>The following diagram illustrates the series of training and test sets, where the blue observations form the training sets, and the red observations form the test sets.</p>
+<p><img src="fpp_files/figure-html/cv1-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>The forecast accuracy is computed by averaging over the test sets. This procedure is sometimes known as “evaluation on a rolling forecasting origin” because the “origin” at which the forecast is based rolls forward in time.</p>
+<p>With time series forecasting, one-step forecasts may not be as relevant as multi-step forecasts. In this case, the cross-validation procedure based on a rolling forecasting origin can be modified to allow multi-step errors to be used. Suppose that we are interested in models that produce good <span class="math inline">\(4\)</span>-step-ahead forecasts. Then the corresponding diagram is shown below.</p>
+<p><img src="fpp_files/figure-html/cv4-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>Time series cross validation is implemented with the <code>tsCV</code> function. In the following example, we compare the residual RMSE with the RMSE obtained via time series cross-validation.</p>
+<pre class="sourceCode r"><code class="sourceCode r">e &lt;-<span class="st"> </span><span class="kw">tsCV</span>(dj, rwf, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">1</span>)
+<span class="kw">sqrt</span>(<span class="kw">mean</span>(e<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))
+<span class="co">#&gt; [1] 22.7</span>
+<span class="kw">sqrt</span>(<span class="kw">mean</span>(<span class="kw">residuals</span>(<span class="kw">rwf</span>(dj, <span class="dt">drift=</span><span class="ot">TRUE</span>))<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))
+<span class="co">#&gt; [1] 22.5</span></code></pre>
+<p>As expected, the RMSE from the residuals is smaller, as the corresponding “forecasts” are based on a model fitted to the entire data set, rather than being true forecasts.</p>
+<p>A good way to choose the best forecasting model is to find the model with the smallest RMSE computed using time series cross-validation.</p>
+<p>The ugliness of the above R code makes this a good opportunity to introduce some alternative ways of stringing R functions together. In the above code, we are nesting functions within functions within functions, so you have to read the code from the inside out, making it difficult to understand what is being computed. Instead, we can use the pipe operator <code>%&gt;%</code> as follows</p>
+<pre class="sourceCode r"><code class="sourceCode r">dj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tsCV</span>(<span class="dt">forecastfunction=</span>rwf, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">1</span>) -&gt;<span class="st"> </span>e
+e<span class="op">^</span><span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(<span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sqrt</span>()
+dj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rwf</span>(<span class="dt">drift=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">residuals</span>() -&gt;<span class="st"> </span>res
+res<span class="op">^</span><span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(<span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sqrt</span>()</code></pre>
+<p>The left hand side of each pipe is passed as the first argument to the function on the right hand side. This is consistent with the way we read from left to right in English. A consequence of using pipes is that all other arguments must be named, which also helps readability. When using pipes, it is natural to use the right arrow assignment <code>-&gt;</code> rather than the left arrow. For example, the third line above can be read as “Take the <code>dj</code> series, pass it to <code>rwf</code> with <code>drift=TRUE</code>, compute the resulting residuals, and store them as <code>res</code>”.</p>
+<p>In the remainder of this book, we will use the pipe operator whenever it makes the code easier to read. In order to be consistent, we will always follow a function with parentheses to differentiate it from other objects, even if it has no arguments. See for example the use of <code>sqrt()</code> in the code above.</p>
+<p>###Example: using tsCV() {-}</p>
+<p>The <code>goog</code> data, plotted below, includes daily closing stock prices of Google Inc from the NASDAQ exchange, for 1000 consecutive trading days between 25 February 2013 and 13 February 2017.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(goog)</code></pre>
+<p><img src="fpp_files/figure-html/tsCV-1.png" width="90%" style="display: block; margin: auto;" /></p>
+<p>The code below evaluates the forecasting performance of 1- to 8-step-ahead naïve forecasts with <code>tsCV</code>, using MSE as the forecast error measure. The plot shows that the forecast error increases as the forecast horizon increases, as we would expect.</p>
+<pre class="sourceCode r"><code class="sourceCode r">e &lt;-<span class="st"> </span><span class="kw">tsCV</span>(goog, <span class="dt">forecastfunction=</span>naive, <span class="dt">h=</span><span class="dv">8</span>)
+  
+<span class="co"># Compute the MSE values and remove missing values</span>
+mse &lt;-<span class="st"> </span><span class="kw">colMeans</span>(e<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm =</span> T)
+
+<span class="co"># Plot the MSE values against the forecast horizon</span>
+<span class="kw">data.frame</span>(<span class="dt">h =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="dt">MSE =</span> mse) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> h, <span class="dt">y =</span> MSE)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<p><img src="fpp_files/figure-html/tsCVplot-1.png" width="90%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Armstrong85">
+<p>Armstrong, J Scott. 1985. <em>Long-Range Forecasting: From Crystal Ball to Computer</em>. Wiley.</p>
+</div>
+<div id="ref-HK06">
+<p>Hyndman, Rob J, and Anne B Koehler. 2006. “Another Look at Measures of Forecast Accuracy.” <em>International Journal of Forecasting</em> 22: 679–88.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>That is, a percentage is valid on a ratio scale, but not on an interval scale. Only ratio scale variables have meaningful zeros.<a href="accuracy.html#fnref2" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="residuals.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-PI.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/robjhyndman/fpp2/edit/master/03-toolbox.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
