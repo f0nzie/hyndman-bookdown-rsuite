@@ -304,7 +304,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="sec-2-methods" class="section level2">
 <h2><span class="header-section-number">3.1</span> Some simple forecasting methods</h2>
 <p>Some forecasting methods are very simple and surprisingly effective. Here are four methods that we will use as benchmarks for other forecasting methods.</p>
-<p>###Average method {-}</p>
+<div id="average-method" class="section level3 unnumbered">
+<h3>Average method</h3>
 <p>Here, the forecasts of all future values are equal to the mean of the historical data. If we let the historical data be denoted by <span class="math inline">\(y_{1},\dots,y_{T}\)</span>, then we can write the forecasts as
 <span class="math display">\[
   \hat{y}_{T+h|T} = \bar{y} = (y_{1}+\dots+y_{T})/T.
@@ -321,21 +322,27 @@ The notation <span class="math inline">\(\hat{y}_{T+h|T}\)</span> is a short-han
 <p>This method works remarkably well for many economic and financial time series.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">naive</span>(y, h)
 <span class="kw">rwf</span>(y, h) <span class="co"># Alternative</span></code></pre>
-<p>###Seasonal naïve method {-}</p>
+</div>
+<div id="seasonal-naive-method" class="section level3 unnumbered">
+<h3>Seasonal naïve method</h3>
 <p>A similar method is useful for highly seasonal data. In this case, we set each forecast to be equal to the last observed value from the same season of the year (e.g., the same month of the previous year). Formally, the forecast for time <span class="math inline">\(T+h\)</span> is written as
 <span class="math display">\[
    \hat{y}_{T+h|T} = y_{T+h-km},
 \]</span></p>
 <p>where <span class="math inline">\(m=\)</span> the seasonal period, <span class="math inline">\(k=\lfloor (h-1)/m\rfloor+1\)</span>, and <span class="math inline">\(\lfloor u \rfloor\)</span> denotes the integer part of <span class="math inline">\(u\)</span>. That looks more complicated than it really is. For example, with monthly data, the forecast for all future February values is equal to the last observed February value. With quarterly data, the forecast of all future Q2 values is equal to the last observed Q2 value (where Q2 means the second quarter). Similar rules apply for other months and quarters, and for other seasonal periods.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">snaive</span>(y, h)</code></pre>
-<p>###Drift method {-}</p>
+</div>
+<div id="drift-method" class="section level3 unnumbered">
+<h3>Drift method</h3>
 <p>A variation on the naïve method is to allow the forecasts to increase or decrease over time, where the amount of change over time (called the “drift”) is set to be the average change seen in the historical data. Thus the forecast for time <span class="math inline">\(T+h\)</span> is given by
 <span class="math display">\[
   \hat{y}_{T+h|T} = y_{T} + \frac{h}{T-1}\sum_{t=2}^T (y_{t}-y_{t-1}) = y_{T} + h \left( \frac{y_{T} -y_{1}}{T-1}\right).
 \]</span>
 This is equivalent to drawing a line between the first and last observations, and extrapolating it into the future.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rwf</span>(y, h, <span class="dt">drift=</span><span class="ot">TRUE</span>)</code></pre>
-<p>###Examples {-}</p>
+</div>
+<div id="examples" class="section level3 unnumbered">
+<h3>Examples</h3>
 <p>Figure <a href="sec-2-methods.html#fig:beerf">3.1</a> shows the first three methods applied to the quarterly beer production data.</p>
 <pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set training data from 1992-2007</span>
 beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))
@@ -371,6 +378,7 @@ Figure 3.2: Forecasts based on 250 days of the Dow Jones Index.
 </p>
 </div>
 <p>Sometimes one of these simple methods will be the best forecasting method available; but in many cases, these methods will serve as benchmarks rather than the method of choice. That is, any forecasting methods we develop will be compared to these simple methods to ensure that the new method is better than these simple alternatives. If not, the new method is not worth considering.</p>
+</div>
 </div>
             </section>
 

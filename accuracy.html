@@ -382,7 +382,9 @@ Because the numerator and denominator both involve values on the scale of the or
   \text{MASE} = \text{mean}(|q_{j}|).
 \]</span>
 Similarly, the <em>mean squared scaled error</em> (MSSE) can be defined where the errors (on both the training data and test data) are squared instead of using absolute values.</p>
-<p>###Examples {-}</p>
+</div>
+<div id="examples-1" class="section level3 unnumbered">
+<h3>Examples</h3>
 <pre class="sourceCode r"><code class="sourceCode r">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))
 beerfit1 &lt;-<span class="st"> </span><span class="kw">meanf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
 beerfit2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
@@ -497,7 +499,9 @@ Figure 3.9: Forecasts of the Dow Jones Index from 16 July 1994.
 </tbody>
 </table>
 <p>Here, the best method is the drift method (regardless of which accuracy measure is used).</p>
-<p>###Time series cross-validation {-}</p>
+</div>
+<div id="time-series-cross-validation" class="section level3 unnumbered">
+<h3>Time series cross-validation</h3>
 <p>A more sophisticated version of training/test sets is time series cross-validation. In this procedure, there are a series of test sets, each consisting of a single observation. The corresponding training set consists only of observations that occurred <em>prior</em> to the observation that forms the test set. Thus, no future observations can be used in constructing the forecast. Since it is not possible to obtain a reliable forecast based on a very small training set, the earliest observations are not considered as test sets.</p>
 <p>The following diagram illustrates the series of training and test sets, where the blue observations form the training sets, and the red observations form the test sets.</p>
 <p><img src="fpp_files/figure-html/cv1-1.png" width="90%" style="display: block; margin: auto;" /></p>
