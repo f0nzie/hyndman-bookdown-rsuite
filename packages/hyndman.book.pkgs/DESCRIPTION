@@ -46,5 +46,9 @@ Imports: logging,
   RcppArmadillo,
   stringr,
   Matrix,
-  igraph
+  igraph,
+  gridExtra,
+  GGally,
+  tidyverse,
+  forecast
 RoxygenNote: 6.1.1
