@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8.5 Non-seasonal ARIMA models | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8.5 Non-seasonal ARIMA models | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -369,8 +368,8 @@ where <span class="math inline">\(y_t&#39; = (1-B)^d y_t\)</span> and <span clas
 <p>Selecting appropriate values for <span class="math inline">\(p\)</span>, <span class="math inline">\(d\)</span> and <span class="math inline">\(q\)</span> can be difficult. However, the <code>auto.arima()</code> function in R will do it for you automatically. Later in this chapter, we will learn how the function works, and some methods for choosing these values yourself.</p>
 <div id="us-consumption-expenditure" class="section level3 unnumbered">
 <h3>US consumption expenditure</h3>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>]) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Quarterly percentage change&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1"><span class="kw">autoplot</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>]) <span class="op">+</span></a>
+<a class="sourceLine" id="cb134-2" data-line-number="2"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Quarterly percentage change&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsumption"></span>
 <img src="fpp_files/figure-html/usconsumption-1.png" alt="Quarterly percentage change in US consumption expenditure." width="90%" />
 <p class="caption">
@@ -379,17 +378,17 @@ Figure 8.7: Quarterly percentage change in US consumption expenditure.
 </div>
 <p>Figure <a href="sec-nonseasonalarima.html#fig:usconsumption">8.7</a> shows quarterly percentage changes in US consumption expenditure. Although it is a quarterly series, there does not appear to be a seasonal pattern, so we will fit a non-seasonal ARIMA model.</p>
 <p>The following R code was used to select a model automatically. (We use the argument <code>seasonal=FALSE</code> for now, but we will consider seasonal ARIMA models in Section <a href="sec-seasonal-arima.html#sec-seasonal-arima">8.9</a> )</p>
-<pre class="sourceCode r"><code class="sourceCode r">(fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">seasonal=</span><span class="ot">FALSE</span>))
-<span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span>
-<span class="co">#&gt; ARIMA(1,0,3) with non-zero mean </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ar1     ma1    ma2    ma3   mean</span>
-<span class="co">#&gt;       0.589  -0.353  0.085  0.174  0.745</span>
-<span class="co">#&gt; s.e.  0.154   0.166  0.082  0.084  0.093</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.35:  log likelihood=-165</span>
-<span class="co">#&gt; AIC=342   AICc=342   BIC=361</span></code></pre>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1">(fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">seasonal=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb135-2" data-line-number="2"><span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span></a>
+<a class="sourceLine" id="cb135-3" data-line-number="3"><span class="co">#&gt; ARIMA(1,0,3) with non-zero mean </span></a>
+<a class="sourceLine" id="cb135-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb135-5" data-line-number="5"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb135-6" data-line-number="6"><span class="co">#&gt;         ar1     ma1    ma2    ma3   mean</span></a>
+<a class="sourceLine" id="cb135-7" data-line-number="7"><span class="co">#&gt;       0.589  -0.353  0.085  0.174  0.745</span></a>
+<a class="sourceLine" id="cb135-8" data-line-number="8"><span class="co">#&gt; s.e.  0.154   0.166  0.082  0.084  0.093</span></a>
+<a class="sourceLine" id="cb135-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb135-10" data-line-number="10"><span class="co">#&gt; sigma^2 estimated as 0.35:  log likelihood=-165</span></a>
+<a class="sourceLine" id="cb135-11" data-line-number="11"><span class="co">#&gt; AIC=342   AICc=342   BIC=361</span></a></code></pre></div>
 <p>This is an ARIMA(2,0,2) model:
 <span class="math display">\[
   y_t = c + 0.589y_{t-1}
@@ -400,7 +399,7 @@ Figure 8.7: Quarterly percentage change in US consumption expenditure.
 \]</span>
 where <span class="math inline">\(c= 0.745 \times (1 - 0.589 + NA) = NA\)</span>
 and <span class="math inline">\(e_t\)</span> is white noise with a standard deviation of <span class="math inline">\(0.592 = \sqrt{0.350}\)</span>. Forecasts from the model are shown in Figure <a href="sec-nonseasonalarima.html#fig:usconsumptionf">8.8</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>(<span class="dt">include=</span><span class="dv">80</span>)</code></pre>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>(<span class="dt">include=</span><span class="dv">80</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsumptionf"></span>
 <img src="fpp_files/figure-html/usconsumptionf-1.png" alt="Forecasts of quarterly percentage changes in US consumption expenditure." width="90%" />
 <p class="caption">
@@ -431,16 +430,16 @@ Figure 8.8: Forecasts of quarterly percentage changes in US consumption expendit
 <p>Recall that an ACF plot shows the autocorrelations which measure the relationship between <span class="math inline">\(y_t\)</span> and <span class="math inline">\(y_{t-k}\)</span> for different values of <span class="math inline">\(k\)</span>. Now if <span class="math inline">\(y_t\)</span> and <span class="math inline">\(y_{t-1}\)</span> are correlated, then <span class="math inline">\(y_{t-1}\)</span> and <span class="math inline">\(y_{t-2}\)</span> must also be correlated. However, then <span class="math inline">\(y_t\)</span> and <span class="math inline">\(y_{t-2}\)</span> might be correlated, simply because they are both connected to <span class="math inline">\(y_{t-1}\)</span>, rather than because of any new information contained in <span class="math inline">\(y_{t-2}\)</span> that could be used in forecasting <span class="math inline">\(y_t\)</span>.</p>
 <p>To overcome this problem, we can use <strong>partial autocorrelations</strong>. These measure the relationship between <span class="math inline">\(y_{t}\)</span> and <span class="math inline">\(y_{t-k}\)</span> after removing the effects of lags <span class="math inline">\(1, 2, 3, \dots, k - 1\)</span>. So the first partial autocorrelation is identical to the first autocorrelation, because there is nothing between them to remove. Each partial autocorrelation can be estimated as the last coefficient in an autoregressive model. Specifically, <span class="math inline">\(\alpha_k\)</span>, the <span class="math inline">\(k\)</span>th partial autocorrelation coefficient, is equal to the estimate of <span class="math inline">\(\phi_k\)</span> in an AR(<span class="math inline">\(k\)</span>) model. In practice, there are more efficient algorithms for computing <span class="math inline">\(\alpha_k\)</span> than fitting all of these autoregressions, but they give the same results.</p>
 <p>Figures <a href="sec-nonseasonalarima.html#fig:usconsumptionacf">8.9</a> and <a href="sec-nonseasonalarima.html#fig:usconsumptionpacf">8.10</a> shows the ACF and PACF plots for the US consumption data shown in Figure <a href="sec-nonseasonalarima.html#fig:usconsumption">8.7</a>. The partial autocorrelations have the same critical values of <span class="math inline">\(\pm 1.96/\sqrt{T}\)</span> as for ordinary autocorrelations, and these are typically shown on the plot as in Figure <a href="sec-nonseasonalarima.html#fig:usconsumptionacf">8.9</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggAcf</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>],<span class="dt">main=</span><span class="st">&quot;&quot;</span>)
-<span class="co">#&gt; Warning: Ignoring unknown parameters: main</span></code></pre>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1"><span class="kw">ggAcf</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>],<span class="dt">main=</span><span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb137-2" data-line-number="2"><span class="co">#&gt; Warning: Ignoring unknown parameters: main</span></a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsumptionacf"></span>
 <img src="fpp_files/figure-html/usconsumptionacf-1.png" alt="ACF of quarterly percentage change in US consumption. A convenient way to produce a time plot, ACF plot and PACF plot in one command is to use the `ggtsdisplay` function in R." width="90%" />
 <p class="caption">
 Figure 8.9: ACF of quarterly percentage change in US consumption. A convenient way to produce a time plot, ACF plot and PACF plot in one command is to use the <code>ggtsdisplay</code> function in R.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggPacf</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>],<span class="dt">main=</span><span class="st">&quot;&quot;</span>)
-<span class="co">#&gt; Warning: Ignoring unknown parameters: main</span></code></pre>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw">ggPacf</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>],<span class="dt">main=</span><span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="co">#&gt; Warning: Ignoring unknown parameters: main</span></a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsumptionpacf"></span>
 <img src="fpp_files/figure-html/usconsumptionpacf-1.png" alt="PACF of quarterly percentage change in US consumption." width="90%" />
 <p class="caption">
@@ -459,30 +458,30 @@ Figure 8.10: PACF of quarterly percentage change in US consumption.
 <li>there is a significant spike at lag <span class="math inline">\(q\)</span> in the ACF, but none beyond lag <span class="math inline">\(q\)</span>.</li>
 </ul>
 <p>In Figure <a href="sec-nonseasonalarima.html#fig:usconsumptionacf">8.9</a>, we see that there are three spikes in the ACF, followed by an almost significant spike at lag 4. In the PACF, there are three significant spikes, and then no significant spikes thereafter (apart from one just outside the bounds at lag 22). We can ignore one significant spike in each plot if it is just outside the limits, and not in the first few lags. After all, the probability of a spike being significant by chance is about one in twenty, and we are plotting 22 spikes in each plot. The pattern in the first three spikes is what we would expect from an ARIMA(3,0,0), as the PACF tends to decrease. So in this case, the ACF and PACF lead us to think an ARIMA(3,0,0) model might be appropriate.</p>
-<pre class="sourceCode r"><code class="sourceCode r">(fit2 &lt;-<span class="st"> </span><span class="kw">Arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>)))
-<span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span>
-<span class="co">#&gt; ARIMA(3,0,0) with non-zero mean </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ar1    ar2    ar3   mean</span>
-<span class="co">#&gt;       0.227  0.160  0.203  0.745</span>
-<span class="co">#&gt; s.e.  0.071  0.072  0.071  0.103</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.349:  log likelihood=-165</span>
-<span class="co">#&gt; AIC=340   AICc=341   BIC=356</span></code></pre>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1">(fit2 &lt;-<span class="st"> </span><span class="kw">Arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>)))</a>
+<a class="sourceLine" id="cb139-2" data-line-number="2"><span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span></a>
+<a class="sourceLine" id="cb139-3" data-line-number="3"><span class="co">#&gt; ARIMA(3,0,0) with non-zero mean </span></a>
+<a class="sourceLine" id="cb139-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb139-5" data-line-number="5"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb139-6" data-line-number="6"><span class="co">#&gt;         ar1    ar2    ar3   mean</span></a>
+<a class="sourceLine" id="cb139-7" data-line-number="7"><span class="co">#&gt;       0.227  0.160  0.203  0.745</span></a>
+<a class="sourceLine" id="cb139-8" data-line-number="8"><span class="co">#&gt; s.e.  0.071  0.072  0.071  0.103</span></a>
+<a class="sourceLine" id="cb139-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb139-10" data-line-number="10"><span class="co">#&gt; sigma^2 estimated as 0.349:  log likelihood=-165</span></a>
+<a class="sourceLine" id="cb139-11" data-line-number="11"><span class="co">#&gt; AIC=340   AICc=341   BIC=356</span></a></code></pre></div>
 <p>This model is actually slightly better than the model identified by <code>auto.arima</code> (with an AICc value of 340.67 compared to 342.08). The <code>auto.arima</code> function did not find this model because it does not consider all possible models in its search. You can make it work harder by using the arguments <code>stepwise=FALSE</code> and <code>approximation=FALSE</code>:</p>
-<pre class="sourceCode r"><code class="sourceCode r">(fit3 &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">seasonal=</span><span class="ot">FALSE</span>,
-  <span class="dt">stepwise=</span><span class="ot">FALSE</span>, <span class="dt">approximation=</span><span class="ot">FALSE</span>))
-<span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span>
-<span class="co">#&gt; ARIMA(3,0,0) with non-zero mean </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ar1    ar2    ar3   mean</span>
-<span class="co">#&gt;       0.227  0.160  0.203  0.745</span>
-<span class="co">#&gt; s.e.  0.071  0.072  0.071  0.103</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.349:  log likelihood=-165</span>
-<span class="co">#&gt; AIC=340   AICc=341   BIC=356</span></code></pre>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1">(fit3 &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">seasonal=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb140-2" data-line-number="2">  <span class="dt">stepwise=</span><span class="ot">FALSE</span>, <span class="dt">approximation=</span><span class="ot">FALSE</span>))</a>
+<a class="sourceLine" id="cb140-3" data-line-number="3"><span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span></a>
+<a class="sourceLine" id="cb140-4" data-line-number="4"><span class="co">#&gt; ARIMA(3,0,0) with non-zero mean </span></a>
+<a class="sourceLine" id="cb140-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb140-6" data-line-number="6"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb140-7" data-line-number="7"><span class="co">#&gt;         ar1    ar2    ar3   mean</span></a>
+<a class="sourceLine" id="cb140-8" data-line-number="8"><span class="co">#&gt;       0.227  0.160  0.203  0.745</span></a>
+<a class="sourceLine" id="cb140-9" data-line-number="9"><span class="co">#&gt; s.e.  0.071  0.072  0.071  0.103</span></a>
+<a class="sourceLine" id="cb140-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb140-11" data-line-number="11"><span class="co">#&gt; sigma^2 estimated as 0.349:  log likelihood=-165</span></a>
+<a class="sourceLine" id="cb140-12" data-line-number="12"><span class="co">#&gt; AIC=340   AICc=341   BIC=356</span></a></code></pre></div>
 <p>This time, <code>auto.arima</code> has found the same model that we guessed from the ACF and PACF plots. The forecasts from this ARIMA(3,0,0) model are almost identical to those shown in Figure <a href="sec-nonseasonalarima.html#fig:usconsumptionf">8.8</a> for the ARIMA(2,0,2) model, so we do not produce the plot here.</p>
 </div>
 </div>

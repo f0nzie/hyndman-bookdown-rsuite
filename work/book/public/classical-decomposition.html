@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.3 Classical decomposition | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.3 Classical decomposition | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -339,9 +338,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <dd>The remainder component is calculated by dividing out the estimated seasonal and trend-cycle components: <span class="math inline">\(\hat{R}_{t} = y_t /( \hat{T}_t \hat{S}_t)\)</span>.
 </dd>
 </dl>
-<pre class="sourceCode r"><code class="sourceCode r">elecequip <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">decompose</span>(<span class="dt">type=</span><span class="st">&quot;multiplicative&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Classical multiplicative decomposition of electrical equipment index&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">elecequip <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">decompose</span>(<span class="dt">type=</span><span class="st">&quot;multiplicative&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb96-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb96-3" data-line-number="3"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Classical multiplicative decomposition of electrical equipment index&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:classical-elecequip"></span>
 <img src="fpp_files/figure-html/classical-elecequip-1.png" alt="A classical multiplicative decomposition of the new orders index for electrical equipment." width="90%" />
 <p class="caption">

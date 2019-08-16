@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.2 Least squares estimation | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.2 Least squares estimation | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -320,31 +319,31 @@ y_t=\beta_0 + \beta_1 x_{1,t}+ \beta_2 x_{2,t}+ \beta_3 x_{3,t}+ \beta_4 x_{4,t}
 \]</span>
 where <span class="math inline">\(y\)</span> is the percentage change in real personal consumption expenditure, <span class="math inline">\(x_1\)</span> is the percentage change in real personal disposable income, <span class="math inline">\(x_2\)</span> is the percentage change in industrial production, <span class="math inline">\(x_3\)</span> is the percentage change in personal savings and <span class="math inline">\(x_4\)</span> is the change in the unemployment rate.</p>
 <p>The following output provides information about the fitted model. The first column of <code>Coefficients</code> gives an estimate of each <span class="math inline">\(\beta\)</span> coefficient and the second column gives its standard error (i.e., the standard deviation which would be obtained from repeatedly estimating the <span class="math inline">\(\beta\)</span> coefficients on similar data sets). The standard error gives a measure of the uncertainty in the estimated <span class="math inline">\(\beta\)</span> coefficient.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit.consMR &lt;-<span class="st"> </span><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Production <span class="op">+</span><span class="st"> </span>Unemployment <span class="op">+</span><span class="st"> </span>Savings,
-  <span class="dt">data=</span>uschange)
-<span class="kw">summary</span>(fit.consMR)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; tslm(formula = Consumption ~ Income + Production + Unemployment + </span>
-<span class="co">#&gt;     Savings, data = uschange)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
-<span class="co">#&gt; -0.8830 -0.1764 -0.0368  0.1525  1.2055 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)   0.26729    0.03721    7.18  1.7e-11 ***</span>
-<span class="co">#&gt; Income        0.71448    0.04219   16.93  &lt; 2e-16 ***</span>
-<span class="co">#&gt; Production    0.04589    0.02588    1.77    0.078 .  </span>
-<span class="co">#&gt; Unemployment -0.20477    0.10550   -1.94    0.054 .  </span>
-<span class="co">#&gt; Savings      -0.04527    0.00278  -16.29  &lt; 2e-16 ***</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.329 on 182 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.754,  Adjusted R-squared:  0.749 </span>
-<span class="co">#&gt; F-statistic:  139 on 4 and 182 DF,  p-value: &lt;2e-16</span></code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">fit.consMR &lt;-<span class="st"> </span><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Production <span class="op">+</span><span class="st"> </span>Unemployment <span class="op">+</span><span class="st"> </span>Savings,</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">  <span class="dt">data=</span>uschange)</a>
+<a class="sourceLine" id="cb66-3" data-line-number="3"><span class="kw">summary</span>(fit.consMR)</a>
+<a class="sourceLine" id="cb66-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb66-6" data-line-number="6"><span class="co">#&gt; tslm(formula = Consumption ~ Income + Production + Unemployment + </span></a>
+<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="co">#&gt;     Savings, data = uschange)</span></a>
+<a class="sourceLine" id="cb66-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb66-9" data-line-number="9"><span class="co">#&gt; Residuals:</span></a>
+<a class="sourceLine" id="cb66-10" data-line-number="10"><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></a>
+<a class="sourceLine" id="cb66-11" data-line-number="11"><span class="co">#&gt; -0.8830 -0.1764 -0.0368  0.1525  1.2055 </span></a>
+<a class="sourceLine" id="cb66-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb66-13" data-line-number="13"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb66-14" data-line-number="14"><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb66-15" data-line-number="15"><span class="co">#&gt; (Intercept)   0.26729    0.03721    7.18  1.7e-11 ***</span></a>
+<a class="sourceLine" id="cb66-16" data-line-number="16"><span class="co">#&gt; Income        0.71448    0.04219   16.93  &lt; 2e-16 ***</span></a>
+<a class="sourceLine" id="cb66-17" data-line-number="17"><span class="co">#&gt; Production    0.04589    0.02588    1.77    0.078 .  </span></a>
+<a class="sourceLine" id="cb66-18" data-line-number="18"><span class="co">#&gt; Unemployment -0.20477    0.10550   -1.94    0.054 .  </span></a>
+<a class="sourceLine" id="cb66-19" data-line-number="19"><span class="co">#&gt; Savings      -0.04527    0.00278  -16.29  &lt; 2e-16 ***</span></a>
+<a class="sourceLine" id="cb66-20" data-line-number="20"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb66-21" data-line-number="21"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb66-22" data-line-number="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb66-23" data-line-number="23"><span class="co">#&gt; Residual standard error: 0.329 on 182 degrees of freedom</span></a>
+<a class="sourceLine" id="cb66-24" data-line-number="24"><span class="co">#&gt; Multiple R-squared:  0.754,  Adjusted R-squared:  0.749 </span></a>
+<a class="sourceLine" id="cb66-25" data-line-number="25"><span class="co">#&gt; F-statistic:  139 on 4 and 182 DF,  p-value: &lt;2e-16</span></a></code></pre></div>
 <p>For forecasting purposes, the final two columns are of limited interest. The “t value” is the ratio of an estimated <span class="math inline">\(\beta\)</span> coefficient to its standard error and the last column gives the p-value: the probability of the estimated <span class="math inline">\(\beta\)</span> coefficient being as large as it is if there was no real relationship between the consumption and the corresponding predictor. This is useful when studying the effect of each predictor, but is not particularly useful when forecasting.</p>
 </div>
 <div id="fitted-values-1" class="section level3 unnumbered">
@@ -356,25 +355,25 @@ where <span class="math inline">\(y\)</span> is the percentage change in real pe
 \end{equation}\]</span>
 Plugging in the values of <span class="math inline">\(x_{1,t},\ldots,x_{k,t}\)</span> for <span class="math inline">\(t=1,\ldots,T\)</span> returns predictions of <span class="math inline">\(y\)</span> within the training-sample, referred to as <em>fitted values</em>. Note that these are predictions of the data used to estimate the model not genuine forecasts of future values of <span class="math inline">\(y\)</span>.</p>
 <p>The following plots show the actual values compared to the fitted values for the percentage change in the US consumption expenditure series. The time plot in Figure <a href="Regr-LSprinciple.html#fig:usfitted1">5.6</a> shows that the fitted values follow the actual data fairly closely. This is verified by the strong positive relationship shown by the scatterplot in Figure <a href="Regr-LSprinciple.html#fig:usfitted2">5.7</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(uschange[,<span class="st">&#39;Consumption&#39;</span>], <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(fit.consMR), <span class="dt">series=</span><span class="st">&quot;Fitted&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Percentage change in US consumption expenditure&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot; &quot;</span>))</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">autoplot</span>(uschange[,<span class="st">&#39;Consumption&#39;</span>], <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(fit.consMR), <span class="dt">series=</span><span class="st">&quot;Fitted&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb67-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb67-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Percentage change in US consumption expenditure&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot; &quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usfitted1"></span>
 <img src="fpp_files/figure-html/usfitted1-1.png" alt="Time plot of US consumption expenditure and predicted expenditure." width="90%" />
 <p class="caption">
 Figure 5.6: Time plot of US consumption expenditure and predicted expenditure.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="dt">Data=</span>uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">Fitted=</span><span class="kw">fitted</span>(fit.consMR)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Data, <span class="dt">y=</span>Fitted)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Fitted (predicted values)&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Data (actual values)&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Percentage change in US consumption expenditure&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_abline</span>(<span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>)</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1"><span class="kw">cbind</span>(<span class="dt">Data=</span>uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">Fitted=</span><span class="kw">fitted</span>(fit.consMR)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Data, <span class="dt">y=</span>Fitted)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Fitted (predicted values)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb68-6" data-line-number="6"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Data (actual values)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb68-7" data-line-number="7"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Percentage change in US consumption expenditure&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb68-8" data-line-number="8"><span class="st">    </span><span class="kw">geom_abline</span>(<span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usfitted2"></span>
 <img src="fpp_files/figure-html/usfitted2-1.png" alt="Actual US consumption expenditure plotted against predicted US consumption expenditure." width="90%" />
 <p class="caption">

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>11.3 Vector autoregressions | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="11.3 Vector autoregressions | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -338,106 +337,106 @@ Again, this is the same form as <a href="VAR.html#eq:var1a">(11.1)</a>–<a href
 </ul>
 <div id="example-a-var-model-for-forecasting-us-consumption" class="section level3 unnumbered">
 <h3>Example: A VAR model for forecasting US consumption</h3>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(vars)
-<span class="co">#&gt; Loading required package: MASS</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: &#39;MASS&#39;</span>
-<span class="co">#&gt; The following object is masked from &#39;package:dplyr&#39;:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     select</span>
-<span class="co">#&gt; The following objects are masked from &#39;package:fma&#39;:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     cement, housing, petrol</span>
-<span class="co">#&gt; Loading required package: strucchange</span>
-<span class="co">#&gt; Loading required package: sandwich</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: &#39;strucchange&#39;</span>
-<span class="co">#&gt; The following object is masked from &#39;package:stringr&#39;:</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     boundary</span>
-<span class="co">#&gt; Loading required package: urca</span>
-<span class="co">#&gt; Loading required package: lmtest</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">VARselect</span>(uschange[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">lag.max=</span><span class="dv">8</span>, <span class="dt">type=</span><span class="st">&quot;const&quot;</span>)[[<span class="st">&quot;selection&quot;</span>]]
-<span class="co">#&gt; AIC(n)  HQ(n)  SC(n) FPE(n) </span>
-<span class="co">#&gt;      5      1      1      5</span>
-
-var &lt;-<span class="st"> </span><span class="kw">VAR</span>(uschange[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">p=</span><span class="dv">3</span>, <span class="dt">type=</span><span class="st">&quot;const&quot;</span>)
-<span class="kw">serial.test</span>(var, <span class="dt">lags.pt=</span><span class="dv">10</span>, <span class="dt">type=</span><span class="st">&quot;PT.asymptotic&quot;</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  Portmanteau Test (asymptotic)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; data:  Residuals of VAR object var</span>
-<span class="co">#&gt; Chi-squared = 34, df = 28, p-value = 0.2</span>
-
-<span class="kw">summary</span>(var)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; VAR Estimation Results:</span>
-<span class="co">#&gt; ========================= </span>
-<span class="co">#&gt; Endogenous variables: Consumption, Income </span>
-<span class="co">#&gt; Deterministic variables: const </span>
-<span class="co">#&gt; Sample size: 184 </span>
-<span class="co">#&gt; Log Likelihood: -380.155 </span>
-<span class="co">#&gt; Roots of the characteristic polynomial:</span>
-<span class="co">#&gt; 0.782 0.498 0.498 0.444 0.286 0.286</span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; VAR(y = uschange[, 1:2], p = 3, type = &quot;const&quot;)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimation results for equation Consumption: </span>
-<span class="co">#&gt; ============================================ </span>
-<span class="co">#&gt; Consumption = Consumption.l1 + Income.l1 + Consumption.l2 + Income.l2 + Consumption.l3 + Income.l3 + const </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; Consumption.l1   0.1910     0.0796    2.40  0.01752 *  </span>
-<span class="co">#&gt; Income.l1        0.0784     0.0545    1.44  0.15245    </span>
-<span class="co">#&gt; Consumption.l2   0.1595     0.0825    1.93  0.05479 .  </span>
-<span class="co">#&gt; Income.l2       -0.0271     0.0572   -0.47  0.63683    </span>
-<span class="co">#&gt; Consumption.l3   0.2265     0.0797    2.84  0.00502 ** </span>
-<span class="co">#&gt; Income.l3       -0.0145     0.0543   -0.27  0.78906    </span>
-<span class="co">#&gt; const            0.2908     0.0830    3.50  0.00058 ***</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.595 on 177 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-Squared: 0.213,   Adjusted R-squared: 0.187 </span>
-<span class="co">#&gt; F-statistic: 7.99 on 6 and 177 DF,  p-value: 1.22e-07 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Estimation results for equation Income: </span>
-<span class="co">#&gt; ======================================= </span>
-<span class="co">#&gt; Income = Consumption.l1 + Income.l1 + Consumption.l2 + Income.l2 + Consumption.l3 + Income.l3 + const </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; Consumption.l1   0.4535     0.1156    3.92  0.00013 ***</span>
-<span class="co">#&gt; Income.l1       -0.2730     0.0791   -3.45  0.00070 ***</span>
-<span class="co">#&gt; Consumption.l2   0.0217     0.1198    0.18  0.85666    </span>
-<span class="co">#&gt; Income.l2       -0.0900     0.0831   -1.08  0.27979    </span>
-<span class="co">#&gt; Consumption.l3   0.3538     0.1157    3.06  0.00257 ** </span>
-<span class="co">#&gt; Income.l3       -0.0538     0.0787   -0.68  0.49570    </span>
-<span class="co">#&gt; const            0.3875     0.1205    3.22  0.00154 ** </span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.864 on 177 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-Squared: 0.175,   Adjusted R-squared: 0.148 </span>
-<span class="co">#&gt; F-statistic: 6.28 on 6 and 177 DF,  p-value: 5.31e-06 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Covariance matrix of residuals:</span>
-<span class="co">#&gt;             Consumption Income</span>
-<span class="co">#&gt; Consumption       0.355  0.185</span>
-<span class="co">#&gt; Income            0.185  0.747</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Correlation matrix of residuals:</span>
-<span class="co">#&gt;             Consumption Income</span>
-<span class="co">#&gt; Consumption       1.000  0.359</span>
-<span class="co">#&gt; Income            0.359  1.000</span></code></pre>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb215-1" data-line-number="1"><span class="kw">library</span>(vars)</a>
+<a class="sourceLine" id="cb215-2" data-line-number="2"><span class="co">#&gt; Loading required package: MASS</span></a>
+<a class="sourceLine" id="cb215-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb215-4" data-line-number="4"><span class="co">#&gt; Attaching package: &#39;MASS&#39;</span></a>
+<a class="sourceLine" id="cb215-5" data-line-number="5"><span class="co">#&gt; The following object is masked from &#39;package:dplyr&#39;:</span></a>
+<a class="sourceLine" id="cb215-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb215-7" data-line-number="7"><span class="co">#&gt;     select</span></a>
+<a class="sourceLine" id="cb215-8" data-line-number="8"><span class="co">#&gt; The following objects are masked from &#39;package:fma&#39;:</span></a>
+<a class="sourceLine" id="cb215-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb215-10" data-line-number="10"><span class="co">#&gt;     cement, housing, petrol</span></a>
+<a class="sourceLine" id="cb215-11" data-line-number="11"><span class="co">#&gt; Loading required package: strucchange</span></a>
+<a class="sourceLine" id="cb215-12" data-line-number="12"><span class="co">#&gt; Loading required package: sandwich</span></a>
+<a class="sourceLine" id="cb215-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb215-14" data-line-number="14"><span class="co">#&gt; Attaching package: &#39;strucchange&#39;</span></a>
+<a class="sourceLine" id="cb215-15" data-line-number="15"><span class="co">#&gt; The following object is masked from &#39;package:stringr&#39;:</span></a>
+<a class="sourceLine" id="cb215-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb215-17" data-line-number="17"><span class="co">#&gt;     boundary</span></a>
+<a class="sourceLine" id="cb215-18" data-line-number="18"><span class="co">#&gt; Loading required package: urca</span></a>
+<a class="sourceLine" id="cb215-19" data-line-number="19"><span class="co">#&gt; Loading required package: lmtest</span></a></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb216-1" data-line-number="1"><span class="kw">VARselect</span>(uschange[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">lag.max=</span><span class="dv">8</span>, <span class="dt">type=</span><span class="st">&quot;const&quot;</span>)[[<span class="st">&quot;selection&quot;</span>]]</a>
+<a class="sourceLine" id="cb216-2" data-line-number="2"><span class="co">#&gt; AIC(n)  HQ(n)  SC(n) FPE(n) </span></a>
+<a class="sourceLine" id="cb216-3" data-line-number="3"><span class="co">#&gt;      5      1      1      5</span></a>
+<a class="sourceLine" id="cb216-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb216-5" data-line-number="5">var &lt;-<span class="st"> </span><span class="kw">VAR</span>(uschange[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">p=</span><span class="dv">3</span>, <span class="dt">type=</span><span class="st">&quot;const&quot;</span>)</a>
+<a class="sourceLine" id="cb216-6" data-line-number="6"><span class="kw">serial.test</span>(var, <span class="dt">lags.pt=</span><span class="dv">10</span>, <span class="dt">type=</span><span class="st">&quot;PT.asymptotic&quot;</span>)</a>
+<a class="sourceLine" id="cb216-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-8" data-line-number="8"><span class="co">#&gt;  Portmanteau Test (asymptotic)</span></a>
+<a class="sourceLine" id="cb216-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-10" data-line-number="10"><span class="co">#&gt; data:  Residuals of VAR object var</span></a>
+<a class="sourceLine" id="cb216-11" data-line-number="11"><span class="co">#&gt; Chi-squared = 34, df = 28, p-value = 0.2</span></a>
+<a class="sourceLine" id="cb216-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb216-13" data-line-number="13"><span class="kw">summary</span>(var)</a>
+<a class="sourceLine" id="cb216-14" data-line-number="14"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-15" data-line-number="15"><span class="co">#&gt; VAR Estimation Results:</span></a>
+<a class="sourceLine" id="cb216-16" data-line-number="16"><span class="co">#&gt; ========================= </span></a>
+<a class="sourceLine" id="cb216-17" data-line-number="17"><span class="co">#&gt; Endogenous variables: Consumption, Income </span></a>
+<a class="sourceLine" id="cb216-18" data-line-number="18"><span class="co">#&gt; Deterministic variables: const </span></a>
+<a class="sourceLine" id="cb216-19" data-line-number="19"><span class="co">#&gt; Sample size: 184 </span></a>
+<a class="sourceLine" id="cb216-20" data-line-number="20"><span class="co">#&gt; Log Likelihood: -380.155 </span></a>
+<a class="sourceLine" id="cb216-21" data-line-number="21"><span class="co">#&gt; Roots of the characteristic polynomial:</span></a>
+<a class="sourceLine" id="cb216-22" data-line-number="22"><span class="co">#&gt; 0.782 0.498 0.498 0.444 0.286 0.286</span></a>
+<a class="sourceLine" id="cb216-23" data-line-number="23"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb216-24" data-line-number="24"><span class="co">#&gt; VAR(y = uschange[, 1:2], p = 3, type = &quot;const&quot;)</span></a>
+<a class="sourceLine" id="cb216-25" data-line-number="25"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-26" data-line-number="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-27" data-line-number="27"><span class="co">#&gt; Estimation results for equation Consumption: </span></a>
+<a class="sourceLine" id="cb216-28" data-line-number="28"><span class="co">#&gt; ============================================ </span></a>
+<a class="sourceLine" id="cb216-29" data-line-number="29"><span class="co">#&gt; Consumption = Consumption.l1 + Income.l1 + Consumption.l2 + Income.l2 + Consumption.l3 + Income.l3 + const </span></a>
+<a class="sourceLine" id="cb216-30" data-line-number="30"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-31" data-line-number="31"><span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb216-32" data-line-number="32"><span class="co">#&gt; Consumption.l1   0.1910     0.0796    2.40  0.01752 *  </span></a>
+<a class="sourceLine" id="cb216-33" data-line-number="33"><span class="co">#&gt; Income.l1        0.0784     0.0545    1.44  0.15245    </span></a>
+<a class="sourceLine" id="cb216-34" data-line-number="34"><span class="co">#&gt; Consumption.l2   0.1595     0.0825    1.93  0.05479 .  </span></a>
+<a class="sourceLine" id="cb216-35" data-line-number="35"><span class="co">#&gt; Income.l2       -0.0271     0.0572   -0.47  0.63683    </span></a>
+<a class="sourceLine" id="cb216-36" data-line-number="36"><span class="co">#&gt; Consumption.l3   0.2265     0.0797    2.84  0.00502 ** </span></a>
+<a class="sourceLine" id="cb216-37" data-line-number="37"><span class="co">#&gt; Income.l3       -0.0145     0.0543   -0.27  0.78906    </span></a>
+<a class="sourceLine" id="cb216-38" data-line-number="38"><span class="co">#&gt; const            0.2908     0.0830    3.50  0.00058 ***</span></a>
+<a class="sourceLine" id="cb216-39" data-line-number="39"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb216-40" data-line-number="40"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb216-41" data-line-number="41"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-42" data-line-number="42"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-43" data-line-number="43"><span class="co">#&gt; Residual standard error: 0.595 on 177 degrees of freedom</span></a>
+<a class="sourceLine" id="cb216-44" data-line-number="44"><span class="co">#&gt; Multiple R-Squared: 0.213,   Adjusted R-squared: 0.187 </span></a>
+<a class="sourceLine" id="cb216-45" data-line-number="45"><span class="co">#&gt; F-statistic: 7.99 on 6 and 177 DF,  p-value: 1.22e-07 </span></a>
+<a class="sourceLine" id="cb216-46" data-line-number="46"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-47" data-line-number="47"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-48" data-line-number="48"><span class="co">#&gt; Estimation results for equation Income: </span></a>
+<a class="sourceLine" id="cb216-49" data-line-number="49"><span class="co">#&gt; ======================================= </span></a>
+<a class="sourceLine" id="cb216-50" data-line-number="50"><span class="co">#&gt; Income = Consumption.l1 + Income.l1 + Consumption.l2 + Income.l2 + Consumption.l3 + Income.l3 + const </span></a>
+<a class="sourceLine" id="cb216-51" data-line-number="51"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-52" data-line-number="52"><span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb216-53" data-line-number="53"><span class="co">#&gt; Consumption.l1   0.4535     0.1156    3.92  0.00013 ***</span></a>
+<a class="sourceLine" id="cb216-54" data-line-number="54"><span class="co">#&gt; Income.l1       -0.2730     0.0791   -3.45  0.00070 ***</span></a>
+<a class="sourceLine" id="cb216-55" data-line-number="55"><span class="co">#&gt; Consumption.l2   0.0217     0.1198    0.18  0.85666    </span></a>
+<a class="sourceLine" id="cb216-56" data-line-number="56"><span class="co">#&gt; Income.l2       -0.0900     0.0831   -1.08  0.27979    </span></a>
+<a class="sourceLine" id="cb216-57" data-line-number="57"><span class="co">#&gt; Consumption.l3   0.3538     0.1157    3.06  0.00257 ** </span></a>
+<a class="sourceLine" id="cb216-58" data-line-number="58"><span class="co">#&gt; Income.l3       -0.0538     0.0787   -0.68  0.49570    </span></a>
+<a class="sourceLine" id="cb216-59" data-line-number="59"><span class="co">#&gt; const            0.3875     0.1205    3.22  0.00154 ** </span></a>
+<a class="sourceLine" id="cb216-60" data-line-number="60"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb216-61" data-line-number="61"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb216-62" data-line-number="62"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-63" data-line-number="63"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-64" data-line-number="64"><span class="co">#&gt; Residual standard error: 0.864 on 177 degrees of freedom</span></a>
+<a class="sourceLine" id="cb216-65" data-line-number="65"><span class="co">#&gt; Multiple R-Squared: 0.175,   Adjusted R-squared: 0.148 </span></a>
+<a class="sourceLine" id="cb216-66" data-line-number="66"><span class="co">#&gt; F-statistic: 6.28 on 6 and 177 DF,  p-value: 5.31e-06 </span></a>
+<a class="sourceLine" id="cb216-67" data-line-number="67"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-68" data-line-number="68"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-69" data-line-number="69"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-70" data-line-number="70"><span class="co">#&gt; Covariance matrix of residuals:</span></a>
+<a class="sourceLine" id="cb216-71" data-line-number="71"><span class="co">#&gt;             Consumption Income</span></a>
+<a class="sourceLine" id="cb216-72" data-line-number="72"><span class="co">#&gt; Consumption       0.355  0.185</span></a>
+<a class="sourceLine" id="cb216-73" data-line-number="73"><span class="co">#&gt; Income            0.185  0.747</span></a>
+<a class="sourceLine" id="cb216-74" data-line-number="74"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb216-75" data-line-number="75"><span class="co">#&gt; Correlation matrix of residuals:</span></a>
+<a class="sourceLine" id="cb216-76" data-line-number="76"><span class="co">#&gt;             Consumption Income</span></a>
+<a class="sourceLine" id="cb216-77" data-line-number="77"><span class="co">#&gt; Consumption       1.000  0.359</span></a>
+<a class="sourceLine" id="cb216-78" data-line-number="78"><span class="co">#&gt; Income            0.359  1.000</span></a></code></pre></div>
 <p>The R output on the following page shows the lag length selected by each of the information criteria available in the <strong>vars</strong> package. There is a large discrepancy between a VAR(5) selected by the AIC and a VAR(1) selected by the BIC. This is not unusual. As a result we first fit a VAR(1), selected by the BIC. In similar fashion to the univariate ARIMA methodology we test that the residuals are uncorrelated using a Portmanteau test<a href="#fn26" class="footnote-ref" id="fnref26"><sup>26</sup></a> The null hypothesis of no serial correlation in the residuals is rejected for both a VAR(1) and a VAR(2) and therefore we fit a VAR(3) as now the null is not rejected. The forecasts generated by the VAR(3) are plotted in Figure <a href="#fig:VAR3"><strong>??</strong></a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># forecast(var) %&gt;%</span>
-<span class="co">#   autoplot() + xlab(&quot;Year&quot;)</span></code></pre>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb217-1" data-line-number="1"><span class="co"># forecast(var) %&gt;%</span></a>
+<a class="sourceLine" id="cb217-2" data-line-number="2"><span class="co">#   autoplot() + xlab(&quot;Year&quot;)</span></a></code></pre></div>
 </div>
 </div>
 <div class="footnotes">

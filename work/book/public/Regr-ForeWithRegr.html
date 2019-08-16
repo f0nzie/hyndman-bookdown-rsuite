@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.6 Forecasting with regression | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.6 Forecasting with regression | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -316,11 +315,11 @@ which comprises the estimated coefficients and ignores the error in the regressi
 <div id="example-australian-quarterly-beer-production-1" class="section level4 unnumbered">
 <h4>Example: Australian quarterly beer production</h4>
 <p>Normally, we cannot use actual future values of the predictor variables when producing ex-ante forecasts because their values will not be known in advance. However, the special predictors introduced in Section <a href="Regr-UsefulPredictors.html#Regr-UsefulPredictors">5.3</a> are all known in advance, as they are based on calendar variables (e.g., seasonal dummy variables or public holiday indicators) or deterministic functions of time (e.g. time trend). In such cases, there is no difference between ex ante and ex post forecasts.</p>
-<pre class="sourceCode r"><code class="sourceCode r">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)
-fit.beer &lt;-<span class="st"> </span><span class="kw">tslm</span>(beer2 <span class="op">~</span><span class="st"> </span>trend <span class="op">+</span><span class="st"> </span>season)
-fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.beer)
-<span class="kw">autoplot</span>(fcast) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Forecasts of beer production using linear regression&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)</a>
+<a class="sourceLine" id="cb83-2" data-line-number="2">fit.beer &lt;-<span class="st"> </span><span class="kw">tslm</span>(beer2 <span class="op">~</span><span class="st"> </span>trend <span class="op">+</span><span class="st"> </span>season)</a>
+<a class="sourceLine" id="cb83-3" data-line-number="3">fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.beer)</a>
+<a class="sourceLine" id="cb83-4" data-line-number="4"><span class="kw">autoplot</span>(fcast) <span class="op">+</span></a>
+<a class="sourceLine" id="cb83-5" data-line-number="5"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Forecasts of beer production using linear regression&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:beerlm1"></span>
 <img src="fpp_files/figure-html/beerlm1-1.png" alt="Forecasts from the regression model for beer production. The dark shaded region shows 80% prediction intervals and the light shaded region shows 95% prediction intervals." width="90%" />
 <p class="caption">
@@ -332,21 +331,21 @@ Figure 5.17: Forecasts from the regression model for beer production. The dark s
 <div id="scenario-based-forecasting" class="section level3 unnumbered">
 <h3>Scenario based forecasting</h3>
 <p>In this setting, the forecaster assumes possible scenarios for the predictor variables that are of interest. For example, a US policy maker may be interested in comparing the predicted change in consumption when there is a constant growth of 1% and 0.5% respectively for income and savings with no change in the employment rate, versus a respective decline of 1% and 0.5%, for each of the four quarters following the end of the sample. The resulting forecasts are calculated below and shown in Figure <a href="#fig:ConsInc4"><strong>??</strong></a>. We should note that prediction intervals for scenario based forecasts do not include the uncertainty associated with the future values of the predictor variables. They assume that the values of the predictors are known in advance.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit.consBest &lt;-<span class="st"> </span><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Savings <span class="op">+</span><span class="st"> </span>Unemployment, <span class="dt">data =</span> uschange)
-h &lt;-<span class="st"> </span><span class="dv">4</span>
-newdata &lt;-
-<span class="st">  </span><span class="kw">cbind</span>(<span class="dt">Income=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">Savings=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>), <span class="dt">Unemployment=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.data.frame</span>()
-fcast.up &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.consBest, <span class="dt">newdata=</span>newdata)
-newdata &lt;-
-<span class="st">  </span><span class="kw">cbind</span>(<span class="dt">Income=</span><span class="kw">rep</span>(<span class="op">-</span><span class="dv">1</span>,h), <span class="dt">Savings=</span><span class="kw">rep</span>(<span class="op">-</span><span class="fl">0.5</span>,h), <span class="dt">Unemployment=</span><span class="kw">rep</span>(<span class="dv">0</span>,h)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.data.frame</span>()
-fcast.down &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.consBest, <span class="dt">newdata=</span>newdata)
-
-<span class="co"># autoplot(uschange[,1]) + ylab(&quot;% change in US consumption&quot;) +</span>
-<span class="co">#   forecast::autolayer(fcast.up, PI=TRUE, series=&quot;increase&quot;) +</span>
-<span class="co">#   forecast::autolayer(fcast.down, PI=TRUE, series=&quot;decrease&quot;) +</span>
-<span class="co">#   guides(colour=guide_legend(title=&quot;Scenario&quot;))</span></code></pre>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">fit.consBest &lt;-<span class="st"> </span><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Savings <span class="op">+</span><span class="st"> </span>Unemployment, <span class="dt">data =</span> uschange)</a>
+<a class="sourceLine" id="cb84-2" data-line-number="2">h &lt;-<span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb84-3" data-line-number="3">newdata &lt;-</a>
+<a class="sourceLine" id="cb84-4" data-line-number="4"><span class="st">  </span><span class="kw">cbind</span>(<span class="dt">Income=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">Savings=</span><span class="kw">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>), <span class="dt">Unemployment=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb84-5" data-line-number="5"><span class="st">  </span><span class="kw">as.data.frame</span>()</a>
+<a class="sourceLine" id="cb84-6" data-line-number="6">fcast.up &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.consBest, <span class="dt">newdata=</span>newdata)</a>
+<a class="sourceLine" id="cb84-7" data-line-number="7">newdata &lt;-</a>
+<a class="sourceLine" id="cb84-8" data-line-number="8"><span class="st">  </span><span class="kw">cbind</span>(<span class="dt">Income=</span><span class="kw">rep</span>(<span class="op">-</span><span class="dv">1</span>,h), <span class="dt">Savings=</span><span class="kw">rep</span>(<span class="op">-</span><span class="fl">0.5</span>,h), <span class="dt">Unemployment=</span><span class="kw">rep</span>(<span class="dv">0</span>,h)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb84-9" data-line-number="9"><span class="st">  </span><span class="kw">as.data.frame</span>()</a>
+<a class="sourceLine" id="cb84-10" data-line-number="10">fcast.down &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit.consBest, <span class="dt">newdata=</span>newdata)</a>
+<a class="sourceLine" id="cb84-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb84-12" data-line-number="12"><span class="co"># autoplot(uschange[,1]) + ylab(&quot;% change in US consumption&quot;) +</span></a>
+<a class="sourceLine" id="cb84-13" data-line-number="13"><span class="co">#   forecast::autolayer(fcast.up, PI=TRUE, series=&quot;increase&quot;) +</span></a>
+<a class="sourceLine" id="cb84-14" data-line-number="14"><span class="co">#   forecast::autolayer(fcast.down, PI=TRUE, series=&quot;decrease&quot;) +</span></a>
+<a class="sourceLine" id="cb84-15" data-line-number="15"><span class="co">#   guides(colour=guide_legend(title=&quot;Scenario&quot;))</span></a></code></pre></div>
 </div>
 <div id="building-a-predictive-regression-model" class="section level3 unnumbered">
 <h3>Building a predictive regression model</h3>
@@ -374,11 +373,11 @@ where <span class="math inline">\(T\)</span> is the total number of observations
 \]</span></p>
 <p>Assuming that for the next four quarters personal income will increase by its historical mean value of <span class="math inline">\(\bar{x}=0.72\%\)</span>, consumption is forecast to increase by <span class="math inline">\(0.75\%\)</span> and
 the corresponding <span class="math inline">\(95\%\)</span> and <span class="math inline">\(80\%\)</span> prediction intervals are <span class="math inline">\([-0.45,1.94]\)</span> and <span class="math inline">\([-0.03,1.52]\)</span> respectively (calcualted using R). If we assume an extreme increase of <span class="math inline">\(10\%\)</span> in income then the prediction intervals are considerably wider as shown in Figure <a href="#fig:conSimplePI"><strong>??</strong></a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># autoplot(uschange[,&quot;Consumption&quot;]) +</span>
-<span class="co">#   ylab(&quot;% change in US consumption&quot;) +</span>
-<span class="co">#   forecast::autolayer(fcast.up, PI=TRUE, series=&quot;Average increase&quot;) +</span>
-<span class="co">#   forecast::autolayer(fcast.down, PI=TRUE, series=&quot;Extreme increase&quot;) +</span>
-<span class="co">#   guides(colour=guide_legend(title=&quot;Scenario&quot;))</span></code></pre>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="co"># autoplot(uschange[,&quot;Consumption&quot;]) +</span></a>
+<a class="sourceLine" id="cb85-2" data-line-number="2"><span class="co">#   ylab(&quot;% change in US consumption&quot;) +</span></a>
+<a class="sourceLine" id="cb85-3" data-line-number="3"><span class="co">#   forecast::autolayer(fcast.up, PI=TRUE, series=&quot;Average increase&quot;) +</span></a>
+<a class="sourceLine" id="cb85-4" data-line-number="4"><span class="co">#   forecast::autolayer(fcast.down, PI=TRUE, series=&quot;Extreme increase&quot;) +</span></a>
+<a class="sourceLine" id="cb85-5" data-line-number="5"><span class="co">#   guides(colour=guide_legend(title=&quot;Scenario&quot;))</span></a></code></pre></div>
 </div>
 </div>
             </section>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7.1 Simple exponential smoothing | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7.1 Simple exponential smoothing | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -304,9 +303,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="sec-7-1-SES" class="section level2">
 <h2><span class="header-section-number">7.1</span> Simple exponential smoothing</h2>
 <p>The simplest of the exponentially smoothing methods is naturally called “simple exponential smoothing” (SES)<a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a>. This method is suitable for forecasting data with no clear trend or seasonal pattern. For example, the data in Figure <a href="sec-7-1-SES.html#fig:7-oil">7.1</a> do not display any clear trending behaviour or any seasonality. (There is a rise in the last few years, which might suggest a trend. We will consider whether a trended method would be better for this series later in this chapter.) We have already considered the naïve and the average as possible methods for forecasting such data (Section <a href="sec-2-methods.html#sec-2-methods">3.1</a>).</p>
-<pre class="sourceCode r"><code class="sourceCode r">oildata &lt;-<span class="st"> </span><span class="kw">window</span>(oil, <span class="dt">start=</span><span class="dv">1996</span>)
-<span class="kw">autoplot</span>(oildata) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Oil (millions of tonnes)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">oildata &lt;-<span class="st"> </span><span class="kw">window</span>(oil, <span class="dt">start=</span><span class="dv">1996</span>)</a>
+<a class="sourceLine" id="cb105-2" data-line-number="2"><span class="kw">autoplot</span>(oildata) <span class="op">+</span></a>
+<a class="sourceLine" id="cb105-3" data-line-number="3"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Oil (millions of tonnes)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:7-oil"></span>
 <img src="fpp_files/figure-html/7-oil-1.png" alt="Oil production in Saudi Arabia from 1980 to 2013." width="90%" />
 <p class="caption">
@@ -446,13 +445,13 @@ Remember that these forecasts will only be suitable if the time series has no tr
 <div id="example-oil-production" class="section level3 unnumbered">
 <h3>Example: Oil production</h3>
 <p>In this example, simple exponential smoothing is applied to forecast oil production in Saudi Arabia.</p>
-<pre class="sourceCode r"><code class="sourceCode r">oildata &lt;-<span class="st"> </span><span class="kw">window</span>(oil, <span class="dt">start=</span><span class="dv">1996</span>)
-<span class="co"># Estimate parameters</span>
-fc &lt;-<span class="st"> </span><span class="kw">ses</span>(oildata, <span class="dt">h=</span><span class="dv">5</span>)
-<span class="co"># Accuracy of one-step-ahead training errors over period 1--12</span>
-<span class="kw">round</span>(<span class="kw">accuracy</span>(fc),<span class="dv">2</span>)
-<span class="co">#&gt;               ME RMSE  MAE MPE MAPE MASE  ACF1</span>
-<span class="co">#&gt; Training set 6.4 28.1 22.3 1.1 4.61 0.93 -0.03</span></code></pre>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1">oildata &lt;-<span class="st"> </span><span class="kw">window</span>(oil, <span class="dt">start=</span><span class="dv">1996</span>)</a>
+<a class="sourceLine" id="cb106-2" data-line-number="2"><span class="co"># Estimate parameters</span></a>
+<a class="sourceLine" id="cb106-3" data-line-number="3">fc &lt;-<span class="st"> </span><span class="kw">ses</span>(oildata, <span class="dt">h=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb106-4" data-line-number="4"><span class="co"># Accuracy of one-step-ahead training errors over period 1--12</span></a>
+<a class="sourceLine" id="cb106-5" data-line-number="5"><span class="kw">round</span>(<span class="kw">accuracy</span>(fc),<span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb106-6" data-line-number="6"><span class="co">#&gt;               ME RMSE  MAE MPE MAPE MASE  ACF1</span></a>
+<a class="sourceLine" id="cb106-7" data-line-number="7"><span class="co">#&gt; Training set 6.4 28.1 22.3 1.1 4.61 0.93 -0.03</span></a></code></pre></div>
 <p>This gives parameters <span class="math inline">\(\alpha=0.83\)</span> and
 <span class="math inline">\(\ell_0=446.6\)</span>, obtained by minimizing SSE (equivalently RMSE) over periods <span class="math inline">\(t=1,2,\dots,12\)</span>, subject to the restriction that <span class="math inline">\(0\le\alpha\le1\)</span>.</p>
 <p>In Table <a href="sec-7-1-SES.html#tab:oilses">7.2</a> we demonstrate the calculation using these parameters. The second last column shows the estimated level for times <span class="math inline">\(t=0\)</span> to <span class="math inline">\(t=12\)</span>; the last few rows of the last column show the forecasts for <span class="math inline">\(h=1,2,3\)</span>.</p>
@@ -639,9 +638,9 @@ fc &lt;-<span class="st"> </span><span class="kw">ses</span>(oildata, <span clas
 </tbody>
 </table>
 <p>The black line in Figure <a href="sec-7-1-SES.html#fig:ses">7.2</a> is a plot of the data, which shows a changing level over time.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(fc) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(fc), <span class="dt">series=</span><span class="st">&quot;Fitted&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Oil (millions of tonnes)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1"><span class="kw">autoplot</span>(fc) <span class="op">+</span></a>
+<a class="sourceLine" id="cb107-2" data-line-number="2"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(fc), <span class="dt">series=</span><span class="st">&quot;Fitted&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb107-3" data-line-number="3"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Oil (millions of tonnes)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ses"></span>
 <img src="fpp_files/figure-html/ses-1.png" alt="Simple exponential smoothing applied to oil production in Saudi Arabia (1996--2013)." width="90%" />
 <p class="caption">

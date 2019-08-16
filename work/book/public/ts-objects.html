@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.1 ts objects | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.1 ts objects | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -336,10 +335,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>We turn this into a <code>ts</code> object using the <code>ts</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">c</span>(<span class="dv">123</span>,<span class="dv">39</span>,<span class="dv">78</span>,<span class="dv">52</span>,<span class="dv">110</span>), <span class="dt">start=</span><span class="dv">2012</span>)</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">y &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">c</span>(<span class="dv">123</span>,<span class="dv">39</span>,<span class="dv">78</span>,<span class="dv">52</span>,<span class="dv">110</span>), <span class="dt">start=</span><span class="dv">2012</span>)</a></code></pre></div>
 <p>If you have annual data, with one observation per year, you only need to provide the starting year (or the ending year).</p>
 <p>For observations that are more frequent than once per year, you simply add a <code>frequency</code> argument. For example, if your monthly data is already stored as a numerical vector <code>z</code>, then it can be converted to a <code>ts</code> object like this:</p>
-<pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">ts</span>(z, <span class="dt">start=</span><span class="dv">2003</span>, <span class="dt">frequency=</span><span class="dv">12</span>)</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">y &lt;-<span class="st"> </span><span class="kw">ts</span>(z, <span class="dt">start=</span><span class="dv">2003</span>, <span class="dt">frequency=</span><span class="dv">12</span>)</a></code></pre></div>
 <p>Almost all of the data used in this book is already stored as <code>ts</code> objects. But if you want to work with your own data, you will need to use the <code>ts</code> function before proceeding with the analysis.</p>
 <div id="frequency-of-a-time-series" class="section level3 unnumbered">
 <h3>Frequency of a time series</h3>

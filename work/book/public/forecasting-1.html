@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9.3 Forecasting | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9.3 Forecasting | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -307,9 +306,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="example-us-personal-consumption-and-income-1" class="section level3 unnumbered">
 <h3>Example: US Personal Consumption and Income</h3>
 <p>We will calculate forecasts for the next eight quarters assuming that the future percentage changes in personal disposable income will be equal to the mean percentage change from the last forty years.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">xreg=</span><span class="kw">rep</span>(<span class="kw">mean</span>(uschange[,<span class="dv">2</span>]),<span class="dv">8</span>))
-<span class="kw">autoplot</span>(fcast) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Percentage change&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb181-1" data-line-number="1">fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">xreg=</span><span class="kw">rep</span>(<span class="kw">mean</span>(uschange[,<span class="dv">2</span>]),<span class="dv">8</span>))</a>
+<a class="sourceLine" id="cb181-2" data-line-number="2"><span class="kw">autoplot</span>(fcast) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb181-3" data-line-number="3"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Percentage change&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsump3"></span>
 <img src="fpp_files/figure-html/usconsump3-1.png" alt="Forecasts obtained from regressing the percentage change in consumption expenditure on the percentage change in disposable income, with an ARIMA(1,0,2) error model." width="90%" />
 <p class="caption">
@@ -337,11 +336,11 @@ Figure 9.6: Daily electricity demand and maximum daily temperature for the state
 </div>
 <p>In this example, we fit a quadratic regression model with ARMA errors using the <code>auto.arima</code> function. Using the estimated model we forecast 14 days ahead starting from Thursday 1 January 2015 (a non-work-day being a public holiday for New Years Day).</p>
 <p>In this case, we could obtain weather forecasts from the weather bureau for the next 14 days. But for the sake of illustration, we will use scenario based forecasting (as introduced in Section <a href="Regr-ForeWithRegr.html#Regr-ForeWithRegr">5.6</a>) where we set the temperature for the next 14 days to a constant 26 degrees.</p>
-<pre class="sourceCode r"><code class="sourceCode r">xreg &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">MaxTemp =</span> elecdaily[, <span class="st">&quot;Temperature&quot;</span>], 
-              <span class="dt">MaxTempSq =</span> elecdaily[, <span class="st">&quot;Temperature&quot;</span>]<span class="op">^</span><span class="dv">2</span>, 
-              <span class="dt">Workday =</span> elecdaily[, <span class="st">&quot;WorkDay&quot;</span>])
-fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(elecdaily[, <span class="st">&quot;Demand&quot;</span>], <span class="dt">xreg =</span> xreg)
-<span class="kw">checkresiduals</span>(fit)</code></pre>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb182-1" data-line-number="1">xreg &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">MaxTemp =</span> elecdaily[, <span class="st">&quot;Temperature&quot;</span>], </a>
+<a class="sourceLine" id="cb182-2" data-line-number="2">              <span class="dt">MaxTempSq =</span> elecdaily[, <span class="st">&quot;Temperature&quot;</span>]<span class="op">^</span><span class="dv">2</span>, </a>
+<a class="sourceLine" id="cb182-3" data-line-number="3">              <span class="dt">Workday =</span> elecdaily[, <span class="st">&quot;WorkDay&quot;</span>])</a>
+<a class="sourceLine" id="cb182-4" data-line-number="4">fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(elecdaily[, <span class="st">&quot;Demand&quot;</span>], <span class="dt">xreg =</span> xreg)</a>
+<a class="sourceLine" id="cb182-5" data-line-number="5"><span class="kw">checkresiduals</span>(fit)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/elecdailyfit-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; 
 #&gt;  Ljung-Box test
@@ -351,19 +350,19 @@ fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(elecdaily[,
 #&gt; 
 #&gt; Model df: 10.   Total lags used: 14</code></pre>
 <p>The model has some significant autocorrelation in the residuals, which means the prediction intervals may not provide accurate coverage. Also, the histogram of the residuals shows one positive outlier, which will also affect the coverage of the prediction intervals.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(elecdaily[,<span class="st">&#39;Demand&#39;</span>], <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(fit), <span class="dt">series=</span><span class="st">&quot;Fitted&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Daily electricity demand (GW)&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot; &quot;</span>))</code></pre>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb184-1" data-line-number="1"><span class="kw">autoplot</span>(elecdaily[,<span class="st">&#39;Demand&#39;</span>], <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb184-2" data-line-number="2"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(fit), <span class="dt">series=</span><span class="st">&quot;Fitted&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb184-3" data-line-number="3"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb184-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Daily electricity demand (GW)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb184-5" data-line-number="5"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot; &quot;</span>))</a></code></pre></div>
 <p><img src="fpp_files/figure-html/elecdailyf-1.png" width="90%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r">
-fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, 
-  <span class="dt">xreg =</span> <span class="kw">cbind</span>(<span class="kw">rep</span>(<span class="dv">26</span>,<span class="dv">14</span>), <span class="kw">rep</span>(<span class="dv">26</span><span class="op">^</span><span class="dv">2</span>,<span class="dv">14</span>), <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)))
-<span class="co">#&gt; Warning in forecast.Arima(fit, xreg = cbind(rep(26, 14), rep(26^2, 14), :</span>
-<span class="co">#&gt; xreg contains different column names from the xreg used in training. Please</span>
-<span class="co">#&gt; check that the regressors are in the same order.</span>
-<span class="kw">autoplot</span>(fcast) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Electicity demand (GW)&quot;</span>) </code></pre>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb185-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb185-2" data-line-number="2">fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, </a>
+<a class="sourceLine" id="cb185-3" data-line-number="3">  <span class="dt">xreg =</span> <span class="kw">cbind</span>(<span class="kw">rep</span>(<span class="dv">26</span>,<span class="dv">14</span>), <span class="kw">rep</span>(<span class="dv">26</span><span class="op">^</span><span class="dv">2</span>,<span class="dv">14</span>), <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb185-4" data-line-number="4"><span class="co">#&gt; Warning in forecast.Arima(fit, xreg = cbind(rep(26, 14), rep(26^2, 14), :</span></a>
+<a class="sourceLine" id="cb185-5" data-line-number="5"><span class="co">#&gt; xreg contains different column names from the xreg used in training. Please</span></a>
+<a class="sourceLine" id="cb185-6" data-line-number="6"><span class="co">#&gt; check that the regressors are in the same order.</span></a>
+<a class="sourceLine" id="cb185-7" data-line-number="7"><span class="kw">autoplot</span>(fcast) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Electicity demand (GW)&quot;</span>) </a></code></pre></div>
 <p><img src="fpp_files/figure-html/elecdailyf-2.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>The point forecasts look reasonable for the first two weeks of 2015. The slow down in electricity demand at the end of 2014 has caused the forecasts for the next two weeks to show similarly low demand values.</p>
 </div>

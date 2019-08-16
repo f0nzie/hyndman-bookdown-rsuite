@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.4 Evaluating the regression model | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.4 Evaluating the regression model | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -330,7 +329,7 @@ As a result of these properties, it is clear that the average of the residuals i
 <p>The time plot shows a large negative value in the residuals at 2004 Q4, which suggests that something unusual may have happened in that quarter. It would be worth investigating to see if there were any unusual circumstances or events which may have significantly reduced beer production for that quarter.</p>
 <p>The remaining residuals show that the model has captured the patterns in the data quite well. However, there is a small amount of autocorrelation left in the residuals, seen in the significant spike in the ACF plot but not detected to be significant by the Breusch-Godfrey test. This suggests that there may be some information remaining in the residuals and the model can be slightly improved to capture this. However, it is unlikely that it will make much difference to the resulting forecasts. The forecasts from the current model are still unbiased, but will have larger prediction intervals than they need to. In Chapter <a href="ch-dynamic.html#ch-dynamic">9</a> we discuss dynamic regression models used for better capturing information left in the residuals.</p>
 <p>The histogram shows that the residuals from modelling the beer data seem to be slightly negatively skewed, although that is due to the large negative value in 2004 Q4.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(fit.beer)</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">checkresiduals</span>(fit.beer)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:beerresidcheck"></span>
 <img src="fpp_files/figure-html/beerresidcheck-1.png" alt="Analysing the residuals from a regression model for beer production." width="90%" />
 <p class="caption">
@@ -351,13 +350,13 @@ Figure 5.11: Analysing the residuals from a regression model for beer production
 <div id="example-1" class="section level4 unnumbered">
 <h4>Example</h4>
 <p>The residuals from the multiple regression model for forecasting US consumption plotted against each predictor in Figure <a href="Regr-EvaluatingSLR.html#fig:resids">5.12</a> seem to be randomly scattered and therefore we are satisfied with these in this case.</p>
-<pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(uschange)
-df[,<span class="st">&quot;Residuals&quot;</span>]  &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">residuals</span>(fit.consMR))
-p1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Income, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
-p2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Production, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
-p3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Savings, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
-p4 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Unemployment, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()
-gridExtra<span class="op">::</span><span class="kw">grid.arrange</span>(p1, p2, p3, p4, <span class="dt">nrow=</span><span class="dv">2</span>)</code></pre>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(uschange)</a>
+<a class="sourceLine" id="cb76-2" data-line-number="2">df[,<span class="st">&quot;Residuals&quot;</span>]  &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">residuals</span>(fit.consMR))</a>
+<a class="sourceLine" id="cb76-3" data-line-number="3">p1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Income, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a>
+<a class="sourceLine" id="cb76-4" data-line-number="4">p2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Production, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a>
+<a class="sourceLine" id="cb76-5" data-line-number="5">p3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Savings, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a>
+<a class="sourceLine" id="cb76-6" data-line-number="6">p4 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>Unemployment, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a>
+<a class="sourceLine" id="cb76-7" data-line-number="7">gridExtra<span class="op">::</span><span class="kw">grid.arrange</span>(p1, p2, p3, p4, <span class="dt">nrow=</span><span class="dv">2</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:resids"></span>
 <img src="fpp_files/figure-html/resids-1.png" alt="Scatterplots of residuals versus each predictor." width="90%" />
 <p class="caption">
@@ -372,19 +371,19 @@ Figure 5.12: Scatterplots of residuals versus each predictor.
 <div id="example-2" class="section level4 unnumbered">
 <h4>Example</h4>
 <p>Figure <a href="Regr-EvaluatingSLR.html#fig:electrendseas">5.13</a> shows the residuals against the fitted values from fitting a linear trend and seasonal dummies to the electricity data we first encountered in Section <a href="sec-transformations.html#sec-transformations">3.2</a>. The plot shows that the trend in the data is nonlinear and that the forecast variable requires a transformation as we observe a heteroscedastic pattern with variation increasing along the x-axis.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">tslm</span>(elec <span class="op">~</span><span class="st"> </span>trend <span class="op">+</span><span class="st"> </span>season)
-<span class="kw">cbind</span>(<span class="dt">Fitted=</span><span class="kw">fitted</span>(fit), <span class="dt">Residuals=</span><span class="kw">residuals</span>(fit)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Fitted, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">tslm</span>(elec <span class="op">~</span><span class="st"> </span>trend <span class="op">+</span><span class="st"> </span>season)</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw">cbind</span>(<span class="dt">Fitted=</span><span class="kw">fitted</span>(fit), <span class="dt">Residuals=</span><span class="kw">residuals</span>(fit)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb77-3" data-line-number="3"><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb77-4" data-line-number="4"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Fitted, <span class="dt">y=</span>Residuals)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:electrendseas"></span>
 <img src="fpp_files/figure-html/electrendseas-1.png" alt="Scatterplot of residuals versus fitted." width="90%" />
 <p class="caption">
 Figure 5.13: Scatterplot of residuals versus fitted.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">##TODO</span>
-<span class="co">## A little too obvious. Can we find something more subtle?</span>
-<span class="co">## George: Will try to</span></code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="co">##TODO</span></a>
+<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="co">## A little too obvious. Can we find something more subtle?</span></a>
+<a class="sourceLine" id="cb78-3" data-line-number="3"><span class="co">## George: Will try to</span></a></code></pre></div>
 </div>
 </div>
 <div id="outliers-and-influential-observations" class="section level3 unnumbered">
@@ -417,31 +416,31 @@ where the summations are over all observations. Thus, it reflects the proportion
 <div id="example-4" class="section level4 unnumbered">
 <h4>Example</h4>
 <p>Recall the example of US consumption data discussed in Section <a href="Regr-LSprinciple.html#Regr-LSprinciple">5.2</a>. The output for the estimated model is reproduced here for convenience:</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit.consMR &lt;-<span class="st"> </span><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Production <span class="op">+</span><span class="st"> </span>Unemployment <span class="op">+</span><span class="st"> </span>Savings,
-  <span class="dt">data=</span>uschange)
-<span class="kw">summary</span>(fit.consMR)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; tslm(formula = Consumption ~ Income + Production + Unemployment + </span>
-<span class="co">#&gt;     Savings, data = uschange)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
-<span class="co">#&gt; -0.8830 -0.1764 -0.0368  0.1525  1.2055 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)   0.26729    0.03721    7.18  1.7e-11 ***</span>
-<span class="co">#&gt; Income        0.71448    0.04219   16.93  &lt; 2e-16 ***</span>
-<span class="co">#&gt; Production    0.04589    0.02588    1.77    0.078 .  </span>
-<span class="co">#&gt; Unemployment -0.20477    0.10550   -1.94    0.054 .  </span>
-<span class="co">#&gt; Savings      -0.04527    0.00278  -16.29  &lt; 2e-16 ***</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 0.329 on 182 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.754,  Adjusted R-squared:  0.749 </span>
-<span class="co">#&gt; F-statistic:  139 on 4 and 182 DF,  p-value: &lt;2e-16</span></code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">fit.consMR &lt;-<span class="st"> </span><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Production <span class="op">+</span><span class="st"> </span>Unemployment <span class="op">+</span><span class="st"> </span>Savings,</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2">  <span class="dt">data=</span>uschange)</a>
+<a class="sourceLine" id="cb79-3" data-line-number="3"><span class="kw">summary</span>(fit.consMR)</a>
+<a class="sourceLine" id="cb79-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb79-5" data-line-number="5"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb79-6" data-line-number="6"><span class="co">#&gt; tslm(formula = Consumption ~ Income + Production + Unemployment + </span></a>
+<a class="sourceLine" id="cb79-7" data-line-number="7"><span class="co">#&gt;     Savings, data = uschange)</span></a>
+<a class="sourceLine" id="cb79-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb79-9" data-line-number="9"><span class="co">#&gt; Residuals:</span></a>
+<a class="sourceLine" id="cb79-10" data-line-number="10"><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></a>
+<a class="sourceLine" id="cb79-11" data-line-number="11"><span class="co">#&gt; -0.8830 -0.1764 -0.0368  0.1525  1.2055 </span></a>
+<a class="sourceLine" id="cb79-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb79-13" data-line-number="13"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb79-14" data-line-number="14"><span class="co">#&gt;              Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb79-15" data-line-number="15"><span class="co">#&gt; (Intercept)   0.26729    0.03721    7.18  1.7e-11 ***</span></a>
+<a class="sourceLine" id="cb79-16" data-line-number="16"><span class="co">#&gt; Income        0.71448    0.04219   16.93  &lt; 2e-16 ***</span></a>
+<a class="sourceLine" id="cb79-17" data-line-number="17"><span class="co">#&gt; Production    0.04589    0.02588    1.77    0.078 .  </span></a>
+<a class="sourceLine" id="cb79-18" data-line-number="18"><span class="co">#&gt; Unemployment -0.20477    0.10550   -1.94    0.054 .  </span></a>
+<a class="sourceLine" id="cb79-19" data-line-number="19"><span class="co">#&gt; Savings      -0.04527    0.00278  -16.29  &lt; 2e-16 ***</span></a>
+<a class="sourceLine" id="cb79-20" data-line-number="20"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb79-21" data-line-number="21"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb79-22" data-line-number="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb79-23" data-line-number="23"><span class="co">#&gt; Residual standard error: 0.329 on 182 degrees of freedom</span></a>
+<a class="sourceLine" id="cb79-24" data-line-number="24"><span class="co">#&gt; Multiple R-squared:  0.754,  Adjusted R-squared:  0.749 </span></a>
+<a class="sourceLine" id="cb79-25" data-line-number="25"><span class="co">#&gt; F-statistic:  139 on 4 and 182 DF,  p-value: &lt;2e-16</span></a></code></pre></div>
 <p>Figure <a href="Regr-LSprinciple.html#fig:usfitted2">5.7</a> plots the actual consumption expenditure values versus the fitted values. The correlation between these variables is <span class="math inline">\(r=0.868\)</span> hence <span class="math inline">\(R^2= 75.4\)</span>% (shown in the output above). In this case model does an excellent job as it explains most of the variation in the consumption data. Compare that to the <span class="math inline">\(R^2\)</span> value of 16% obtained from the simple regression with the same data set in Section <a href="Regr-Intro.html#Regr-Intro">5.1</a>. Adding the three extra predictors has allowed a lot more of the variance in the consumption data to be explained.</p>
 </div>
 </div>
@@ -469,27 +468,27 @@ Figure 5.15: Trending time series data can appear to be related as shown in this
 </div>
 <p>Regressing non-stationary time series can lead to spurious regressions. The output of regressing Australian air passengers on rice production in Guinea is shown below. High <span class="math inline">\(R^2\)</span> and high residual autocorrelation can be signs of spurious regression. We discuss the issues surrounding non-stationary data and spurious regressions in more detail in Chapter <a href="ch-dynamic.html#ch-dynamic">9</a>.</p>
 <p>Cases of spurious regression might appear to give reasonable short-term forecasts, but they will generally not continue to work into the future.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">tslm</span>(aussies <span class="op">~</span><span class="st"> </span>guinearice)
-<span class="kw">summary</span>(fit)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; tslm(formula = aussies ~ guinearice)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residuals:</span>
-<span class="co">#&gt;    Min     1Q Median     3Q    Max </span>
-<span class="co">#&gt; -5.945 -1.892 -0.327  1.862 10.421 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="co">#&gt; (Intercept)    -7.49       1.20   -6.23  2.3e-07 ***</span>
-<span class="co">#&gt; guinearice     40.29       1.34   30.13  &lt; 2e-16 ***</span>
-<span class="co">#&gt; ---</span>
-<span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Residual standard error: 3.24 on 40 degrees of freedom</span>
-<span class="co">#&gt; Multiple R-squared:  0.958,  Adjusted R-squared:  0.957 </span>
-<span class="co">#&gt; F-statistic:  908 on 1 and 40 DF,  p-value: &lt;2e-16</span>
-<span class="kw">checkresiduals</span>(fit)</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">tslm</span>(aussies <span class="op">~</span><span class="st"> </span>guinearice)</a>
+<a class="sourceLine" id="cb80-2" data-line-number="2"><span class="kw">summary</span>(fit)</a>
+<a class="sourceLine" id="cb80-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb80-4" data-line-number="4"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb80-5" data-line-number="5"><span class="co">#&gt; tslm(formula = aussies ~ guinearice)</span></a>
+<a class="sourceLine" id="cb80-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb80-7" data-line-number="7"><span class="co">#&gt; Residuals:</span></a>
+<a class="sourceLine" id="cb80-8" data-line-number="8"><span class="co">#&gt;    Min     1Q Median     3Q    Max </span></a>
+<a class="sourceLine" id="cb80-9" data-line-number="9"><span class="co">#&gt; -5.945 -1.892 -0.327  1.862 10.421 </span></a>
+<a class="sourceLine" id="cb80-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb80-11" data-line-number="11"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb80-12" data-line-number="12"><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
+<a class="sourceLine" id="cb80-13" data-line-number="13"><span class="co">#&gt; (Intercept)    -7.49       1.20   -6.23  2.3e-07 ***</span></a>
+<a class="sourceLine" id="cb80-14" data-line-number="14"><span class="co">#&gt; guinearice     40.29       1.34   30.13  &lt; 2e-16 ***</span></a>
+<a class="sourceLine" id="cb80-15" data-line-number="15"><span class="co">#&gt; ---</span></a>
+<a class="sourceLine" id="cb80-16" data-line-number="16"><span class="co">#&gt; Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></a>
+<a class="sourceLine" id="cb80-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb80-18" data-line-number="18"><span class="co">#&gt; Residual standard error: 3.24 on 40 degrees of freedom</span></a>
+<a class="sourceLine" id="cb80-19" data-line-number="19"><span class="co">#&gt; Multiple R-squared:  0.958,  Adjusted R-squared:  0.957 </span></a>
+<a class="sourceLine" id="cb80-20" data-line-number="20"><span class="co">#&gt; F-statistic:  908 on 1 and 40 DF,  p-value: &lt;2e-16</span></a>
+<a class="sourceLine" id="cb80-21" data-line-number="21"><span class="kw">checkresiduals</span>(fit)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:tslmspurious"></span>
 <img src="fpp_files/figure-html/tslmspurious-1.png" alt="Residuals from a spurious regression." width="90%" />
 <p class="caption">

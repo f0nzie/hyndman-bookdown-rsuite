@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.5 Prediction intervals for aggregates | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.5 Prediction intervals for aggregates | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -306,33 +305,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>A common problem is to forecast the aggregate of several time periods of data, using a model fitted to the disaggregated data. For example, you may have monthly data but wish to forecast the total for the next year. Or you may have weekly data, and want to forecast the total for the next four weeks.</p>
 <p>If the point forecasts are means, then adding them up will give a good estimate of the total. But prediction intervals are more tricky due to the correlations between forecast errors.</p>
 <p>A general solution is to use simulations. Here is an example using ETS models applied to Australian monthly gas production data, assuming we wish to forecast the aggregate gas demand in the next six months.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># First fit a model to the data</span>
-fit &lt;-<span class="st"> </span><span class="kw">ets</span>(gas<span class="op">/</span><span class="dv">1000</span>)
-
-<span class="co"># Forecast six months ahead</span>
-fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">h=</span><span class="dv">6</span>)
-
-<span class="co"># Simulate 10000 future sample paths</span>
-nsim &lt;-<span class="st"> </span><span class="dv">10000</span>
-h &lt;-<span class="st"> </span><span class="dv">6</span> 
-sim &lt;-<span class="st"> </span><span class="kw">numeric</span>(nsim)
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq_len</span>(nsim))
-  sim[i] &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">simulate</span>(fit, <span class="dt">future=</span><span class="ot">TRUE</span>, <span class="dt">nsim=</span>h))
-meanagg &lt;-<span class="st"> </span><span class="kw">mean</span>(sim)</code></pre>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" data-line-number="1"><span class="co"># First fit a model to the data</span></a>
+<a class="sourceLine" id="cb232-2" data-line-number="2">fit &lt;-<span class="st"> </span><span class="kw">ets</span>(gas<span class="op">/</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb232-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb232-4" data-line-number="4"><span class="co"># Forecast six months ahead</span></a>
+<a class="sourceLine" id="cb232-5" data-line-number="5">fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">h=</span><span class="dv">6</span>)</a>
+<a class="sourceLine" id="cb232-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb232-7" data-line-number="7"><span class="co"># Simulate 10000 future sample paths</span></a>
+<a class="sourceLine" id="cb232-8" data-line-number="8">nsim &lt;-<span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb232-9" data-line-number="9">h &lt;-<span class="st"> </span><span class="dv">6</span> </a>
+<a class="sourceLine" id="cb232-10" data-line-number="10">sim &lt;-<span class="st"> </span><span class="kw">numeric</span>(nsim)</a>
+<a class="sourceLine" id="cb232-11" data-line-number="11"><span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq_len</span>(nsim))</a>
+<a class="sourceLine" id="cb232-12" data-line-number="12">  sim[i] &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">simulate</span>(fit, <span class="dt">future=</span><span class="ot">TRUE</span>, <span class="dt">nsim=</span>h))</a>
+<a class="sourceLine" id="cb232-13" data-line-number="13">meanagg &lt;-<span class="st"> </span><span class="kw">mean</span>(sim)</a></code></pre></div>
 <p>The mean of the simulations is very close to the sum of the individual forecasts:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(fc<span class="op">$</span>mean[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>])
-<span class="co">#&gt; [1] 282</span>
-meanagg
-<span class="co">#&gt; [1] 282</span></code></pre>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb233-1" data-line-number="1"><span class="kw">sum</span>(fc<span class="op">$</span>mean[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>])</a>
+<a class="sourceLine" id="cb233-2" data-line-number="2"><span class="co">#&gt; [1] 282</span></a>
+<a class="sourceLine" id="cb233-3" data-line-number="3">meanagg</a>
+<a class="sourceLine" id="cb233-4" data-line-number="4"><span class="co">#&gt; [1] 282</span></a></code></pre></div>
 <p>Prediction intervals are also easy to obtain:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#80% interval:</span>
-<span class="kw">quantile</span>(sim, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>))
-<span class="co">#&gt; 10% 90% </span>
-<span class="co">#&gt; 263 301</span>
-<span class="co">#95% interval:</span>
-<span class="kw">quantile</span>(sim, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))
-<span class="co">#&gt;  2.5% 97.5% </span>
-<span class="co">#&gt;   254   311</span></code></pre>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb234-1" data-line-number="1"><span class="co">#80% interval:</span></a>
+<a class="sourceLine" id="cb234-2" data-line-number="2"><span class="kw">quantile</span>(sim, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>))</a>
+<a class="sourceLine" id="cb234-3" data-line-number="3"><span class="co">#&gt; 10% 90% </span></a>
+<a class="sourceLine" id="cb234-4" data-line-number="4"><span class="co">#&gt; 263 301</span></a>
+<a class="sourceLine" id="cb234-5" data-line-number="5"><span class="co">#95% interval:</span></a>
+<a class="sourceLine" id="cb234-6" data-line-number="6"><span class="kw">quantile</span>(sim, <span class="dt">prob=</span><span class="kw">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</a>
+<a class="sourceLine" id="cb234-7" data-line-number="7"><span class="co">#&gt;  2.5% 97.5% </span></a>
+<a class="sourceLine" id="cb234-8" data-line-number="8"><span class="co">#&gt;   254   311</span></a></code></pre></div>
 </div>
             </section>
 

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9.2 Regression with ARIMA errors in R | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9.2 Regression with ARIMA errors in R | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -304,7 +303,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="regression-with-arima-errors-in-r" class="section level2">
 <h2><span class="header-section-number">9.2</span> Regression with ARIMA errors in R</h2>
 <p>The R function <code>Arima()</code> will fit a regression model with ARIMA errors if the argument <code>xreg</code> is used. The <code>order</code> argument specifies the order of the ARIMA error model. If differencing is specified, then the differencing is applied to all variables in the regression model before the model is estimated. For example, the R command</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">Arima</span>(y, <span class="dt">xreg=</span>x, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>))</code></pre>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb175-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">Arima</span>(y, <span class="dt">xreg=</span>x, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>))</a></code></pre></div>
 <p>will fit the model <span class="math inline">\(y_t&#39; = \beta_1 x&#39;_t + n&#39;_t\)</span>, where <span class="math inline">\(n&#39;_t = \phi_1 n&#39;_{t-1} + e_t\)</span> is an AR(1) error. This is equivalent to the model
 <span class="math display">\[
   y_t = \beta_0 + \beta_1 x_t + n_t,
@@ -317,26 +316,26 @@ model, specify <code>include.drift=TRUE</code>.</p>
 <div id="example-us-personal-consumption-and-income" class="section level3 unnumbered">
 <h3>Example: US Personal Consumption and Income</h3>
 <p>Figure <a href="regression-with-arima-errors-in-r.html#fig:usconsump">9.1</a> shows the quarterly changes in personal consumption expenditure and personal disposable income from 1970 to 2010. We would like to forecast changes in expenditure based on changes in income. A change in income does not necessarily translate to an instant change in consumption (e.g., after the loss of a job, it may take a few months for expenses to be reduced to allow for the new circumstances). However, we will ignore this complexity in this example and try to measure the instantaneous effect of the average change of income on the average change of consumption expenditure.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(uschange[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Quarterly changes in US consumption and personal income&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb176-1" data-line-number="1"><span class="kw">autoplot</span>(uschange[,<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>], <span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb176-2" data-line-number="2"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb176-3" data-line-number="3"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Quarterly changes in US consumption and personal income&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsump"></span>
 <img src="fpp_files/figure-html/usconsump-1.png" alt="Percentage changes in quarterly personal consumption expenditure and personal disposable income for the USA, 1970 to 2010." width="90%" />
 <p class="caption">
 Figure 9.1: Percentage changes in quarterly personal consumption expenditure and personal disposable income for the USA, 1970 to 2010.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r">(fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">xreg=</span>uschange[,<span class="st">&quot;Income&quot;</span>]))
-<span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span>
-<span class="co">#&gt; Regression with ARIMA(1,0,2) errors </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ar1     ma1    ma2  intercept   xreg</span>
-<span class="co">#&gt;       0.692  -0.576  0.198      0.599  0.203</span>
-<span class="co">#&gt; s.e.  0.116   0.130  0.076      0.088  0.046</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.322:  log likelihood=-157</span>
-<span class="co">#&gt; AIC=326   AICc=326   BIC=345</span></code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb177-1" data-line-number="1">(fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(uschange[,<span class="st">&quot;Consumption&quot;</span>], <span class="dt">xreg=</span>uschange[,<span class="st">&quot;Income&quot;</span>]))</a>
+<a class="sourceLine" id="cb177-2" data-line-number="2"><span class="co">#&gt; Series: uschange[, &quot;Consumption&quot;] </span></a>
+<a class="sourceLine" id="cb177-3" data-line-number="3"><span class="co">#&gt; Regression with ARIMA(1,0,2) errors </span></a>
+<a class="sourceLine" id="cb177-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb177-5" data-line-number="5"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb177-6" data-line-number="6"><span class="co">#&gt;         ar1     ma1    ma2  intercept   xreg</span></a>
+<a class="sourceLine" id="cb177-7" data-line-number="7"><span class="co">#&gt;       0.692  -0.576  0.198      0.599  0.203</span></a>
+<a class="sourceLine" id="cb177-8" data-line-number="8"><span class="co">#&gt; s.e.  0.116   0.130  0.076      0.088  0.046</span></a>
+<a class="sourceLine" id="cb177-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb177-10" data-line-number="10"><span class="co">#&gt; sigma^2 estimated as 0.322:  log likelihood=-157</span></a>
+<a class="sourceLine" id="cb177-11" data-line-number="11"><span class="co">#&gt; AIC=326   AICc=326   BIC=345</span></a></code></pre></div>
 <p>The data are clearly already stationary (as we are considering percentage changes rather than raw expenditure and income), so there is no need for any differencing. The fitted model is
 <span class="math display">\[\begin{align*}
   y_t &amp;= 0.60 +
@@ -347,9 +346,9 @@ Figure 9.1: Percentage changes in quarterly personal consumption expenditure and
   e_t &amp;\sim \text{NID}(0,0.322).
 \end{align*}\]</span></p>
 <p>We can recover both the <span class="math inline">\(n_t\)</span> and <span class="math inline">\(e_t\)</span> series using the <code>residuals()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="st">&quot;Regression Errors&quot;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit, <span class="dt">type=</span><span class="st">&quot;regression&quot;</span>),
-      <span class="st">&quot;ARIMA errors&quot;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit, <span class="dt">type=</span><span class="st">&quot;innovation&quot;</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb178-1" data-line-number="1"><span class="kw">cbind</span>(<span class="st">&quot;Regression Errors&quot;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit, <span class="dt">type=</span><span class="st">&quot;regression&quot;</span>),</a>
+<a class="sourceLine" id="cb178-2" data-line-number="2">      <span class="st">&quot;ARIMA errors&quot;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit, <span class="dt">type=</span><span class="st">&quot;innovation&quot;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb178-3" data-line-number="3"><span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsumpres"></span>
 <img src="fpp_files/figure-html/usconsumpres-1.png" alt="Regression errors ($n_t$) and ARIMA errors ($e_t$) from the fitted model." width="90%" />
 <p class="caption">
@@ -358,7 +357,7 @@ Figure 9.2: Regression errors (<span class="math inline">\(n_t\)</span>) and ARI
 </div>
 <p>It is the ARIMA errors that should resemble a white noise series.</p>
 <!--?? Should we change the test to BG test when reg argument is used in auto.arima? -->
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(fit)</code></pre>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb179-1" data-line-number="1"><span class="kw">checkresiduals</span>(fit)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usconsumpres2"></span>
 <img src="fpp_files/figure-html/usconsumpres2-1.png" alt="The residuals (i.e., the ARIMA errors) are not significantly different from white noise." width="90%" />
 <p class="caption">

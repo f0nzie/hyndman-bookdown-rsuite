@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8.9 Seasonal ARIMA models | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8.9 Seasonal ARIMA models | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -356,7 +355,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="example-european-quarterly-retail-trade" class="section level3 unnumbered">
 <h3>Example: European quarterly retail trade</h3>
 <p>We will describe the seasonal ARIMA modelling procedure using quarterly European retail trade data from 1996 to 2011. The data are plotted in Figure <a href="sec-seasonal-arima.html#fig:euretail1">8.15</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(euretail) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Retail index&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" data-line-number="1"><span class="kw">autoplot</span>(euretail) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Retail index&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:euretail1"></span>
 <img src="fpp_files/figure-html/euretail1-1.png" alt="Quarterly retail trade index in the Euro area (17 countries), 1996--2011, covering wholesale and retail trade, and the repair of motor vehicles and motorcycles. (Index: 2005 = 100)." width="90%" />
 <p class="caption">
@@ -364,14 +363,14 @@ Figure 8.15: Quarterly retail trade index in the Euro area (17 countries), 1996�
 </p>
 </div>
 <p>The data are clearly non-stationary, with some seasonality, so we will first take a seasonal difference. The seasonally differenced data are shown in Figure <a href="sec-seasonal-arima.html#fig:euretail2">8.16</a>. These also appear to be non-stationary, so we take an additional first difference, shown in Figure <a href="sec-seasonal-arima.html#fig:euretail3">8.17</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">euretail <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>(<span class="dt">lag=</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span>ggtsdisplay</code></pre>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1">euretail <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>(<span class="dt">lag=</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span>ggtsdisplay</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:euretail2"></span>
 <img src="fpp_files/figure-html/euretail2-1.png" alt="Seasonally differenced European retail trade index." width="90%" />
 <p class="caption">
 Figure 8.16: Seasonally differenced European retail trade index.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r">euretail <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>(<span class="dt">lag=</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>() <span class="op">%&gt;%</span><span class="st"> </span>ggtsdisplay</code></pre>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" data-line-number="1">euretail <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>(<span class="dt">lag=</span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>() <span class="op">%&gt;%</span><span class="st"> </span>ggtsdisplay</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:euretail3"></span>
 <img src="fpp_files/figure-html/euretail3-1.png" alt="Double differenced European retail trade index." width="90%" />
 <p class="caption">
@@ -379,10 +378,10 @@ Figure 8.17: Double differenced European retail trade index.
 </p>
 </div>
 <p>Our aim now is to find an appropriate ARIMA model based on the ACF and PACF shown in Figure <a href="sec-seasonal-arima.html#fig:euretail3">8.17</a>. The significant spike at lag 1 in the ACF suggests a non-seasonal MA(1) component, and the significant spike at lag 4 in the ACF suggests a seasonal MA(1) component. Consequently, we begin with an ARIMA(0,1,1)(0,1,1)<span class="math inline">\(_4\)</span> model, indicating a first and seasonal difference, and non-seasonal and seasonal MA(1) components. The residuals for the fitted model are shown in Figure <a href="sec-seasonal-arima.html#fig:euretail4">8.18</a>. (By analogous logic applied to the PACF, we could also have started with an ARIMA(1,1,0)(1,1,0)<span class="math inline">\(_4\)</span> model.)</p>
-<pre class="sourceCode r"><code class="sourceCode r">euretail <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">Arima</span>(<span class="dt">order=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span>residuals <span class="op">%&gt;%</span>
-<span class="st">  </span>ggtsdisplay</code></pre>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb151-1" data-line-number="1">euretail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb151-2" data-line-number="2"><span class="st">  </span><span class="kw">Arima</span>(<span class="dt">order=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb151-3" data-line-number="3"><span class="st">  </span>residuals <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb151-4" data-line-number="4"><span class="st">  </span>ggtsdisplay</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:euretail4"></span>
 <img src="fpp_files/figure-html/euretail4-1.png" alt="Residuals from the fitted ARIMA(0,1,3)(0,1,1)$_4$ model for the European retail trade index data." width="90%" />
 <p class="caption">
@@ -390,8 +389,8 @@ Figure 8.18: Residuals from the fitted ARIMA(0,1,3)(0,1,1)<span class="math inli
 </p>
 </div>
 <p>Both the ACF and PACF show significant spikes at lag 2, and almost significant spikes at lag 3, indicating that some additional non-seasonal terms need to be included in the model. The AICc of the ARIMA(0,1,2)(0,1,1)<span class="math inline">\(_4\)</span> model is 74.36, while that for the ARIMA(0,1,3)(0,1,1)<span class="math inline">\(_4\)</span> model is 68.53. We tried other models with AR terms as well, but none that gave a smaller AICc value. Consequently, we choose the ARIMA(0,1,3)(0,1,1)<span class="math inline">\(_4\)</span> model. Its residuals are plotted in Figure <a href="sec-seasonal-arima.html#fig:euretail5">8.19</a>. All the spikes are now within the significance limits, so the residuals appear to be white noise. The Ljung-Box test also shows that the residuals have no remaining autocorrelations.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit3 &lt;-<span class="st"> </span><span class="kw">Arima</span>(euretail, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>))
-<span class="kw">checkresiduals</span>(fit3)</code></pre>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" data-line-number="1">fit3 &lt;-<span class="st"> </span><span class="kw">Arima</span>(euretail, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb152-2" data-line-number="2"><span class="kw">checkresiduals</span>(fit3)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:euretail5"></span>
 <img src="fpp_files/figure-html/euretail5-1.png" alt="Residuals from the fitted ARIMA(0,1,3)(0,1,1)$_4$ model for the European retail trade index data." width="90%" />
 <p class="caption">
@@ -406,7 +405,7 @@ Figure 8.19: Residuals from the fitted ARIMA(0,1,3)(0,1,1)<span class="math inli
 #&gt; 
 #&gt; Model df: 4.   Total lags used: 8</code></pre>
 <p>Thus, we now have a seasonal ARIMA model that passes the required checks and is ready for forecasting. Forecasts from the model for the next three years are shown in Figure <a href="sec-seasonal-arima.html#fig:euretail6">8.20</a>. The forecasts follow the recent trend in the data, because of the double differencing. The large and rapidly increasing prediction intervals show that the retail trade index could start increasing or decreasing at any time — while the point forecasts trend downwards, the prediction intervals allow for the data to trend upwards during the forecast period.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>) <span class="op">%&gt;%</span><span class="st"> </span>autoplot</code></pre>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" data-line-number="1">fit3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>) <span class="op">%&gt;%</span><span class="st"> </span>autoplot</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:euretail6"></span>
 <img src="fpp_files/figure-html/euretail6-1.png" alt="Forecasts of the European retail trade index data using the ARIMA(0,1,3)(0,1,1)$_4$ model. 80% and 95% prediction intervals are shown." width="90%" />
 <p class="caption">
@@ -414,38 +413,38 @@ Figure 8.20: Forecasts of the European retail trade index data using the ARIMA(0
 </p>
 </div>
 <p>We could have used <code>auto.arima()</code> to do most of this work for us. It would have given the following result.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">auto.arima</span>(euretail)
-<span class="co">#&gt; Series: euretail </span>
-<span class="co">#&gt; ARIMA(0,1,3)(0,1,1)[4] </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ma1    ma2    ma3    sma1</span>
-<span class="co">#&gt;       0.263  0.369  0.420  -0.664</span>
-<span class="co">#&gt; s.e.  0.124  0.126  0.129   0.155</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.156:  log likelihood=-28.6</span>
-<span class="co">#&gt; AIC=67.3   AICc=68.4   BIC=77.7</span></code></pre>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1"><span class="kw">auto.arima</span>(euretail)</a>
+<a class="sourceLine" id="cb155-2" data-line-number="2"><span class="co">#&gt; Series: euretail </span></a>
+<a class="sourceLine" id="cb155-3" data-line-number="3"><span class="co">#&gt; ARIMA(0,1,3)(0,1,1)[4] </span></a>
+<a class="sourceLine" id="cb155-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb155-5" data-line-number="5"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb155-6" data-line-number="6"><span class="co">#&gt;         ma1    ma2    ma3    sma1</span></a>
+<a class="sourceLine" id="cb155-7" data-line-number="7"><span class="co">#&gt;       0.263  0.369  0.420  -0.664</span></a>
+<a class="sourceLine" id="cb155-8" data-line-number="8"><span class="co">#&gt; s.e.  0.124  0.126  0.129   0.155</span></a>
+<a class="sourceLine" id="cb155-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb155-10" data-line-number="10"><span class="co">#&gt; sigma^2 estimated as 0.156:  log likelihood=-28.6</span></a>
+<a class="sourceLine" id="cb155-11" data-line-number="11"><span class="co">#&gt; AIC=67.3   AICc=68.4   BIC=77.7</span></a></code></pre></div>
 <p>Notice that it has selected a different model (with a larger AICc value). <code>auto.arima()</code> takes some short-cuts in order to speed up the computation, and will not always give the best model. The short-cuts can be turned off, and then it will sometimes return a different model.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">auto.arima</span>(euretail, <span class="dt">stepwise=</span><span class="ot">FALSE</span>, <span class="dt">approximation=</span><span class="ot">FALSE</span>)
-<span class="co">#&gt; Series: euretail </span>
-<span class="co">#&gt; ARIMA(0,1,3)(0,1,1)[4] </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ma1    ma2    ma3    sma1</span>
-<span class="co">#&gt;       0.263  0.369  0.420  -0.664</span>
-<span class="co">#&gt; s.e.  0.124  0.126  0.129   0.155</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.156:  log likelihood=-28.6</span>
-<span class="co">#&gt; AIC=67.3   AICc=68.4   BIC=77.7</span></code></pre>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1"><span class="kw">auto.arima</span>(euretail, <span class="dt">stepwise=</span><span class="ot">FALSE</span>, <span class="dt">approximation=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb156-2" data-line-number="2"><span class="co">#&gt; Series: euretail </span></a>
+<a class="sourceLine" id="cb156-3" data-line-number="3"><span class="co">#&gt; ARIMA(0,1,3)(0,1,1)[4] </span></a>
+<a class="sourceLine" id="cb156-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb156-5" data-line-number="5"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb156-6" data-line-number="6"><span class="co">#&gt;         ma1    ma2    ma3    sma1</span></a>
+<a class="sourceLine" id="cb156-7" data-line-number="7"><span class="co">#&gt;       0.263  0.369  0.420  -0.664</span></a>
+<a class="sourceLine" id="cb156-8" data-line-number="8"><span class="co">#&gt; s.e.  0.124  0.126  0.129   0.155</span></a>
+<a class="sourceLine" id="cb156-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb156-10" data-line-number="10"><span class="co">#&gt; sigma^2 estimated as 0.156:  log likelihood=-28.6</span></a>
+<a class="sourceLine" id="cb156-11" data-line-number="11"><span class="co">#&gt; AIC=67.3   AICc=68.4   BIC=77.7</span></a></code></pre></div>
 <p>This time it returned the same model we had identified.</p>
 </div>
 <div id="example-cortecosteroid-drug-sales-in-australia" class="section level3 unnumbered">
 <h3>Example: Cortecosteroid drug sales in Australia</h3>
 <p>Our second example is more difficult. We will try to forecast monthly cortecosteroid drug sales in Australia. These are known as H02 drugs under the Anatomical Therapeutical Chemical classification scheme.</p>
-<pre class="sourceCode r"><code class="sourceCode r">lh02 &lt;-<span class="st"> </span><span class="kw">log</span>(h02)
-<span class="kw">cbind</span>(<span class="st">&quot;H02 sales (million scripts)&quot;</span> =<span class="st"> </span>h02,
-      <span class="st">&quot;Log H02 sales&quot;</span>=lh02) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1">lh02 &lt;-<span class="st"> </span><span class="kw">log</span>(h02)</a>
+<a class="sourceLine" id="cb157-2" data-line-number="2"><span class="kw">cbind</span>(<span class="st">&quot;H02 sales (million scripts)&quot;</span> =<span class="st"> </span>h02,</a>
+<a class="sourceLine" id="cb157-3" data-line-number="3">      <span class="st">&quot;Log H02 sales&quot;</span>=lh02) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb157-4" data-line-number="4"><span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:h02"></span>
 <img src="fpp_files/figure-html/h02-1.png" alt="Cortecosteroid drug sales in Australia (in millions of scripts per month). Logged data shown in bottom panel." width="90%" />
 <p class="caption">
@@ -455,8 +454,8 @@ Figure 8.21: Cortecosteroid drug sales in Australia (in millions of scripts per 
 <p>Data from July 1991 to June 2008 are plotted in Figure <a href="sec-seasonal-arima.html#fig:h02">8.21</a>. There is a small increase in the variance with the level, so we take logarithms to stabilize the variance.</p>
 <p>The data are strongly seasonal and obviously non-stationary, so seasonal differencing will be used. The seasonally differenced data are shown in Figure <a href="sec-seasonal-arima.html#fig:h02b">8.22</a>. It is not clear at this point whether we should do another difference or not. We decide not to, but the choice is not obvious.</p>
 <p>The last few observations appear to be different (more variable) from the earlier data. This may be due to the fact that data are sometimes revised when earlier sales are reported late.</p>
-<pre class="sourceCode r"><code class="sourceCode r">lh02 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>(<span class="dt">lag=</span><span class="dv">12</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggtsdisplay</span>(<span class="dt">xlab=</span><span class="st">&quot;Year&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Seasonally differenced H02 scripts&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" data-line-number="1">lh02 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>(<span class="dt">lag=</span><span class="dv">12</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb158-2" data-line-number="2"><span class="st">  </span><span class="kw">ggtsdisplay</span>(<span class="dt">xlab=</span><span class="st">&quot;Year&quot;</span>, <span class="dt">main=</span><span class="st">&quot;Seasonally differenced H02 scripts&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:h02b"></span>
 <img src="fpp_files/figure-html/h02b-1.png" alt="Seasonally differenced cortecosteroid drug sales in Australia (in millions of scripts per month)." width="90%" />
 <p class="caption">
@@ -504,19 +503,19 @@ Figure 8.22: Seasonally differenced cortecosteroid drug sales in Australia (in m
 </tbody>
 </table>
 <p>Of these models, the best is the ARIMA(3,0,1)(0,1,2)<span class="math inline">\(_{12}\)</span> model (i.e., it has the smallest AICc value).</p>
-<pre class="sourceCode r"><code class="sourceCode r">(fit &lt;-<span class="st"> </span><span class="kw">Arima</span>(h02, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">lambda=</span><span class="dv">0</span>))
-<span class="co">#&gt; Series: h02 </span>
-<span class="co">#&gt; ARIMA(3,0,1)(0,1,2)[12] </span>
-<span class="co">#&gt; Box Cox transformation: lambda= 0 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;          ar1    ar2    ar3    ma1    sma1    sma2</span>
-<span class="co">#&gt;       -0.160  0.548  0.568  0.383  -0.522  -0.177</span>
-<span class="co">#&gt; s.e.   0.164  0.088  0.094  0.190   0.086   0.087</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.00428:  log likelihood=250</span>
-<span class="co">#&gt; AIC=-486   AICc=-485   BIC=-463</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(fit, <span class="dt">lag=</span><span class="dv">36</span>)</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1">(fit &lt;-<span class="st"> </span><span class="kw">Arima</span>(h02, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">lambda=</span><span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb159-2" data-line-number="2"><span class="co">#&gt; Series: h02 </span></a>
+<a class="sourceLine" id="cb159-3" data-line-number="3"><span class="co">#&gt; ARIMA(3,0,1)(0,1,2)[12] </span></a>
+<a class="sourceLine" id="cb159-4" data-line-number="4"><span class="co">#&gt; Box Cox transformation: lambda= 0 </span></a>
+<a class="sourceLine" id="cb159-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb159-6" data-line-number="6"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb159-7" data-line-number="7"><span class="co">#&gt;          ar1    ar2    ar3    ma1    sma1    sma2</span></a>
+<a class="sourceLine" id="cb159-8" data-line-number="8"><span class="co">#&gt;       -0.160  0.548  0.568  0.383  -0.522  -0.177</span></a>
+<a class="sourceLine" id="cb159-9" data-line-number="9"><span class="co">#&gt; s.e.   0.164  0.088  0.094  0.190   0.086   0.087</span></a>
+<a class="sourceLine" id="cb159-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb159-11" data-line-number="11"><span class="co">#&gt; sigma^2 estimated as 0.00428:  log likelihood=250</span></a>
+<a class="sourceLine" id="cb159-12" data-line-number="12"><span class="co">#&gt; AIC=-486   AICc=-485   BIC=-463</span></a></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb160-1" data-line-number="1"><span class="kw">checkresiduals</span>(fit, <span class="dt">lag=</span><span class="dv">36</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:h02res"></span>
 <img src="fpp_files/figure-html/h02res-1.png" alt="Residuals from the ARIMA(3,0,1)(0,1,2)$_{12}$ model applied to the H02 monthly script sales data." width="90%" />
 <p class="caption">
@@ -605,11 +604,11 @@ Figure 8.23: Residuals from the ARIMA(3,0,1)(0,1,2)<span class="math inline">\(_
 <p>When models are compared using AICc values, it is important that all models have the same orders of differencing. However, when comparing models using a test set, it does not matter how the forecasts were produced — the comparisons are always valid. Consequently, in the table above, we can include some models with only seasonal differencing and some models with both first and seasonal differencing, while in the earlier table containing AICc values, we only compared models with seasonal differencing but no first differencing.</p>
 <p>None of the models considered here pass all of the residual tests. In practice, we would normally use the best model we could find, even if it did not pass all of the tests.</p>
 <p>Forecasts from the ARIMA(3,0,1)(0,1,2)<span class="math inline">\(_{12}\)</span> model (which has the lowest RMSE value on the test set, and the best AICc value amongst models with only seasonal differencing) are shown in Figure <a href="sec-seasonal-arima.html#fig:h02f">8.24</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">h02 <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">Arima</span>(<span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">lambda=</span><span class="dv">0</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">forecast</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;H02 sales (million scripts)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" data-line-number="1">h02 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb162-2" data-line-number="2"><span class="st">  </span><span class="kw">Arima</span>(<span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">lambda=</span><span class="dv">0</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb162-3" data-line-number="3"><span class="st">  </span><span class="kw">forecast</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb162-4" data-line-number="4"><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb162-5" data-line-number="5"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;H02 sales (million scripts)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:h02f"></span>
 <img src="fpp_files/figure-html/h02f-1.png" alt="Forecasts from the ARIMA(3,0,1)(0,1,2)$_{12}$ model applied to the H02 monthly script sales data." width="90%" />
 <p class="caption">

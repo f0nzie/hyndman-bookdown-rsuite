@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.10 Exercises | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.10 Exercises | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -361,10 +360,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Produce a residual plot. Is the model adequate? Are there any outliers or influential observations?</li>
 <li>Use the model to predict the electricity consumption that you would expect for the next day if the maximum temperature was <span class="math inline">\(10^\circ\)</span> and compare it with the forecast if the with maximum temperature was <span class="math inline">\(35^\circ\)</span>. Do you believe these predictions?</li>
 <li><p>Give prediction intervals for your forecasts. The following R code will get you started:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(Mwh <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>econsumption)
-fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Mwh <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>econsumption)
-<span class="kw">plot</span>(<span class="kw">residuals</span>(fit) <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>econsumption)
-<span class="kw">forecast</span>(fit, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">temp=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">35</span>)))</code></pre></li>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">plot</span>(Mwh <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>econsumption)</a>
+<a class="sourceLine" id="cb89-2" data-line-number="2">fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Mwh <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>econsumption)</a>
+<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="kw">plot</span>(<span class="kw">residuals</span>(fit) <span class="op">~</span><span class="st"> </span>temp, <span class="dt">data=</span>econsumption)</a>
+<a class="sourceLine" id="cb89-4" data-line-number="4"><span class="kw">forecast</span>(fit, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">temp=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">35</span>)))</a></code></pre></div></li>
 </ol></li>
 <li><p>Data set <code>olympic</code> contains the winning times (in seconds) for the men’s 400 meters final in each Olympic Games from 1896 to 2012.</p>
 <ol style="list-style-type: lower-alpha">
@@ -394,7 +393,7 @@ fit &lt;-<span class="st"> </span><span class="kw">lm</span>(Mwh <span class="op
 <li>Fit a harmonic regression with trend to the data. Select the appropriate number of Fourier terms to include by minimizing the AICc or CV value.</li>
 <li>Check the residuals of the final model using the <code>checkresiduals()</code> function. Even though the residuals fail the correlation tests, the results are probably not severe enough to make much difference to the forecasts and prediction intervals. (Note that the correlations are relatively small, even though they are significant.)</li>
 <li><p>To forecast using harmonic regression, you will need to generate the future values of the Fourier terms. This can be done as follows.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="kw">fourier</span>(x, K, h))</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="kw">fourier</span>(x, K, h))</a></code></pre></div>
 <p>where <code>fit</code> is the fitted model using <code>tslm</code>, <code>K</code> is the number of Fourier terms used in creating <code>fit</code>, and <code>h</code> is the forecast horizon required.</p>
 Forecast the next year of data.</li>
 <li><p>Plot the forecasts along with the actual data for 2005. What do you find?</p></li>

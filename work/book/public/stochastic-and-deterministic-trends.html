@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9.4 Stochastic and deterministic trends | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9.4 Stochastic and deterministic trends | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -319,9 +318,9 @@ This is very similar to a random walk with drift, but here the error term is an 
 <p>Although these models appear quite similar (they only differ in the number of differences that need to be applied to <span class="math inline">\(n_t\)</span>), their forecasting characteristics are quite different.</p>
 <div id="example-international-visitors-to-australia" class="section level3 unnumbered">
 <h3>Example: International visitors to Australia</h3>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(austa) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;millions of people&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Total annual international visitors to Australia&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb186-1" data-line-number="1"><span class="kw">autoplot</span>(austa) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb186-2" data-line-number="2"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;millions of people&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb186-3" data-line-number="3"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Total annual international visitors to Australia&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:austa"></span>
 <img src="fpp_files/figure-html/austa-1.png" alt="Annual international visitors to Australia, 1980--2010." width="90%" />
 <p class="caption">
@@ -330,18 +329,18 @@ Figure 9.7: Annual international visitors to Australia, 1980–2010.
 </div>
 <p>Figure <a href="stochastic-and-deterministic-trends.html#fig:austa">9.7</a> shows the total number of international visitors to Australia each year from 1980 to 2010. We will fit both a deterministic and a stochastic trend model to these data.</p>
 <p>The deterministic trend model is obtained as follows:</p>
-<pre class="sourceCode r"><code class="sourceCode r">trend &lt;-<span class="st"> </span><span class="kw">seq_along</span>(austa)
-(fit1 &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(austa, <span class="dt">d=</span><span class="dv">0</span>, <span class="dt">xreg=</span>trend))
-<span class="co">#&gt; Series: austa </span>
-<span class="co">#&gt; Regression with ARIMA(2,0,0) errors </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;        ar1     ar2  intercept   xreg</span>
-<span class="co">#&gt;       1.11  -0.380      0.416  0.171</span>
-<span class="co">#&gt; s.e.  0.16   0.158      0.190  0.009</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.0298:  log likelihood=13.6</span>
-<span class="co">#&gt; AIC=-17.2   AICc=-15.2   BIC=-9.28</span></code></pre>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb187-1" data-line-number="1">trend &lt;-<span class="st"> </span><span class="kw">seq_along</span>(austa)</a>
+<a class="sourceLine" id="cb187-2" data-line-number="2">(fit1 &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(austa, <span class="dt">d=</span><span class="dv">0</span>, <span class="dt">xreg=</span>trend))</a>
+<a class="sourceLine" id="cb187-3" data-line-number="3"><span class="co">#&gt; Series: austa </span></a>
+<a class="sourceLine" id="cb187-4" data-line-number="4"><span class="co">#&gt; Regression with ARIMA(2,0,0) errors </span></a>
+<a class="sourceLine" id="cb187-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb187-6" data-line-number="6"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb187-7" data-line-number="7"><span class="co">#&gt;        ar1     ar2  intercept   xreg</span></a>
+<a class="sourceLine" id="cb187-8" data-line-number="8"><span class="co">#&gt;       1.11  -0.380      0.416  0.171</span></a>
+<a class="sourceLine" id="cb187-9" data-line-number="9"><span class="co">#&gt; s.e.  0.16   0.158      0.190  0.009</span></a>
+<a class="sourceLine" id="cb187-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb187-11" data-line-number="11"><span class="co">#&gt; sigma^2 estimated as 0.0298:  log likelihood=13.6</span></a>
+<a class="sourceLine" id="cb187-12" data-line-number="12"><span class="co">#&gt; AIC=-17.2   AICc=-15.2   BIC=-9.28</span></a></code></pre></div>
 <p>This model can be written as
 <span class="math display">\[\begin{align*}
   y_t &amp;= 0.42 + 0.17 t + n_t \\
@@ -350,17 +349,17 @@ Figure 9.7: Annual international visitors to Australia, 1980–2010.
 \end{align*}\]</span></p>
 <p>The estimated growth in visitor numbers is 0.17 million people per year.</p>
 <p>Alternatively, the stochastic trend model can be estimated.</p>
-<pre class="sourceCode r"><code class="sourceCode r">(fit2 &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(austa, <span class="dt">d=</span><span class="dv">1</span>))
-<span class="co">#&gt; Series: austa </span>
-<span class="co">#&gt; ARIMA(0,1,1) with drift </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ma1  drift</span>
-<span class="co">#&gt;       0.301  0.173</span>
-<span class="co">#&gt; s.e.  0.165  0.039</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.0338:  log likelihood=10.6</span>
-<span class="co">#&gt; AIC=-15.2   AICc=-14.5   BIC=-10.6</span></code></pre>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb188-1" data-line-number="1">(fit2 &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(austa, <span class="dt">d=</span><span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb188-2" data-line-number="2"><span class="co">#&gt; Series: austa </span></a>
+<a class="sourceLine" id="cb188-3" data-line-number="3"><span class="co">#&gt; ARIMA(0,1,1) with drift </span></a>
+<a class="sourceLine" id="cb188-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb188-5" data-line-number="5"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb188-6" data-line-number="6"><span class="co">#&gt;         ma1  drift</span></a>
+<a class="sourceLine" id="cb188-7" data-line-number="7"><span class="co">#&gt;       0.301  0.173</span></a>
+<a class="sourceLine" id="cb188-8" data-line-number="8"><span class="co">#&gt; s.e.  0.165  0.039</span></a>
+<a class="sourceLine" id="cb188-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb188-10" data-line-number="10"><span class="co">#&gt; sigma^2 estimated as 0.0338:  log likelihood=10.6</span></a>
+<a class="sourceLine" id="cb188-11" data-line-number="11"><span class="co">#&gt; AIC=-15.2   AICc=-14.5   BIC=-10.6</span></a></code></pre></div>
 <p>This model can be written as <span class="math inline">\(y_t-y_{t-1} = 0.17 + n&#39;_t\)</span>, or equivalently
 <span class="math display">\[\begin{align*}
   y_t &amp;= y_0 + 0.17 t + n_t \\
@@ -368,14 +367,14 @@ Figure 9.7: Annual international visitors to Australia, 1980–2010.
   e_t &amp;\sim \text{NID}(0,0.0338).
 \end{align*}\]</span></p>
 <p>In this case, the estimated growth in visitor numbers is also 0.17 million people per year. Although the growth estimates are similar, the prediction intervals are not, as Figure <a href="#fig:austaf"><strong>??</strong></a> shows. In particular, stochastic trends have much wider prediction intervals because the errors are non-stationary.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fc1 &lt;- forecast(fit1, xreg=data.frame(trend=length(austa)+1:10))</span>
-<span class="co"># fc2 &lt;- forecast(fit2, h=10)</span>
-<span class="co"># autoplot(austa) +</span>
-<span class="co">#   forecast::autolayer(fc2, series=&quot;Stochastic trend&quot;) +</span>
-<span class="co">#   forecast::autolayer(fc1, series=&quot;Deterministic trend&quot;) +</span>
-<span class="co">#   ggtitle(&quot;Forecasts from deterministic and stochastic trend models&quot;) +</span>
-<span class="co">#   xlab(&quot;Year&quot;) + ylab(&quot;Visitors to Australia (millions)&quot;) +</span>
-<span class="co">#   guides(colour=guide_legend(title=&quot;Forecast&quot;))</span></code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb189-1" data-line-number="1"><span class="co"># fc1 &lt;- forecast(fit1, xreg=data.frame(trend=length(austa)+1:10))</span></a>
+<a class="sourceLine" id="cb189-2" data-line-number="2"><span class="co"># fc2 &lt;- forecast(fit2, h=10)</span></a>
+<a class="sourceLine" id="cb189-3" data-line-number="3"><span class="co"># autoplot(austa) +</span></a>
+<a class="sourceLine" id="cb189-4" data-line-number="4"><span class="co">#   forecast::autolayer(fc2, series=&quot;Stochastic trend&quot;) +</span></a>
+<a class="sourceLine" id="cb189-5" data-line-number="5"><span class="co">#   forecast::autolayer(fc1, series=&quot;Deterministic trend&quot;) +</span></a>
+<a class="sourceLine" id="cb189-6" data-line-number="6"><span class="co">#   ggtitle(&quot;Forecasts from deterministic and stochastic trend models&quot;) +</span></a>
+<a class="sourceLine" id="cb189-7" data-line-number="7"><span class="co">#   xlab(&quot;Year&quot;) + ylab(&quot;Visitors to Australia (millions)&quot;) +</span></a>
+<a class="sourceLine" id="cb189-8" data-line-number="8"><span class="co">#   guides(colour=guide_legend(title=&quot;Forecast&quot;))</span></a></code></pre></div>
 <p>There is an implicit assumption with deterministic trends that the slope of the trend is not going to change over time. On the other hand, stochastic trends can change, and the estimated growth is only assumed to be the average growth over the historical period, not necessarily the rate of growth that will be observed into the future. Consequently, it is safer to forecast with stochastic trends, especially for longer forecast horizons, as the prediction intervals allow for greater uncertainty in future growth.</p>
 </div>
 </div>

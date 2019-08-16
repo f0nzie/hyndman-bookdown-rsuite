@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.3 Base and coherent forecasts | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10.3 Base and coherent forecasts | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -307,7 +306,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Commonly used approaches are based on first generating forecasts for a single level of aggregation, and then producing coherent forecasts by aggregating these up using a bottom-up approach, disaggregating them down using a top-down approach, or a combination of the two using a middle-out approach. The details of these methods are presented in Sections <a href="Hier-bu.html#Hier:bu">10.4</a> to <a href="Hier-mo.html#Hier:mo">10.6</a>. An alternative and a more advnanced approach is to first generate forecasts for all the time series and then reconcile these so that they become coherent. The details of this approach which we refer to as the optimal reconciliation approach are presented in Section <a href="Hier-reconciliation.html#Hier:reconciliation">10.8</a>.</p>
 <p>In what follows in this section we introduce and formally define the concepts of base and coherent forecasts in order to build a unified framework that incorporates all of the approaches outlined above for both hierarchical and grouped time series.</p>
 <p>Denote as <span class="math inline">\(\hat{y}_{h}\)</span> the <span class="math inline">\(h\)</span>-step-ahead forecast generated for the “Total” series having observed the time series up to time <span class="math inline">\(T\)</span>.<a href="#fn19" class="footnote-ref" id="fnref19"><sup>19</sup></a> Likewise denote as <span class="math inline">\(\yhat{j}{h}\)</span> the <span class="math inline">\(h\)</span>-step-ahead forecast generated for the series at node <span class="math inline">\(j\)</span> having observed the time series up to time <span class="math inline">\(T\)</span>. We refer to these as <strong>base forecasts</strong>. These are forecasts generated for each time series in the aggregation structure using a suitable forecasting method. The <code>hts</code> package has three inbuit options to produce base forecasts. These are controlled by the <code>fmethod</code> method argument</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(..., <span class="dt">fmethod =</span> <span class="kw">c</span>(<span class="st">&quot;ets&quot;</span>, <span class="st">&quot;arima&quot;</span>, <span class="st">&quot;rw&quot;</span>), ...). </code></pre>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb199-1" data-line-number="1"><span class="kw">forecast</span>(..., <span class="dt">fmethod =</span> <span class="kw">c</span>(<span class="st">&quot;ets&quot;</span>, <span class="st">&quot;arima&quot;</span>, <span class="st">&quot;rw&quot;</span>), ...). </a></code></pre></div>
 <p>as discussed in the Introduction of this Chapter <a href="ch-hierarchical.html#ch-hierarchical">10</a>.</p>
 <p>Although the data follows exactly the aggregation structure (as reflected by the summing matrix <span class="math inline">\(\bm{S}\)</span>) base forecasts will generally not. It is only under very special circumstances such as using a very simple method to forecasts all the time series (for example using naïve forecasts for all series) that the base forecasts will be coherent.</p>
 <p>The base forecasts can however be combined, as briefly described above, to produce a set of forecasts that are coherent. We denote the set of <strong>coherent forecasts</strong> for the “Total” series and all series below the top-level as <span class="math inline">\(\tilde{y}_{h}\)</span> and <span class="math inline">\(\ytilde{j}{h}\)</span> respectively.</p>

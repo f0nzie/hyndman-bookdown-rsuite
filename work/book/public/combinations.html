@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.4 Forecast combinations | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.4 Forecast combinations | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -310,32 +309,32 @@ to increased forecast accuracy. in many cases one can make dramatic performance 
 </blockquote>
 <p>While there has been considerable research on using weighted averages, or some other more complicated combination approach, using a simple average has proven hard to beat.</p>
 <p>Here is an example using monthly expenditure on eating out in Australia, from April 1982 to September 2017. We use forecast from the following models: ETS, ARIMA, STL-ETS, NNAR, and TBATS; and we compare the results using the last 5 years (60 months) of observations.</p>
-<pre class="sourceCode r"><code class="sourceCode r">train &lt;-<span class="st"> </span><span class="kw">window</span>(auscafe, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2012</span>,<span class="dv">9</span>))
-h &lt;-<span class="st"> </span><span class="kw">length</span>(auscafe) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(train)
-ETS &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">ets</span>(train), <span class="dt">h=</span>h)
-ARIMA &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">auto.arima</span>(train, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">biasadj=</span><span class="ot">TRUE</span>), <span class="dt">h=</span>h)
-STL &lt;-<span class="st"> </span><span class="kw">stlf</span>(train, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">h=</span>h, <span class="dt">biasadj=</span><span class="ot">TRUE</span>)
-NNAR &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">nnetar</span>(train), <span class="dt">h=</span>h)
-TBATS &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">tbats</span>(train), <span class="dt">h=</span>h)
-Combination &lt;-<span class="st"> </span>(ETS<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>ARIMA<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>STL<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>NNAR<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>TBATS<span class="op">$</span>mean)<span class="op">/</span><span class="dv">5</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(auscafe) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(ETS<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;ETS&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(ARIMA<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;ARIMA&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(STL<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;STL&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(STL<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;NNAR&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(STL<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;TBATS&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(Combination, <span class="dt">series=</span><span class="st">&quot;Combination&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;$ billion&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Australian monthly expenditure on eating out&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb229-1" data-line-number="1">train &lt;-<span class="st"> </span><span class="kw">window</span>(auscafe, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2012</span>,<span class="dv">9</span>))</a>
+<a class="sourceLine" id="cb229-2" data-line-number="2">h &lt;-<span class="st"> </span><span class="kw">length</span>(auscafe) <span class="op">-</span><span class="st"> </span><span class="kw">length</span>(train)</a>
+<a class="sourceLine" id="cb229-3" data-line-number="3">ETS &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">ets</span>(train), <span class="dt">h=</span>h)</a>
+<a class="sourceLine" id="cb229-4" data-line-number="4">ARIMA &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">auto.arima</span>(train, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">biasadj=</span><span class="ot">TRUE</span>), <span class="dt">h=</span>h)</a>
+<a class="sourceLine" id="cb229-5" data-line-number="5">STL &lt;-<span class="st"> </span><span class="kw">stlf</span>(train, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">h=</span>h, <span class="dt">biasadj=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb229-6" data-line-number="6">NNAR &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">nnetar</span>(train), <span class="dt">h=</span>h)</a>
+<a class="sourceLine" id="cb229-7" data-line-number="7">TBATS &lt;-<span class="st"> </span><span class="kw">forecast</span>(<span class="kw">tbats</span>(train), <span class="dt">h=</span>h)</a>
+<a class="sourceLine" id="cb229-8" data-line-number="8">Combination &lt;-<span class="st"> </span>(ETS<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>ARIMA<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>STL<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>NNAR<span class="op">$</span>mean <span class="op">+</span><span class="st"> </span>TBATS<span class="op">$</span>mean)<span class="op">/</span><span class="dv">5</span></a></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb230-1" data-line-number="1"><span class="kw">autoplot</span>(auscafe) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-2" data-line-number="2"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(ETS<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;ETS&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-3" data-line-number="3"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(ARIMA<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;ARIMA&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-4" data-line-number="4"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(STL<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;STL&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-5" data-line-number="5"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(STL<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;NNAR&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-6" data-line-number="6"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(STL<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;TBATS&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-7" data-line-number="7"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(Combination, <span class="dt">series=</span><span class="st">&quot;Combination&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-8" data-line-number="8"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;$ billion&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb230-9" data-line-number="9"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Australian monthly expenditure on eating out&quot;</span>)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/combineplot-1.png" width="90%" style="display: block; margin: auto;" /></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">ETS=</span><span class="kw">accuracy</span>(ETS, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],
-  <span class="dt">ARIMA=</span><span class="kw">accuracy</span>(ARIMA, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],
-  <span class="st">`</span><span class="dt">STL-ETS</span><span class="st">`</span>=<span class="kw">accuracy</span>(STL, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],
-  <span class="dt">NNAR=</span><span class="kw">accuracy</span>(NNAR, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],
-  <span class="dt">TBATS=</span><span class="kw">accuracy</span>(TBATS, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],
-  <span class="dt">Combination=</span><span class="kw">accuracy</span>(Combination, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>])
-<span class="co">#&gt;         ETS       ARIMA     STL-ETS        NNAR       TBATS Combination </span>
-<span class="co">#&gt;      0.1370      0.1215      0.2145      0.3177      0.0884      0.0719</span></code></pre>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb231-1" data-line-number="1"><span class="kw">c</span>(<span class="dt">ETS=</span><span class="kw">accuracy</span>(ETS, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],</a>
+<a class="sourceLine" id="cb231-2" data-line-number="2">  <span class="dt">ARIMA=</span><span class="kw">accuracy</span>(ARIMA, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],</a>
+<a class="sourceLine" id="cb231-3" data-line-number="3">  <span class="st">`</span><span class="dt">STL-ETS</span><span class="st">`</span>=<span class="kw">accuracy</span>(STL, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],</a>
+<a class="sourceLine" id="cb231-4" data-line-number="4">  <span class="dt">NNAR=</span><span class="kw">accuracy</span>(NNAR, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],</a>
+<a class="sourceLine" id="cb231-5" data-line-number="5">  <span class="dt">TBATS=</span><span class="kw">accuracy</span>(TBATS, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>],</a>
+<a class="sourceLine" id="cb231-6" data-line-number="6">  <span class="dt">Combination=</span><span class="kw">accuracy</span>(Combination, auscafe)[<span class="st">&quot;Test set&quot;</span>,<span class="st">&quot;RMSE&quot;</span>])</a>
+<a class="sourceLine" id="cb231-7" data-line-number="7"><span class="co">#&gt;         ETS       ARIMA     STL-ETS        NNAR       TBATS Combination </span></a>
+<a class="sourceLine" id="cb231-8" data-line-number="8"><span class="co">#&gt;      0.1370      0.1215      0.2145      0.3177      0.0884      0.0719</span></a></code></pre></div>
 <p>TBATS does particularly well with this series, but the combination approach is not far behind. For other data, TBATS may be quite poor, while the combination approach is almost always close to, or better than, the best component method.</p>
 </div>
 <h3>References</h3>

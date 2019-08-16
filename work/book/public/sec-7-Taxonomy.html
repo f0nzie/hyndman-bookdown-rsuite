@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7.3 Holt-Winters’ seasonal method | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7.3 Holt-Winters’ seasonal method | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -338,14 +337,14 @@ which is identical to the smoothing equation for the seasonal component we speci
 <div id="example-international-tourist-visitor-nights-in-australia" class="section level3 unnumbered">
 <h3>Example: International tourist visitor nights in Australia</h3>
 <p>In this example we employ the Holt-Winters method with both additive and multiplicative seasonality to forecast quarterly visitor nights in Australia spent by international tourists. Figure <a href="sec-7-Taxonomy.html#fig:7-HW">7.7</a> shows the data from 2005, and the forecasts for 2016–2017. The data show an obvious seasonal pattern, with peaks observed in the March quarter of each year, corresponding to the Australian summer.</p>
-<pre class="sourceCode r"><code class="sourceCode r">aust &lt;-<span class="st"> </span><span class="kw">window</span>(austourists,<span class="dt">start=</span><span class="dv">2005</span>)
-fit1 &lt;-<span class="st"> </span><span class="kw">hw</span>(aust,<span class="dt">seasonal=</span><span class="st">&quot;additive&quot;</span>)
-fit2 &lt;-<span class="st"> </span><span class="kw">hw</span>(aust,<span class="dt">seasonal=</span><span class="st">&quot;multiplicative&quot;</span>)
-<span class="kw">autoplot</span>(aust) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(fit1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;HW additive forecasts&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(fit2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;HW multiplicative forecasts&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;International visitor night in Australia (millions)&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">aust &lt;-<span class="st"> </span><span class="kw">window</span>(austourists,<span class="dt">start=</span><span class="dv">2005</span>)</a>
+<a class="sourceLine" id="cb115-2" data-line-number="2">fit1 &lt;-<span class="st"> </span><span class="kw">hw</span>(aust,<span class="dt">seasonal=</span><span class="st">&quot;additive&quot;</span>)</a>
+<a class="sourceLine" id="cb115-3" data-line-number="3">fit2 &lt;-<span class="st"> </span><span class="kw">hw</span>(aust,<span class="dt">seasonal=</span><span class="st">&quot;multiplicative&quot;</span>)</a>
+<a class="sourceLine" id="cb115-4" data-line-number="4"><span class="kw">autoplot</span>(aust) <span class="op">+</span></a>
+<a class="sourceLine" id="cb115-5" data-line-number="5"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(fit1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;HW additive forecasts&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb115-6" data-line-number="6"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(fit2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;HW multiplicative forecasts&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb115-7" data-line-number="7"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;International visitor night in Australia (millions)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb115-8" data-line-number="8"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:7-HW"></span>
 <img src="fpp_files/figure-html/7-HW-1.png" alt="Forecasting international visitor nights in Australia using the Holt-Winters method with both additive and multiplicative seasonality." width="90%" />
 <p class="caption">
@@ -1428,17 +1427,17 @@ Figure 7.8: Estimated components for the Holt-Winters method with additive and m
   b_{t} &amp;= \beta^*(\ell_{t} - \ell_{t-1}) + (1 - \beta^*)\phi b_{t-1}             \\
   s_{t} &amp;= \gamma \frac{y_{t}}{(\ell_{t-1} + \phi b_{t-1})} + (1 - \gamma)s_{t-m}.
 \end{align*}\]</span></p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hw</span>(x, <span class="dt">damped=</span><span class="ot">TRUE</span>, <span class="dt">seasonal=</span><span class="st">&quot;multiplicative&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1"><span class="kw">hw</span>(x, <span class="dt">damped=</span><span class="ot">TRUE</span>, <span class="dt">seasonal=</span><span class="st">&quot;multiplicative&quot;</span>)</a></code></pre></div>
 </div>
 <div id="example-holt-winters-method-with-daily-data" class="section level3 unnumbered">
 <h3>Example: Holt-Winters method with daily data</h3>
 <p>The Holt-Winters method can also be used for daily type of data, where the seasonal pattern is of length 7, and the appropriate unit of time for <span class="math inline">\(h\)</span> is in days. Here, we generate daily forecasts for the last five weeks for the <code>hyndsight</code> data, which contains the daily pageviews on the Hyndsight blog for one year starting April 30, 2014.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fc &lt;-<span class="st"> </span><span class="kw">hw</span>(<span class="kw">subset</span>(hyndsight,<span class="dt">end=</span><span class="kw">length</span>(hyndsight)<span class="op">-</span><span class="dv">35</span>),
-         <span class="dt">damped =</span> <span class="ot">TRUE</span>, <span class="dt">seasonal=</span><span class="st">&quot;multiplicative&quot;</span>, <span class="dt">h=</span><span class="dv">35</span>)
-
-<span class="kw">autoplot</span>(hyndsight) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(fc<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;HW multi damped&quot;</span>)<span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Daily forecasts&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">fc &lt;-<span class="st"> </span><span class="kw">hw</span>(<span class="kw">subset</span>(hyndsight,<span class="dt">end=</span><span class="kw">length</span>(hyndsight)<span class="op">-</span><span class="dv">35</span>),</a>
+<a class="sourceLine" id="cb117-2" data-line-number="2">         <span class="dt">damped =</span> <span class="ot">TRUE</span>, <span class="dt">seasonal=</span><span class="st">&quot;multiplicative&quot;</span>, <span class="dt">h=</span><span class="dv">35</span>)</a>
+<a class="sourceLine" id="cb117-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb117-4" data-line-number="4"><span class="kw">autoplot</span>(hyndsight) <span class="op">+</span></a>
+<a class="sourceLine" id="cb117-5" data-line-number="5"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(fc<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;HW multi damped&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb117-6" data-line-number="6"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Daily forecasts&quot;</span>))</a></code></pre></div>
 <p><img src="fpp_files/figure-html/hyndsight-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 </div>

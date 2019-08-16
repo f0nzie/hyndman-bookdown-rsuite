@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.7 Forecasting with decomposition | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.7 Forecasting with decomposition | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -317,10 +316,10 @@ where <span class="math inline">\(\hat{A}_t = \hat{T}_t\hat{R}_{t}\)</span>.</p>
 <p>To forecast the seasonally adjusted component, any non-seasonal forecasting method may be used. For example, a random walk with drift model, or Holt’s method (discussed in the next chapter), or a non-seasonal ARIMA model (discussed in Chapter <a href="ch-arima.html#ch-arima">8</a>), may be used.</p>
 <div id="example-electrical-equipment-manufacturing" class="section level3 unnumbered">
 <h3>Example: Electrical equipment manufacturing</h3>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">stl</span>(elecequip, <span class="dt">t.window=</span><span class="dv">13</span>, <span class="dt">s.window=</span><span class="st">&quot;periodic&quot;</span>, <span class="dt">robust=</span><span class="ot">TRUE</span>)
-
-fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">seasadj</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">naive</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;New orders index&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Naive forecasts of seasonally adjusted data&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">stl</span>(elecequip, <span class="dt">t.window=</span><span class="dv">13</span>, <span class="dt">s.window=</span><span class="st">&quot;periodic&quot;</span>, <span class="dt">robust=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb102-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb102-3" data-line-number="3">fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">seasadj</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">naive</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;New orders index&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb102-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Naive forecasts of seasonally adjusted data&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:elecequip4"></span>
 <img src="fpp_files/figure-html/elecequip4-1.png" alt="Naïve forecasts of the seasonally adjusted data obtained from an STL decomposition of the electrical equipment orders data." width="90%" />
 <p class="caption">
@@ -329,7 +328,7 @@ Figure 6.14: Naïve forecasts of the seasonally adjusted data obtained from an S
 </div>
 <p>Figure <a href="forecasting-with-decomposition.html#fig:elecequip4">6.14</a> shows naïve forecasts of the seasonally adjusted electrical equipment orders data. These are then “reseasonalized” by adding in the seasonal naïve forecasts of the seasonal component.</p>
 <p>This is made easy with the <code>forecast</code> function applied to the <code>stl</code> object. You need to specify the method being used on the seasonally adjusted data, and the function will do the re-seasonalizing for you. The resulting forecasts of the original data are shown in Figure <a href="forecasting-with-decomposition.html#fig:elecequip5">6.15</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">method=</span><span class="st">&quot;naive&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;New orders index&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">method=</span><span class="st">&quot;naive&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;New orders index&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:elecequip5"></span>
 <img src="fpp_files/figure-html/elecequip5-1.png" alt="Forecasts of the electrical equipment orders data based on a naïve forecast of the seasonally adjusted data and a seasonal naïve forecast of the seasonal component, after an STL decomposition of the data." width="90%" />
 <p class="caption">
@@ -338,7 +337,7 @@ Figure 6.15: Forecasts of the electrical equipment orders data based on a naïve
 </div>
 <p>The prediction intervals shown in this graph are constructed in the same way as the point forecasts. That is, the upper and lower limits of the prediction intervals on the seasonally adjusted data are “reseasonalized” by adding in the forecasts of the seasonal component. In this calculation, the uncertainty in the forecasts of the seasonal component has been ignored. The rationale for this choice is that the uncertainty in the seasonal component is much smaller than that for the seasonally adjusted data, and so it is a reasonable approximation to ignore it.</p>
 <p>A short-cut approach is to use the <code>stlf</code> function. The following code will decompose the time series using STL, forecast the seasonally adjusted series, and return reseasonalize the forecasts.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fcast &lt;-<span class="st"> </span><span class="kw">stlf</span>(eeadj, <span class="dt">method=</span><span class="st">&#39;naive&#39;</span>)</code></pre>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">fcast &lt;-<span class="st"> </span><span class="kw">stlf</span>(eeadj, <span class="dt">method=</span><span class="st">&#39;naive&#39;</span>)</a></code></pre></div>
 <p>The <code>stlf</code> function uses default values for <code>s.window</code> and <code>t.window</code>.</p>
 <p>As well as the naïve method, several other possible forecasting methods are available with <code>stlf</code>, as described in the corresponding help file. If <code>method</code> is not specified, it will use the ETS approach (discussed in the next chapter) applied to the seasonally adjusted series. This usually produces quite good forecasts for seasonal time series, and some companies use it routinely for all their operational forecasts.</p>
 </div>

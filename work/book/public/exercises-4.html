@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9.7 Exercises | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9.7 Exercises | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -310,7 +309,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Fit a standard regression model <span class="math inline">\(y_t = a + b x_t + n_t\)</span> where <span class="math inline">\(y_t\)</span> denotes sales and <span class="math inline">\(x_t\)</span> denotes advertising using the <code>tslm()</code> function.</li>
 <li>Show that the residuals have significant autocorrelation.</li>
 <li><p>What difference does it make you use the  function instead:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Arima</span>(advert[,<span class="st">&quot;sales&quot;</span>], <span class="dt">xreg=</span>advert[,<span class="st">&quot;advert&quot;</span>], <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))</code></pre></li>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb194-1" data-line-number="1"><span class="kw">Arima</span>(advert[,<span class="st">&quot;sales&quot;</span>], <span class="dt">xreg=</span>advert[,<span class="st">&quot;advert&quot;</span>], <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))</a></code></pre></div></li>
 <li>Refit the model using <code>auto.arima()</code>. How much difference does the error model make to the estimated parameters? What ARIMA model for the errors is selected?</li>
 <li>Check the residuals of the fitted model.</li>
 <li><p>Assuming the advertising budget for the next six months is exactly 10 units per month, produce and plot sales forecasts with prediction intervals for the next six months.</p></li>

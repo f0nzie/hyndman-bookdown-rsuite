@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.6 The forecast package in R | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.6 The forecast package in R | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -328,16 +327,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The <code>forecast()</code> function works with many different types of input. It generally takes a time series or time series model as its main argument, and produces forecasts appropriately. It always returns objects of class <code>forecast</code>.</p>
 <p>If the first argument is of class <code>ts</code>, it returns forecasts from the automatic ETS algorithm discussed in Chapter <a href="ch-expsmooth.html#ch-expsmooth">7</a>.</p>
 <p>Here is a simple example, applying <code>forecast()</code> to the <code>ausbeer</code> data:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(ausbeer)
-<span class="co">#&gt;         Point Forecast Lo 80 Hi 80 Lo 95 Hi 95</span>
-<span class="co">#&gt; 2010 Q3            405   386   423   376   433</span>
-<span class="co">#&gt; 2010 Q4            480   458   503   445   515</span>
-<span class="co">#&gt; 2011 Q1            417   397   438   386   448</span>
-<span class="co">#&gt; 2011 Q2            383   364   403   353   413</span>
-<span class="co">#&gt; 2011 Q3            403   380   426   368   438</span>
-<span class="co">#&gt; 2011 Q4            478   450   507   435   522</span>
-<span class="co">#&gt; 2012 Q1            415   390   441   376   455</span>
-<span class="co">#&gt; 2012 Q2            382   357   406   344   419</span></code></pre>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">forecast</span>(ausbeer)</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="co">#&gt;         Point Forecast Lo 80 Hi 80 Lo 95 Hi 95</span></a>
+<a class="sourceLine" id="cb54-3" data-line-number="3"><span class="co">#&gt; 2010 Q3            405   386   423   376   433</span></a>
+<a class="sourceLine" id="cb54-4" data-line-number="4"><span class="co">#&gt; 2010 Q4            480   458   503   445   515</span></a>
+<a class="sourceLine" id="cb54-5" data-line-number="5"><span class="co">#&gt; 2011 Q1            417   397   438   386   448</span></a>
+<a class="sourceLine" id="cb54-6" data-line-number="6"><span class="co">#&gt; 2011 Q2            383   364   403   353   413</span></a>
+<a class="sourceLine" id="cb54-7" data-line-number="7"><span class="co">#&gt; 2011 Q3            403   380   426   368   438</span></a>
+<a class="sourceLine" id="cb54-8" data-line-number="8"><span class="co">#&gt; 2011 Q4            478   450   507   435   522</span></a>
+<a class="sourceLine" id="cb54-9" data-line-number="9"><span class="co">#&gt; 2012 Q1            415   390   441   376   455</span></a>
+<a class="sourceLine" id="cb54-10" data-line-number="10"><span class="co">#&gt; 2012 Q2            382   357   406   344   419</span></a></code></pre></div>
 <p>That works quite well if you have no idea what sort of model to use. But by the end of this book, you should not need to use <code>forecast()</code> in this “blind” fashion. Instead, you will fit a model appropriate to the data, and then use <code>forecast()</code> to produce forecasts from that model.</p>
 </div>
 </div>

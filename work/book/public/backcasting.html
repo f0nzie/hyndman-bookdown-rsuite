@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.6 Backcasting | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.6 Backcasting | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -304,31 +303,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="backcasting" class="section level2">
 <h2><span class="header-section-number">12.6</span> Backcasting</h2>
 <p>Sometimes it is useful to “backcast” a time series — that is, forecast in reverse time. Although there are no in-built R functions to do this, it is very easy to implement. The following functions reverse a <code>ts</code> object and a <code>forecast</code> object.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Function to reverse time</span>
-reverse_ts &lt;-<span class="st"> </span><span class="cf">function</span>(y)
-{
-  <span class="kw">ts</span>(<span class="kw">rev</span>(y), <span class="dt">start=</span><span class="kw">tsp</span>(y)[1L], <span class="dt">frequency=</span><span class="kw">frequency</span>(y))
-}
-<span class="co"># Function to reverse a forecast</span>
-reverse_forecast &lt;-<span class="st"> </span><span class="cf">function</span>(object)
-{
-  h &lt;-<span class="st"> </span><span class="kw">length</span>(object<span class="op">$</span>mean)
-  f &lt;-<span class="st"> </span><span class="kw">frequency</span>(object<span class="op">$</span>mean)
-  object<span class="op">$</span>x &lt;-<span class="st"> </span><span class="kw">reverse_ts</span>(object<span class="op">$</span>x)
-  object<span class="op">$</span>mean &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">rev</span>(object<span class="op">$</span>mean), 
-                    <span class="dt">end=</span><span class="kw">tsp</span>(object<span class="op">$</span>x)[1L]<span class="op">-</span><span class="dv">1</span><span class="op">/</span>f, <span class="dt">frequency=</span>f)
-  object<span class="op">$</span>lower &lt;-<span class="st"> </span>object<span class="op">$</span>lower[h<span class="op">:</span>1L,]
-  object<span class="op">$</span>upper &lt;-<span class="st"> </span>object<span class="op">$</span>upper[h<span class="op">:</span>1L,]
-  <span class="kw">return</span>(object)
-}</code></pre>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" data-line-number="1"><span class="co"># Function to reverse time</span></a>
+<a class="sourceLine" id="cb235-2" data-line-number="2">reverse_ts &lt;-<span class="st"> </span><span class="cf">function</span>(y)</a>
+<a class="sourceLine" id="cb235-3" data-line-number="3">{</a>
+<a class="sourceLine" id="cb235-4" data-line-number="4">  <span class="kw">ts</span>(<span class="kw">rev</span>(y), <span class="dt">start=</span><span class="kw">tsp</span>(y)[1L], <span class="dt">frequency=</span><span class="kw">frequency</span>(y))</a>
+<a class="sourceLine" id="cb235-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb235-6" data-line-number="6"><span class="co"># Function to reverse a forecast</span></a>
+<a class="sourceLine" id="cb235-7" data-line-number="7">reverse_forecast &lt;-<span class="st"> </span><span class="cf">function</span>(object)</a>
+<a class="sourceLine" id="cb235-8" data-line-number="8">{</a>
+<a class="sourceLine" id="cb235-9" data-line-number="9">  h &lt;-<span class="st"> </span><span class="kw">length</span>(object<span class="op">$</span>mean)</a>
+<a class="sourceLine" id="cb235-10" data-line-number="10">  f &lt;-<span class="st"> </span><span class="kw">frequency</span>(object<span class="op">$</span>mean)</a>
+<a class="sourceLine" id="cb235-11" data-line-number="11">  object<span class="op">$</span>x &lt;-<span class="st"> </span><span class="kw">reverse_ts</span>(object<span class="op">$</span>x)</a>
+<a class="sourceLine" id="cb235-12" data-line-number="12">  object<span class="op">$</span>mean &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">rev</span>(object<span class="op">$</span>mean), </a>
+<a class="sourceLine" id="cb235-13" data-line-number="13">                    <span class="dt">end=</span><span class="kw">tsp</span>(object<span class="op">$</span>x)[1L]<span class="op">-</span><span class="dv">1</span><span class="op">/</span>f, <span class="dt">frequency=</span>f)</a>
+<a class="sourceLine" id="cb235-14" data-line-number="14">  object<span class="op">$</span>lower &lt;-<span class="st"> </span>object<span class="op">$</span>lower[h<span class="op">:</span>1L,]</a>
+<a class="sourceLine" id="cb235-15" data-line-number="15">  object<span class="op">$</span>upper &lt;-<span class="st"> </span>object<span class="op">$</span>upper[h<span class="op">:</span>1L,]</a>
+<a class="sourceLine" id="cb235-16" data-line-number="16">  <span class="kw">return</span>(object)</a>
+<a class="sourceLine" id="cb235-17" data-line-number="17">}</a></code></pre></div>
 <p>Then we can apply these function to backcast any time series. Here is an example applied to quarterly retail trade in the Euro area. The data are from 1996-2011. We backcast to predict the years 1994-1995.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Backcast example</span>
-euretail <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">reverse_ts</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">forecast</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">reverse_forecast</span>() -&gt;<span class="st"> </span>bc
-<span class="kw">autoplot</span>(bc) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">&quot;Backcasts from&quot;</span>,bc<span class="op">$</span>method))</code></pre>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb236-1" data-line-number="1"><span class="co"># Backcast example</span></a>
+<a class="sourceLine" id="cb236-2" data-line-number="2">euretail <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb236-3" data-line-number="3"><span class="st">  </span><span class="kw">reverse_ts</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb236-4" data-line-number="4"><span class="st">  </span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb236-5" data-line-number="5"><span class="st">  </span><span class="kw">forecast</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb236-6" data-line-number="6"><span class="st">  </span><span class="kw">reverse_forecast</span>() -&gt;<span class="st"> </span>bc</a>
+<a class="sourceLine" id="cb236-7" data-line-number="7"><span class="kw">autoplot</span>(bc) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="kw">paste</span>(<span class="st">&quot;Backcasts from&quot;</span>,bc<span class="op">$</span>method))</a></code></pre></div>
 <p><img src="fpp_files/figure-html/backcasting-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
             </section>

@@ -65,7 +65,7 @@ Happy forecasting!
 Rob J Hyndman<br>
 George Athanasopoulos
 
-June 2019
+August 2019
 
 
 <!--chapter:end:index.Rmd-->
@@ -2126,9 +2126,6 @@ The first column of Figure \@ref(fig:ScatterMatrix) below shows the relationship
 uschange %>%
   as.data.frame() %>%
   GGally::ggpairs()
-#> Registered S3 method overwritten by 'GGally':
-#>   method from   
-#>   +.gg   ggplot2
 ```
 
 <div class="figure" style="text-align: center">

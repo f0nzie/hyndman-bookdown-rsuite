@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7.7 Forecasting with ETS models | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7.7 Forecasting with ETS models | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -316,9 +315,9 @@ y_{T+2} &amp;= (\ell_{T+1} + b_{T+1})(1 + \varepsilon_{T+1})\\
 Therefore, <span class="math inline">\(\hat{y}_{T+2|T}= \ell_{T}+2b_{T},\)</span> and so on. These forecasts are identical to the forecasts from Holt’s linear method, and also to those from model ETS(A,A,N). Thus, the point forecasts obtained from the method and from the two models that underlie the method are identical (assuming that the same parameter values are used).</p>
 <p>ETS point forecasts are equal to the medians of the forecast distributions. For models with only additive components, the forecast distributions are normal, so the medians and means are equal. For ETS models with multiplicative errors, or with multiplicative seasonality, the point forecasts will not be equal to the means of the forecast distributions.</p>
 <p>To obtain forecasts from an ETS model, we use the <code>forecast</code> function. The R code below shows the possible arguments that this function takes when applied to an ETS model. We explain each of the arguments in what follows.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(object, <span class="dt">h=</span><span class="kw">ifelse</span>(object<span class="op">$</span>m<span class="op">&gt;</span><span class="dv">1</span>, <span class="dv">2</span><span class="op">*</span>object<span class="op">$</span>m, <span class="dv">10</span>),
-<span class="dt">level=</span><span class="kw">c</span>(<span class="dv">80</span>,<span class="dv">95</span>), <span class="dt">fan=</span><span class="ot">FALSE</span>, <span class="dt">simulate=</span><span class="ot">FALSE</span>, <span class="dt">bootstrap=</span><span class="ot">FALSE</span>, <span class="dt">npaths=</span><span class="dv">5000</span>,
-<span class="dt">PI=</span><span class="ot">TRUE</span>, <span class="dt">lambda=</span>object<span class="op">$</span>lambda, <span class="dt">biasadj=</span><span class="ot">NULL</span>, ...)</code></pre>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1"><span class="kw">forecast</span>(object, <span class="dt">h=</span><span class="kw">ifelse</span>(object<span class="op">$</span>m<span class="op">&gt;</span><span class="dv">1</span>, <span class="dv">2</span><span class="op">*</span>object<span class="op">$</span>m, <span class="dv">10</span>),</a>
+<a class="sourceLine" id="cb122-2" data-line-number="2"><span class="dt">level=</span><span class="kw">c</span>(<span class="dv">80</span>,<span class="dv">95</span>), <span class="dt">fan=</span><span class="ot">FALSE</span>, <span class="dt">simulate=</span><span class="ot">FALSE</span>, <span class="dt">bootstrap=</span><span class="ot">FALSE</span>, <span class="dt">npaths=</span><span class="dv">5000</span>,</a>
+<a class="sourceLine" id="cb122-3" data-line-number="3"><span class="dt">PI=</span><span class="ot">TRUE</span>, <span class="dt">lambda=</span>object<span class="op">$</span>lambda, <span class="dt">biasadj=</span><span class="ot">NULL</span>, ...)</a></code></pre></div>
 <dl>
 <dt><code>object</code></dt>
 <dd>The object returned by the <code>ets()</code> function.
@@ -351,9 +350,9 @@ Therefore, <span class="math inline">\(\hat{y}_{T+2|T}= \ell_{T}+2b_{T},\)</span
 <dd>If <code>lambda</code> is not <code>NULL</code>, the backtransformed forecasts (and prediction intervals) are bias-adjusted.
 </dd>
 </dl>
-<pre class="sourceCode r"><code class="sourceCode r">fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">8</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;International visitor night in Australia (millions)&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">fit <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">8</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb123-2" data-line-number="2"><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb123-3" data-line-number="3"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;International visitor night in Australia (millions)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:MAMforecasts"></span>
 <img src="fpp_files/figure-html/MAMforecasts-1.png" alt="Forecasting international visitor nights in Australia using an ETS(M,A,M) model." width="90%" />
 <p class="caption">
@@ -398,14 +397,14 @@ Figure 7.13: Forecasts of the ten bootstrapped series obtained using ETS models.
 </p>
 </div>
 <p>The average of these forecast gives the bagged forecasts of the original data. The whole procedure can be handled with the <code>baggedETS</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r">etsfc &lt;-<span class="st"> </span>aust <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>ets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>)
-baggedfc &lt;-<span class="st"> </span>aust <span class="op">%&gt;%</span>
-<span class="st">  </span>baggedETS <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>)
-<span class="kw">autoplot</span>(aust) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(baggedfc<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;BaggedETS&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(etsfc<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;ETS&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecasts&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">etsfc &lt;-<span class="st"> </span>aust <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb125-2" data-line-number="2"><span class="st">  </span>ets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb125-3" data-line-number="3">baggedfc &lt;-<span class="st"> </span>aust <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb125-4" data-line-number="4"><span class="st">  </span>baggedETS <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb125-5" data-line-number="5"><span class="kw">autoplot</span>(aust) <span class="op">+</span></a>
+<a class="sourceLine" id="cb125-6" data-line-number="6"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(baggedfc<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;BaggedETS&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb125-7" data-line-number="7"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(etsfc<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;ETS&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb125-8" data-line-number="8"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecasts&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:baggedets"></span>
 <img src="fpp_files/figure-html/baggedets-1.png" alt="Comparing bagged ETS forecasts (the average of 100 bootstrapped forecast) and ETS applied directly to the data." width="90%" />
 <p class="caption">

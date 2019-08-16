@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.1 Some simple forecasting methods | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.1 Some simple forecasting methods | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -311,17 +310,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   \hat{y}_{T+h|T} = \bar{y} = (y_{1}+\dots+y_{T})/T.
 \]</span>
 The notation <span class="math inline">\(\hat{y}_{T+h|T}\)</span> is a short-hand for the estimate of <span class="math inline">\(y_{T+h}\)</span> based on the data <span class="math inline">\(y_1,\dots,y_T\)</span>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">meanf</span>(y, h)
-<span class="co"># y contains the time series</span>
-<span class="co"># h is the forecast horizon</span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="kw">meanf</span>(y, h)</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="co"># y contains the time series</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co"># h is the forecast horizon</span></a></code></pre></div>
 <p>###Naïve method {-}</p>
 <p>Naïve forecasts are where all forecasts are simply set to be the value of the last observation. That is,
 <span class="math display">\[
   \hat{y}_{T+h|T} = y_{T}.
 \]</span></p>
 <p>This method works remarkably well for many economic and financial time series.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">naive</span>(y, h)
-<span class="kw">rwf</span>(y, h) <span class="co"># Alternative</span></code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">naive</span>(y, h)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">rwf</span>(y, h) <span class="co"># Alternative</span></a></code></pre></div>
 </div>
 <div id="seasonal-naive-method" class="section level3 unnumbered">
 <h3>Seasonal naïve method</h3>
@@ -330,7 +329,7 @@ The notation <span class="math inline">\(\hat{y}_{T+h|T}\)</span> is a short-han
    \hat{y}_{T+h|T} = y_{T+h-km},
 \]</span></p>
 <p>where <span class="math inline">\(m=\)</span> the seasonal period, <span class="math inline">\(k=\lfloor (h-1)/m\rfloor+1\)</span>, and <span class="math inline">\(\lfloor u \rfloor\)</span> denotes the integer part of <span class="math inline">\(u\)</span>. That looks more complicated than it really is. For example, with monthly data, the forecast for all future February values is equal to the last observed February value. With quarterly data, the forecast of all future Q2 values is equal to the last observed Q2 value (where Q2 means the second quarter). Similar rules apply for other months and quarters, and for other seasonal periods.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">snaive</span>(y, h)</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">snaive</span>(y, h)</a></code></pre></div>
 </div>
 <div id="drift-method" class="section level3 unnumbered">
 <h3>Drift method</h3>
@@ -339,21 +338,21 @@ The notation <span class="math inline">\(\hat{y}_{T+h|T}\)</span> is a short-han
   \hat{y}_{T+h|T} = y_{T} + \frac{h}{T-1}\sum_{t=2}^T (y_{t}-y_{t-1}) = y_{T} + h \left( \frac{y_{T} -y_{1}}{T-1}\right).
 \]</span>
 This is equivalent to drawing a line between the first and last observations, and extrapolating it into the future.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rwf</span>(y, h, <span class="dt">drift=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">rwf</span>(y, h, <span class="dt">drift=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="examples" class="section level3 unnumbered">
 <h3>Examples</h3>
 <p>Figure <a href="sec-2-methods.html#fig:beerf">3.1</a> shows the first three methods applied to the quarterly beer production data.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set training data from 1992-2007</span>
-beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))
-<span class="co"># Plot some forecasts</span>
-<span class="kw">autoplot</span>(beer2) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">meanf</span>(beer2, <span class="dt">h=</span><span class="dv">11</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">naive</span>(beer2, <span class="dt">h=</span><span class="dv">11</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">snaive</span>(beer2, <span class="dt">h=</span><span class="dv">11</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Seasonal naïve&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Forecasts for quarterly beer production&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Megalitres&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="co"># Set training data from 1992-2007</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"><span class="co"># Plot some forecasts</span></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="kw">autoplot</span>(beer2) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-5" data-line-number="5"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">meanf</span>(beer2, <span class="dt">h=</span><span class="dv">11</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">naive</span>(beer2, <span class="dt">h=</span><span class="dv">11</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-7" data-line-number="7"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">snaive</span>(beer2, <span class="dt">h=</span><span class="dv">11</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Seasonal naïve&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-8" data-line-number="8"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Forecasts for quarterly beer production&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Megalitres&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-10" data-line-number="10"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:beerf"></span>
 <img src="fpp_files/figure-html/beerf-1.png" alt="Forecasts of Australian quarterly beer production." width="90%" />
 <p class="caption">
@@ -361,16 +360,16 @@ Figure 3.1: Forecasts of Australian quarterly beer production.
 </p>
 </div>
 <p>In Figure <a href="sec-2-methods.html#fig:djf">3.2</a>, the non-seasonal methods were applied to a series of 250 days of the Dow Jones Index.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Set training data to first 250 days</span>
-dj2 &lt;-<span class="st"> </span><span class="kw">window</span>(dj,<span class="dt">end=</span><span class="dv">250</span>)
-<span class="co"># Plot some forecasts</span>
-<span class="kw">autoplot</span>(dj2) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">meanf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">rwf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">rwf</span>(dj2, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">42</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Drift&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Dow Jones Index (daily ending 15 Jul 94)&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># Set training data to first 250 days</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">dj2 &lt;-<span class="st"> </span><span class="kw">window</span>(dj,<span class="dt">end=</span><span class="dv">250</span>)</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="co"># Plot some forecasts</span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="kw">autoplot</span>(dj2) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">meanf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">rwf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-7" data-line-number="7"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">rwf</span>(dj2, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">42</span>)<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Drift&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Dow Jones Index (daily ending 15 Jul 94)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb28-10" data-line-number="10"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:djf"></span>
 <img src="fpp_files/figure-html/djf-1.png" alt="Forecasts based on 250 days of the Dow Jones Index." width="90%" />
 <p class="caption">

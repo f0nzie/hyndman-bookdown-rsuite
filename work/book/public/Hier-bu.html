@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.4 The bottom-up approach | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10.4 The bottom-up approach | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -344,7 +343,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 where <span class="math inline">\(\tilde{\bm{y}_t}\)</span> is an <span class="math inline">\(n\)</span>-dimensional vector of coherent <span class="math inline">\(h\)</span>-step-ahead forecasts of each time series within any aggregation structure and <span class="math inline">\(\hat{\bm{y}}_{K,h}\)</span> is an <span class="math inline">\(m\)</span>-dimensional vector of <span class="math inline">\(h\)</span>-step-ahead base forecasts for each of the bottom-level series of any aggregation structure. Note that for the bottom-up approach the coherent forecasts for the bottom-level series are equal to the base forecasts, i.e., <span class="math inline">\(\tilde{\bm{y}}_{K,t}=\hat{\bm{y}}_{K,t}\)</span>.</p>
 <p>The greatest advantage of this approach is that we are forecasting at the bottom-level of a structure and therefore no information is lost due to aggregation. On the other hand bottom-level data can be quite noisy and more challenging to model and forecast.</p>
 <p>The bottom-up approach is implemented in the <code>forecast</code> package by setting</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(..., <span class="dt">method =</span> <span class="st">&quot;bu&quot;</span>, ...). </code></pre>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb200-1" data-line-number="1"><span class="kw">forecast</span>(..., <span class="dt">method =</span> <span class="st">&quot;bu&quot;</span>, ...). </a></code></pre></div>
 </div>
             </section>
 

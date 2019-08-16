@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8.1 Stationarity and differencing | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8.1 Stationarity and differencing | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -326,12 +325,12 @@ Figure 8.1: Which of these series are stationary? (a) Dow Jones index on 292 con
 Figure 8.2: The ACF of the Dow-Jones index (left) and of the daily changes in the Dow-Jones index (right).
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">Box.test</span>(<span class="kw">diff</span>(dj), <span class="dt">lag=</span><span class="dv">10</span>, <span class="dt">type=</span><span class="st">&quot;Ljung-Box&quot;</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  Box-Ljung test</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; data:  diff(dj)</span>
-<span class="co">#&gt; X-squared = 14, df = 10, p-value = 0.2</span></code></pre>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1"><span class="kw">Box.test</span>(<span class="kw">diff</span>(dj), <span class="dt">lag=</span><span class="dv">10</span>, <span class="dt">type=</span><span class="st">&quot;Ljung-Box&quot;</span>)</a>
+<a class="sourceLine" id="cb128-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb128-3" data-line-number="3"><span class="co">#&gt;  Box-Ljung test</span></a>
+<a class="sourceLine" id="cb128-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb128-5" data-line-number="5"><span class="co">#&gt; data:  diff(dj)</span></a>
+<a class="sourceLine" id="cb128-6" data-line-number="6"><span class="co">#&gt; X-squared = 14, df = 10, p-value = 0.2</span></a></code></pre></div>
 <p>The ACF of the differenced Dow-Jones index looks just like that of a white noise series. There is only one autocorrelation lying just outside the 95% limits, and the Ljung-Box <span class="math inline">\(Q^*\)</span> statistic has a <em>p</em>-value of 0.153 (for <span class="math inline">\(h=10\)</span>). This suggests that the <em>daily change</em> in the Dow-Jones index is essentially a random amount which is uncorrelated with that of previous days.</p>
 </div>
 <div id="random-walk-model" class="section level3 unnumbered">
@@ -380,12 +379,12 @@ where <span class="math inline">\(m=\)</span> the number of seasons. These are a
   y_t = y_{t-m}+e_t.
 \]</span>
 Forecasts from this model are equal to the last observation from the relevant season. That is, this model gives seasonal naïve forecasts.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="st">&quot;Sales ($million)&quot;</span> =<span class="st"> </span>a10,
-      <span class="st">&quot;Monthly log sales&quot;</span> =<span class="st"> </span><span class="kw">log</span>(a10),
-      <span class="st">&quot;Annual change in log sales&quot;</span> =<span class="st"> </span><span class="kw">diff</span>(<span class="kw">log</span>(a10),<span class="dv">12</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Antidiabetic drug sales&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="kw">cbind</span>(<span class="st">&quot;Sales ($million)&quot;</span> =<span class="st"> </span>a10,</a>
+<a class="sourceLine" id="cb129-2" data-line-number="2">      <span class="st">&quot;Monthly log sales&quot;</span> =<span class="st"> </span><span class="kw">log</span>(a10),</a>
+<a class="sourceLine" id="cb129-3" data-line-number="3">      <span class="st">&quot;Annual change in log sales&quot;</span> =<span class="st"> </span><span class="kw">diff</span>(<span class="kw">log</span>(a10),<span class="dv">12</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb129-4" data-line-number="4"><span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb129-5" data-line-number="5"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb129-6" data-line-number="6"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Antidiabetic drug sales&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:a10diff"></span>
 <img src="fpp_files/figure-html/a10diff-1.png" alt="Logs and seasonal differences of the A10 (antidiabetic) sales data. The logarithms stabilize the variance, while the seasonal differences remove the seasonality and trend." width="90%" />
 <p class="caption">
@@ -395,13 +394,13 @@ Figure 8.3: Logs and seasonal differences of the A10 (antidiabetic) sales data. 
 <p>Figure <a href="stationarity-and-differencing.html#fig:a10diff">8.3</a> shows the seasonal differences of the logarithm of the monthly scripts for A10 (antidiabetic) drugs sold in Australia. The transformation and differencing have made the series look relatively stationary.</p>
 <p>To distinguish seasonal differences from ordinary differences, we sometimes refer to ordinary differences as “first differences”, meaning differences at lag 1.</p>
 <p>Sometimes it is necessary to do both a seasonal difference and a first difference to obtain stationary data, as is shown in Figure <a href="stationarity-and-differencing.html#fig:usmelec">8.4</a>. Here, the data are first transformed using logarithms (second panel), then seasonal differences are calculated (third panel). The data still seem a little non-stationary, and so a further lot of first differences are computed (bottom panel).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="st">&quot;Billion kWh&quot;</span> =<span class="st"> </span>usmelec,
-      <span class="st">&quot;Logs&quot;</span> =<span class="st"> </span><span class="kw">log</span>(usmelec),
-      <span class="st">&quot;Seasonally</span><span class="ch">\n</span><span class="st"> differenced logs&quot;</span> =<span class="st"> </span><span class="kw">diff</span>(<span class="kw">log</span>(usmelec),<span class="dv">12</span>),
-      <span class="st">&quot;Doubly</span><span class="ch">\n</span><span class="st"> differenced logs&quot;</span> =<span class="st"> </span><span class="kw">diff</span>(<span class="kw">diff</span>(<span class="kw">log</span>(usmelec),<span class="dv">12</span>),<span class="dv">1</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Monthly US net electricity generation&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="kw">cbind</span>(<span class="st">&quot;Billion kWh&quot;</span> =<span class="st"> </span>usmelec,</a>
+<a class="sourceLine" id="cb130-2" data-line-number="2">      <span class="st">&quot;Logs&quot;</span> =<span class="st"> </span><span class="kw">log</span>(usmelec),</a>
+<a class="sourceLine" id="cb130-3" data-line-number="3">      <span class="st">&quot;Seasonally</span><span class="ch">\n</span><span class="st"> differenced logs&quot;</span> =<span class="st"> </span><span class="kw">diff</span>(<span class="kw">log</span>(usmelec),<span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb130-4" data-line-number="4">      <span class="st">&quot;Doubly</span><span class="ch">\n</span><span class="st"> differenced logs&quot;</span> =<span class="st"> </span><span class="kw">diff</span>(<span class="kw">diff</span>(<span class="kw">log</span>(usmelec),<span class="dv">12</span>),<span class="dv">1</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb130-5" data-line-number="5"><span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb130-6" data-line-number="6"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb130-7" data-line-number="7"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Monthly US net electricity generation&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:usmelec"></span>
 <img src="fpp_files/figure-html/usmelec-1.png" alt="Top panel: US net electricity generation (billion kWh). Other panels show the same data after transforming and differencing." width="90%" />
 <p class="caption">
@@ -429,25 +428,25 @@ When both seasonal and first differences are applied, it makes no difference whi
   y&#39;_t = \alpha + \beta t + \phi y_{t-1} + \gamma_1 y&#39;_{t-1} + \gamma_2 y&#39;_{t-2} + \cdots + \gamma_k y&#39;_{t-k},
 \]</span>
 where <span class="math inline">\(y&#39;_t\)</span> denotes the first-differenced series, <span class="math inline">\(y&#39;_t=y_t-y_{t-1}\)</span>, and <span class="math inline">\(k\)</span> is the number of lags to include in the regression (often set to be about 3). If the original series, <span class="math inline">\(y_t\)</span>, needs differencing, then the coefficient <span class="math inline">\(\hat\phi\)</span> should be approximately zero. If <span class="math inline">\(y_t\)</span> is already stationary, then <span class="math inline">\(\hat{\phi}&lt;0\)</span>. The usual hypothesis tests for regression coefficients do not work when the data are non-stationary, but the test can be carried out using the following R function from the <code>tseries</code> package.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">adf.test</span>(x, <span class="dt">alternative =</span> <span class="st">&quot;stationary&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1"><span class="kw">adf.test</span>(x, <span class="dt">alternative =</span> <span class="st">&quot;stationary&quot;</span>)</a></code></pre></div>
 <p>In R, the default value of <span class="math inline">\(k\)</span> is set to <span class="math inline">\(\lfloor(T - 1)^{1/3}\rfloor\)</span>, where <span class="math inline">\(T\)</span> is the length of the time series and <span class="math inline">\(\lfloor x\rfloor\)</span> means the largest integer not greater than <span class="math inline">\(x\)</span>.</p>
 <p>The null-hypothesis for an ADF test is that the data are non-stationary. Thus, large p-values are indicative of non-stationarity, and small p-values suggest stationarity. Using the usual 5% threshold, differencing is required if the p-value is greater than 0.05.</p>
 </div>
 <div id="kpss-test" class="section level4 unnumbered">
 <h4>KPSS test</h4>
 <p>Another popular unit root test is the <em>Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test</em>. This reverses the hypotheses, so the null hypothesis is that the data are stationary. In this case, small p-values (e.g., less than 0.05) suggest that differencing is required. The <code>kpss.test</code> is also from the <code>tseries</code> package.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">kpss.test</span>(x)</code></pre>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1"><span class="kw">kpss.test</span>(x)</a></code></pre></div>
 <p>A useful R function is <code>ndiffs()</code>, which uses these tests to determine the appropriate number of first differences required for a non-seasonal time series.</p>
 <p>More complicated tests are required for seasonal differencing, and are beyond the scope of this book. A useful R function for determining whether seasonal differencing is required is <code>nsdiffs()</code>, which uses seasonal unit root tests to determine the appropriate number of seasonal differences required.</p>
 <p>The following code can be used to find how to make a seasonal series stationary. The resulting series, stored as <code>xstar</code>, has been differenced appropriately.</p>
-<pre class="sourceCode r"><code class="sourceCode r">ns &lt;-<span class="st"> </span><span class="kw">nsdiffs</span>(x)
-<span class="cf">if</span>(ns <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)
-  xstar &lt;-<span class="st"> </span><span class="kw">diff</span>(x, <span class="dt">lag=</span><span class="kw">frequency</span>(x), <span class="dt">differences=</span>ns)
-<span class="cf">else</span>
-  xstar &lt;-<span class="st"> </span>x
-nd &lt;-<span class="st"> </span><span class="kw">ndiffs</span>(xstar)
-<span class="cf">if</span>(nd <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)
-  xstar &lt;-<span class="st"> </span><span class="kw">diff</span>(xstar, <span class="dt">differences=</span>nd)</code></pre>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">ns &lt;-<span class="st"> </span><span class="kw">nsdiffs</span>(x)</a>
+<a class="sourceLine" id="cb133-2" data-line-number="2"><span class="cf">if</span>(ns <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb133-3" data-line-number="3">  xstar &lt;-<span class="st"> </span><span class="kw">diff</span>(x, <span class="dt">lag=</span><span class="kw">frequency</span>(x), <span class="dt">differences=</span>ns)</a>
+<a class="sourceLine" id="cb133-4" data-line-number="4"><span class="cf">else</span></a>
+<a class="sourceLine" id="cb133-5" data-line-number="5">  xstar &lt;-<span class="st"> </span>x</a>
+<a class="sourceLine" id="cb133-6" data-line-number="6">nd &lt;-<span class="st"> </span><span class="kw">ndiffs</span>(xstar)</a>
+<a class="sourceLine" id="cb133-7" data-line-number="7"><span class="cf">if</span>(nd <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb133-8" data-line-number="8">  xstar &lt;-<span class="st"> </span><span class="kw">diff</span>(xstar, <span class="dt">differences=</span>nd)</a></code></pre></div>
 </div>
 </div>
 </div>

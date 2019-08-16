@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.3 Ensuring forecasts stay within limits | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.3 Ensuring forecasts stay within limits | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -307,10 +306,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="positive-forecasts" class="section level3 unnumbered">
 <h3>Positive forecasts</h3>
 <p>To impose a positivity constraint, simply work on the log scale, by specifying the Box-Cox parameter <span class="math inline">\(\lambda=0\)</span>. For example, consider the real price of a dozen eggs (1900-1993; in cents):</p>
-<pre class="sourceCode r"><code class="sourceCode r">eggs <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ets</span>(<span class="dt">model=</span><span class="st">&quot;AAN&quot;</span>, <span class="dt">damped=</span><span class="ot">FALSE</span>, <span class="dt">lambda=</span><span class="dv">0</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">50</span>, <span class="dt">biasadj=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>()</code></pre>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb227-1" data-line-number="1">eggs <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb227-2" data-line-number="2"><span class="st">  </span><span class="kw">ets</span>(<span class="dt">model=</span><span class="st">&quot;AAN&quot;</span>, <span class="dt">damped=</span><span class="ot">FALSE</span>, <span class="dt">lambda=</span><span class="dv">0</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb227-3" data-line-number="3"><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">50</span>, <span class="dt">biasadj=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb227-4" data-line-number="4"><span class="st">  </span><span class="kw">autoplot</span>()</a></code></pre></div>
 <p><img src="fpp_files/figure-html/positiveeggs-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>Because we set <code>biasadj=TRUE</code>, the forecasts are the means of the forecast distributions.</p>
 </div>
@@ -325,20 +324,20 @@ where <span class="math inline">\(x\)</span> is on the original scale and <span 
 x  = \frac{(b-a)e^y}{1+e^y} + a.
 \]</span>
 This is not a built-in transformation, so we will need to do more work.</p>
-<pre class="sourceCode r"><code class="sourceCode r">    <span class="co"># Bounds</span>
-    a &lt;-<span class="st"> </span><span class="dv">50</span>
-    b &lt;-<span class="st"> </span><span class="dv">400</span>
-    <span class="co"># Transform data and fit model</span>
-    fit &lt;-<span class="st"> </span><span class="kw">log</span>((eggs<span class="op">-</span>a)<span class="op">/</span>(b<span class="op">-</span>eggs)) <span class="op">%&gt;%</span>
-<span class="st">      </span><span class="kw">ets</span>(<span class="dt">model=</span><span class="st">&quot;AAN&quot;</span>, <span class="dt">damped=</span><span class="ot">FALSE</span>)
-    fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">h=</span><span class="dv">50</span>)
-    <span class="co"># Back-transform forecasts</span>
-    fc<span class="op">$</span>mean &lt;-<span class="st"> </span>(b<span class="op">-</span>a)<span class="op">*</span><span class="kw">exp</span>(fc<span class="op">$</span>mean)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(fc<span class="op">$</span>mean)) <span class="op">+</span><span class="st"> </span>a
-    fc<span class="op">$</span>lower &lt;-<span class="st"> </span>(b<span class="op">-</span>a)<span class="op">*</span><span class="kw">exp</span>(fc<span class="op">$</span>lower)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(fc<span class="op">$</span>lower)) <span class="op">+</span><span class="st"> </span>a
-    fc<span class="op">$</span>upper &lt;-<span class="st"> </span>(b<span class="op">-</span>a)<span class="op">*</span><span class="kw">exp</span>(fc<span class="op">$</span>upper)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(fc<span class="op">$</span>upper)) <span class="op">+</span><span class="st"> </span>a
-    fc<span class="op">$</span>x &lt;-<span class="st"> </span>eggs
-    <span class="co"># Plot result on original scale</span>
-    <span class="kw">autoplot</span>(fc)</code></pre>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb228-1" data-line-number="1">    <span class="co"># Bounds</span></a>
+<a class="sourceLine" id="cb228-2" data-line-number="2">    a &lt;-<span class="st"> </span><span class="dv">50</span></a>
+<a class="sourceLine" id="cb228-3" data-line-number="3">    b &lt;-<span class="st"> </span><span class="dv">400</span></a>
+<a class="sourceLine" id="cb228-4" data-line-number="4">    <span class="co"># Transform data and fit model</span></a>
+<a class="sourceLine" id="cb228-5" data-line-number="5">    fit &lt;-<span class="st"> </span><span class="kw">log</span>((eggs<span class="op">-</span>a)<span class="op">/</span>(b<span class="op">-</span>eggs)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb228-6" data-line-number="6"><span class="st">      </span><span class="kw">ets</span>(<span class="dt">model=</span><span class="st">&quot;AAN&quot;</span>, <span class="dt">damped=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb228-7" data-line-number="7">    fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">h=</span><span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb228-8" data-line-number="8">    <span class="co"># Back-transform forecasts</span></a>
+<a class="sourceLine" id="cb228-9" data-line-number="9">    fc<span class="op">$</span>mean &lt;-<span class="st"> </span>(b<span class="op">-</span>a)<span class="op">*</span><span class="kw">exp</span>(fc<span class="op">$</span>mean)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(fc<span class="op">$</span>mean)) <span class="op">+</span><span class="st"> </span>a</a>
+<a class="sourceLine" id="cb228-10" data-line-number="10">    fc<span class="op">$</span>lower &lt;-<span class="st"> </span>(b<span class="op">-</span>a)<span class="op">*</span><span class="kw">exp</span>(fc<span class="op">$</span>lower)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(fc<span class="op">$</span>lower)) <span class="op">+</span><span class="st"> </span>a</a>
+<a class="sourceLine" id="cb228-11" data-line-number="11">    fc<span class="op">$</span>upper &lt;-<span class="st"> </span>(b<span class="op">-</span>a)<span class="op">*</span><span class="kw">exp</span>(fc<span class="op">$</span>upper)<span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="kw">exp</span>(fc<span class="op">$</span>upper)) <span class="op">+</span><span class="st"> </span>a</a>
+<a class="sourceLine" id="cb228-12" data-line-number="12">    fc<span class="op">$</span>x &lt;-<span class="st"> </span>eggs</a>
+<a class="sourceLine" id="cb228-13" data-line-number="13">    <span class="co"># Plot result on original scale</span></a>
+<a class="sourceLine" id="cb228-14" data-line-number="14">    <span class="kw">autoplot</span>(fc)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/constrained-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>No bias-adjustment has been used here, so the forecasts are the medians of the future distributions. The prediction intervals from these transformations have the same coverage probability as on the transformed scale, because quantiles are preserved under monotonically increasing transformations.</p>
 <p>The prediction intervals lie above 50 due to the transformation. As a result of this artificial (and unrealistic) constraint, the forecast distributions have become extremely skewed.</p>

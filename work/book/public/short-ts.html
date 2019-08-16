@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.7 Forecasting very short time series | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.7 Forecasting very short time series | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -307,17 +306,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Some textbooks provide rules-of-thumb giving minimum sample sizes for various time series models. These are misleading and unsubstantiated in theory or practice. Further, they ignore the underlying variability of the data and often overlook the number of parameters to be estimated as well. There is, for example, no justification whatever for the magic number of 30 often given as a minimum for ARIMA modelling. The only theoretical limit is that you need more observations than there are parameters in your forecasting model. However, in practice, you usually need substantially more observations than that.</p>
 <p>Ideally, we would test if our chosen model performs well out-of-sample compared to some simpler approaches. However, with short series, there is not enough data to allow some observations to be withheld for testing purposes, and even time series cross validation can be difficult to apply. The AICc is particularly useful here, because it is a proxy for the one-step forecast out-of-sample MSE. Choosing the model with the minimum AICc value allows both the number of parameters and the amount of noise to be taken into account.</p>
 <p>What tends to happen with short series is that the AIC suggests very simple models because anything with more than one or two parameters will produce poor forecasts due to the estimation error.  We applied the <code>auto.arima()</code> function to all the series from the M-competition with fewer than 20 observations. There were a total of 144 series, of which 54 had models with zero parameters (white noise and random walks), 73 had models with one parameter, 15 had models with two parameters and 2 series had models with three parameters. Interested readers can carry out the same exercise using the following code.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(Mcomp)
-<span class="kw">library</span>(purrr)
-n &lt;-<span class="st"> </span><span class="kw">map_int</span>(M1, <span class="cf">function</span>(x) {<span class="kw">length</span>(x<span class="op">$</span>x)})
-M1[n <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>] <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">map_int</span>(<span class="cf">function</span>(u) {
-    u<span class="op">$</span>x <span class="op">%&gt;%</span>
-<span class="st">      </span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span>
-<span class="st">      </span><span class="kw">coefficients</span>() <span class="op">%&gt;%</span>
-<span class="st">      </span><span class="kw">length</span>()
-  }) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">table</span>()</code></pre>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb237-1" data-line-number="1"><span class="kw">library</span>(Mcomp)</a>
+<a class="sourceLine" id="cb237-2" data-line-number="2"><span class="kw">library</span>(purrr)</a>
+<a class="sourceLine" id="cb237-3" data-line-number="3">n &lt;-<span class="st"> </span><span class="kw">map_int</span>(M1, <span class="cf">function</span>(x) {<span class="kw">length</span>(x<span class="op">$</span>x)})</a>
+<a class="sourceLine" id="cb237-4" data-line-number="4">M1[n <span class="op">&lt;</span><span class="st"> </span><span class="dv">20</span>] <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb237-5" data-line-number="5"><span class="st">  </span><span class="kw">map_int</span>(<span class="cf">function</span>(u) {</a>
+<a class="sourceLine" id="cb237-6" data-line-number="6">    u<span class="op">$</span>x <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb237-7" data-line-number="7"><span class="st">      </span><span class="kw">auto.arima</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb237-8" data-line-number="8"><span class="st">      </span><span class="kw">coefficients</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb237-9" data-line-number="9"><span class="st">      </span><span class="kw">length</span>()</a>
+<a class="sourceLine" id="cb237-10" data-line-number="10">  }) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb237-11" data-line-number="11"><span class="st">  </span><span class="kw">table</span>()</a></code></pre></div>
 </div>
             </section>
 

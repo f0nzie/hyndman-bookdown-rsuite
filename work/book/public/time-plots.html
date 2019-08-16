@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.2 Time plots | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.2 Time plots | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -304,9 +303,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="time-plots" class="section level2">
 <h2><span class="header-section-number">2.2</span> Time plots</h2>
 <p>For time series data, the obvious graph to start with is a time plot. That is, the observations are plotted against the time of observation, with consecutive observations joined by straight lines. Figure <a href="time-plots.html#fig:ansett">2.1</a> below shows the weekly economy passenger load on Ansett Airlines between Australia’s two largest cities.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(melsyd[,<span class="st">&quot;Economy.Class&quot;</span>]) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Economy class passengers: Melbourne-Sydney&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Thousands&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">autoplot</span>(melsyd[,<span class="st">&quot;Economy.Class&quot;</span>]) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Economy class passengers: Melbourne-Sydney&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Thousands&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ansett"></span>
 <img src="fpp_files/figure-html/ansett-1.png" alt="Weekly economy passenger load on Ansett Airlines." width="90%" />
 <p class="caption">
@@ -325,9 +324,9 @@ Figure 2.1: Weekly economy passenger load on Ansett Airlines.
 </ul>
 <p>Any model will need to take all these features into account in order to effectively forecast the passenger load into the future.</p>
 <p>A simpler time series is shown in Figure <a href="time-plots.html#fig:a10">2.2</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(a10) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Antidiabetic drug sales&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;$ million&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">autoplot</span>(a10) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Antidiabetic drug sales&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;$ million&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:a10"></span>
 <img src="fpp_files/figure-html/a10-1.png" alt="Monthly sales of antidiabetic drugs in Australia." width="90%" />
 <p class="caption">

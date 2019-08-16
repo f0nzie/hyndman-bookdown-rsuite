@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.6 STL decomposition | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.6 STL decomposition | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -314,9 +313,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>On the other hand, STL has some disadvantages. In particular, it does not handle trading day or calendar variation automatically, and it only provides facilities for additive decompositions.</p>
 <p>It is possible to obtain a multiplicative decomposition by first taking logs of the data, then back-transforming the components. Decompositions between additive and multiplicative can be obtained using a Box-Cox transformation of the data with <span class="math inline">\(0&lt;\lambda&lt;1\)</span>. A value of <span class="math inline">\(\lambda=0\)</span> corresponds to the multiplicative decomposition while <span class="math inline">\(\lambda=1\)</span> is equivalent to an additive decomposition.</p>
 <p>The best way to begin learning how to use STL is to see some examples and experiment with the settings. Figure <a href="sec-6-1-TSpatterns.html#fig:elecequip-stl">6.2</a> showed an example of STL applied to the electrical equipment orders data. Figure <a href="sec-6-stl.html#fig:elecequip-stl2">6.13</a> shows an alternative STL decomposition where the trend-cycle is more flexible, the seasonal component does not change over time, and the robust option has been used. Here, it is more obvious that there has been a down-turn at the end of the series, and that the orders in 2009 were unusually low (corresponding to some large negative values in the remainder component).</p>
-<pre class="sourceCode r"><code class="sourceCode r">elecequip <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">stl</span>(<span class="dt">t.window=</span><span class="dv">13</span>, <span class="dt">s.window=</span><span class="st">&quot;periodic&quot;</span>, <span class="dt">robust=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>autoplot</code></pre>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">elecequip <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="st">  </span><span class="kw">stl</span>(<span class="dt">t.window=</span><span class="dv">13</span>, <span class="dt">s.window=</span><span class="st">&quot;periodic&quot;</span>, <span class="dt">robust=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb101-3" data-line-number="3"><span class="st">  </span>autoplot</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:elecequip-stl2"></span>
 <img src="fpp_files/figure-html/elecequip-stl2-1.png" alt="The electrical equipment orders (top) and its three additive components obtained from a robust STL decomposition with flexible trend-cycle and fixed seasonality." width="90%" />
 <p class="caption">

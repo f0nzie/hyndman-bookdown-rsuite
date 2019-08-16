@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.5 Selecting predictors | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.5 Selecting predictors | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -330,9 +329,9 @@ although it does tend to err on the side of selecting too many predictors.</p>
 </ol>
 <p>Although this looks this looks like a time-consuming procedure there are very fast methods of calculating CV, so that it takes no longer than fitting one model to the full data set. The equation for computing CV efficiently is given in Section <a href="Regr-MatrixEquations.html#Regr-MatrixEquations">5.7</a>.</p>
 <p>Under this criterion, the best model is the one with the smallest value of CV.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">CV</span>(fit.consMR)
-<span class="co">#&gt;       CV      AIC     AICc      BIC    AdjR2 </span>
-<span class="co">#&gt;    0.116 -409.298 -408.831 -389.911    0.749</span></code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">CV</span>(fit.consMR)</a>
+<a class="sourceLine" id="cb82-2" data-line-number="2"><span class="co">#&gt;       CV      AIC     AICc      BIC    AdjR2 </span></a>
+<a class="sourceLine" id="cb82-3" data-line-number="3"><span class="co">#&gt;    0.116 -409.298 -408.831 -389.911    0.749</span></a></code></pre></div>
 </div>
 <div id="akaikes-information-criterion" class="section level3 unnumbered">
 <h3>Akaike’s Information Criterion</h3>

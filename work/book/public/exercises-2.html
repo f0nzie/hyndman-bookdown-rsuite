@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7.8 Exercises | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7.8 Exercises | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -366,9 +365,9 @@ days’ sales for paperback and hardcover books.
 </ol></li>
 <li>The <code>fets</code> function below returns ETS forecasts.</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">  fets &lt;-<span class="st"> </span><span class="cf">function</span>(y, h) {
-  <span class="kw">forecast</span>(<span class="kw">ets</span>(y), <span class="dt">h =</span> h)
-  }</code></pre>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1">  fets &lt;-<span class="st"> </span><span class="cf">function</span>(y, h) {</a>
+<a class="sourceLine" id="cb126-2" data-line-number="2">  <span class="kw">forecast</span>(<span class="kw">ets</span>(y), <span class="dt">h =</span> h)</a>
+<a class="sourceLine" id="cb126-3" data-line-number="3">  }</a></code></pre></div>
 <pre><code>a. Apply `tsCV()` for a forecast horizon of $h=4$, for both ETS and seasonal naive methods to the `cement` data, XXX. (Hint: use the newly created `fets` and the existing `snaive` functions as your forecast function arguments.)
 b. Compute the MSE of the resulting $4$-steps-ahead errors. (Hint: make sure you remove missing values.) Why is there missing values? Comment on which forecasts are more accurate. Is this what you expected?</code></pre>
 <ol start="13" style="list-style-type: decimal">

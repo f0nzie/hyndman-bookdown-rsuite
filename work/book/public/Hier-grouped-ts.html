@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.2 Grouped time series | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10.2 Grouped time series | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -367,23 +366,23 @@ Figure 10.5: Total Australian adult prison population and Australian prison popu
 </div>
 <p>To create a grouped time series we use the <code>gts</code> function as shown below. Similarly to the hts function the gts function requires as inputs the bottom-level time series and information about the grouping structure. <code>prison</code> is a time series matrix containing the bottom-level times series. Similarly to the hts function the information about the grouping structure can be passed in using the <code>characters</code> input. An alternative is to be more explicit about the labelling of the series and use the <code>groups</code> input. The code below shows examples for both these.</p>
 <p><code>TODO: talk about interactions here - but possibly need to wait for update of the hts</code></p>
-<pre class="sourceCode r"><code class="sourceCode r">prison &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;Ch10Data/prison.csv&quot;</span>, <span class="dt">strip.white =</span> <span class="ot">TRUE</span>, <span class="dt">check.names=</span><span class="ot">FALSE</span>)
-prison &lt;-<span class="st"> </span><span class="kw">ts</span>(prison, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2005</span>,<span class="dv">1</span>), <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2016</span>,<span class="dv">4</span>), <span class="dt">frequency=</span><span class="dv">4</span>)
-<span class="co"># Need to make data into prison time series matrix to add to fpp2</span>
-
-<span class="co"># Using the `characters` input</span>
-prison.gts &lt;-<span class="st"> </span><span class="kw">gts</span>(prison, <span class="dt">characters =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))
-<span class="co">#&gt; Argument gnames is missing and the default labels are used.</span>
-
-<span class="co"># Using the `groups` input # 8 states, 2 legal, 2 gender</span>
-s &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;NSW&quot;</span>, <span class="st">&quot;VIC&quot;</span>, <span class="st">&quot;QLD&quot;</span>, <span class="st">&quot;SA&quot;</span>, <span class="st">&quot;WA&quot;</span>, <span class="st">&quot;NT&quot;</span>, <span class="st">&quot;ACT&quot;</span>, <span class="st">&quot;TAS&quot;</span>), <span class="dv">32</span><span class="op">/</span><span class="dv">8</span>)
-l &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Rem&quot;</span>,<span class="st">&quot;Sen&quot;</span>),<span class="dt">each=</span><span class="dv">8</span>),<span class="dv">2</span>) <span class="co"># Sentenced is number 2 here</span>
-g &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>),<span class="dt">each=</span><span class="dv">32</span><span class="op">/</span><span class="dv">2</span>)
-s_l &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">interaction</span>(s,l,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
-s_g &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">interaction</span>(s,g,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
-g_l &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">interaction</span>(g,l,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))
-gc &lt;-<span class="kw">rbind</span>(s,l,g,s_l, s_g, g_l)
-prison.gts &lt;-<span class="st"> </span><span class="kw">gts</span>(prison,<span class="dt">groups=</span>gc)</code></pre>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb198-1" data-line-number="1">prison &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;Ch10Data/prison.csv&quot;</span>, <span class="dt">strip.white =</span> <span class="ot">TRUE</span>, <span class="dt">check.names=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb198-2" data-line-number="2">prison &lt;-<span class="st"> </span><span class="kw">ts</span>(prison, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2005</span>,<span class="dv">1</span>), <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2016</span>,<span class="dv">4</span>), <span class="dt">frequency=</span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb198-3" data-line-number="3"><span class="co"># Need to make data into prison time series matrix to add to fpp2</span></a>
+<a class="sourceLine" id="cb198-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb198-5" data-line-number="5"><span class="co"># Using the `characters` input</span></a>
+<a class="sourceLine" id="cb198-6" data-line-number="6">prison.gts &lt;-<span class="st"> </span><span class="kw">gts</span>(prison, <span class="dt">characters =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb198-7" data-line-number="7"><span class="co">#&gt; Argument gnames is missing and the default labels are used.</span></a>
+<a class="sourceLine" id="cb198-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb198-9" data-line-number="9"><span class="co"># Using the `groups` input # 8 states, 2 legal, 2 gender</span></a>
+<a class="sourceLine" id="cb198-10" data-line-number="10">s &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;NSW&quot;</span>, <span class="st">&quot;VIC&quot;</span>, <span class="st">&quot;QLD&quot;</span>, <span class="st">&quot;SA&quot;</span>, <span class="st">&quot;WA&quot;</span>, <span class="st">&quot;NT&quot;</span>, <span class="st">&quot;ACT&quot;</span>, <span class="st">&quot;TAS&quot;</span>), <span class="dv">32</span><span class="op">/</span><span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb198-11" data-line-number="11">l &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Rem&quot;</span>,<span class="st">&quot;Sen&quot;</span>),<span class="dt">each=</span><span class="dv">8</span>),<span class="dv">2</span>) <span class="co"># Sentenced is number 2 here</span></a>
+<a class="sourceLine" id="cb198-12" data-line-number="12">g &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>),<span class="dt">each=</span><span class="dv">32</span><span class="op">/</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb198-13" data-line-number="13">s_l &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">interaction</span>(s,l,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</a>
+<a class="sourceLine" id="cb198-14" data-line-number="14">s_g &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">interaction</span>(s,g,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</a>
+<a class="sourceLine" id="cb198-15" data-line-number="15">g_l &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">interaction</span>(g,l,<span class="dt">sep=</span><span class="st">&quot;&quot;</span>))</a>
+<a class="sourceLine" id="cb198-16" data-line-number="16">gc &lt;-<span class="kw">rbind</span>(s,l,g,s_l, s_g, g_l)</a>
+<a class="sourceLine" id="cb198-17" data-line-number="17">prison.gts &lt;-<span class="st"> </span><span class="kw">gts</span>(prison,<span class="dt">groups=</span>gc)</a></code></pre></div>
 Figure <a href="Hier-grouped-ts.html#fig:prison1">10.6</a> shows the Australian prison population grouped by all possible combinations of two attributes at a time. The top plot shows the prison population grouped by state and legal status, the middle panel shows the prison poplulation grouped by state and gender and the bottom panel shows the prison population grouped by legal status and gender.
 <div class="figure" style="text-align: center"><span id="fig:prison1"></span>
 <img src="fpp_files/figure-html/prison1-1.png" alt="Australian adult prison population grouped by pairs of attributes." width="90%" />

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.2 Transformations and adjustments | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.2 Transformations and adjustments | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -308,9 +307,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Calendar adjustments</h3>
 <p>Some of the variation seen in seasonal data may be due to simple calendar effects. In such cases, it is usually much easier to remove the variation before fitting a forecasting model. The <code>monthdays</code> function will compute the number of days in each month or quarter.</p>
 <p>For example, if you are studying the monthly milk production on a farm, there will be variation between the months simply because of the different numbers of days in each month, in addition to the seasonal variation across the year.</p>
-<pre class="sourceCode r"><code class="sourceCode r">dframe &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">Monthly =</span> milk, <span class="dt">DailyAverage=</span>milk<span class="op">/</span><span class="kw">monthdays</span>(milk)) 
-  <span class="kw">autoplot</span>(dframe, <span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Years&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Pounds&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Milk production per cow&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">dframe &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">Monthly =</span> milk, <span class="dt">DailyAverage=</span>milk<span class="op">/</span><span class="kw">monthdays</span>(milk)) </a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">  <span class="kw">autoplot</span>(dframe, <span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Years&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Pounds&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb29-3" data-line-number="3"><span class="st">    </span><span class="kw">ggtitle</span>(<span class="st">&quot;Milk production per cow&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:cowmilk"></span>
 <img src="fpp_files/figure-html/cowmilk-1.png" alt="Monthly milk production per cow. Source: @Cryer2008." width="90%" />
 <p class="caption">
@@ -348,9 +347,9 @@ Figure 3.3: Monthly milk production per cow. Source: <span class="citation">Crye
 </iframe>
 <p>A good value of <span class="math inline">\(\lambda\)</span> is one which makes the size of the seasonal variation about the same across the whole series, as that makes the forecasting model simpler. In this case, <span class="math inline">\(\lambda=0.30\)</span> works quite well, although any value of <span class="math inline">\(\lambda\)</span> between 0 and 0.5 would give similar results.</p>
 <p>The <code>BoxCox.lambda()</code> function will choose a value of lambda for you.</p>
-<pre class="sourceCode r"><code class="sourceCode r">(lambda &lt;-<span class="st"> </span><span class="kw">BoxCox.lambda</span>(elec))
-<span class="co">#&gt; [1] 0.265</span>
-<span class="kw">autoplot</span>(<span class="kw">BoxCox</span>(elec,lambda))</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">(lambda &lt;-<span class="st"> </span><span class="kw">BoxCox.lambda</span>(elec))</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="co">#&gt; [1] 0.265</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw">autoplot</span>(<span class="kw">BoxCox</span>(elec,lambda))</a></code></pre></div>
 <p><img src="fpp_files/figure-html/BoxCoxlambda-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>Having chosen a transformation, we need to forecast the transformed data. Then, we need to reverse the transformation (or <em>back-transform</em>) to obtain forecasts on the original scale. The reverse Box-Cox transformation is given by
 <span class="math display" id="eq:backtransform">\[\begin{equation}
@@ -386,12 +385,12 @@ y_t =
 \end{equation}\]</span>
 where <span class="math inline">\(\sigma_h^2\)</span> is the <span class="math inline">\(h\)</span>-step forecast variance. The larger the forecast variance, the bigger the difference between the mean and the median.</p>
 <p>The difference between the simple back-transformed forecast given by <a href="sec-transformations.html#eq:backtransform">(3.1)</a> and the mean given by <a href="sec-transformations.html#eq:backtransformmean">(3.2)</a> is called the “bias”. When we use the mean, rather than the median, we say the point forecasts have been “bias-adjusted”. To see how much difference this bias-adjustment makes, consider the following example. Here we are forecasting the average annual price of eggs using the drift method with a log transformation <span class="math inline">\((\lambda=0)\)</span>. The log transformation is useful in this case to ensure the forecasts and the prediction intervals stay positive.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fc &lt;-<span class="st"> </span><span class="kw">rwf</span>(eggs, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">h=</span><span class="dv">50</span>, <span class="dt">level=</span><span class="dv">80</span>)
-fc2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(eggs, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">h=</span><span class="dv">50</span>, <span class="dt">level=</span><span class="dv">80</span>, <span class="dt">biasadj=</span><span class="ot">TRUE</span>)
-<span class="co"># autoplot(eggs) +</span>
-<span class="co">#   forecast::autolayer(fc, series=&quot;Simple back transformation&quot;) +</span>
-<span class="co">#   forecast::autolayer(fc2$mean, series=&quot;Bias adjusted&quot;) +</span>
-<span class="co">#   guides(colour=guide_legend(title=&quot;Forecast&quot;))</span></code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">fc &lt;-<span class="st"> </span><span class="kw">rwf</span>(eggs, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">h=</span><span class="dv">50</span>, <span class="dt">level=</span><span class="dv">80</span>)</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">fc2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(eggs, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">lambda=</span><span class="dv">0</span>, <span class="dt">h=</span><span class="dv">50</span>, <span class="dt">level=</span><span class="dv">80</span>, <span class="dt">biasadj=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="co"># autoplot(eggs) +</span></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="co">#   forecast::autolayer(fc, series=&quot;Simple back transformation&quot;) +</span></a>
+<a class="sourceLine" id="cb31-5" data-line-number="5"><span class="co">#   forecast::autolayer(fc2$mean, series=&quot;Bias adjusted&quot;) +</span></a>
+<a class="sourceLine" id="cb31-6" data-line-number="6"><span class="co">#   guides(colour=guide_legend(title=&quot;Forecast&quot;))</span></a></code></pre></div>
 <p>The blue line shows the forecast medians while the red line shows the forecast means. Notice how the skewed forecast distribution pulls up the point forecast when we use the bias adjustment.</p>
 <p>Bias adjustment is not done by default in the forecast package. If you want your forecasts to be means rather than medians, use the argument <code>biadadj=TRUE</code> when you select your Box-Cox transformation parameter.</p>
 </div>

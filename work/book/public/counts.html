@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.2 Time series of counts | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.2 Time series of counts | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -450,7 +449,7 @@ The smoothing parameter <span class="math inline">\(\alpha\)</span> takes values
 </table>
 <p>The <code>croston</code> function simply uses <span class="math inline">\(\alpha=0.1\)</span> by default, and <span class="math inline">\(\ell_0\)</span> is set to be equal to the first observation in each of the series. This is consistent with the way Croston envisaged the method being used. This gives the demand forecast 2.750 and the arrival forecast 2.793. So the forecast of the original series is
 <span class="math inline">\(\hat{y}_{T+h|T} = 2.750 / 2.793 = 0.985\)</span>. In practice, R does these calculations for you:</p>
-<pre class="sourceCode r"><code class="sourceCode r">productC <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">croston</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</code></pre>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb226-1" data-line-number="1">productC <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">croston</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</a></code></pre></div>
 <p><img src="fpp_files/figure-html/croston-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>An implementation of Croston’s method with more facilities (including parameter estimation) is available in the <a href="https://cran.r-project.org/package=tsintermittent">tsintermittent</a> package for R.</p>
 <p>Forecasting models that deal more directly with the count nature of the data are described in <span class="citation">Christou and Fokianos (<a href="#ref-christou2015count">2015</a>)</span>.</p>

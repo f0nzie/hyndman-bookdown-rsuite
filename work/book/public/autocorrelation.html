@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.8 Autocorrelation | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.8 Autocorrelation | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -341,7 +340,7 @@ where <span class="math inline">\(T\)</span> is the length of the time series.</
 </tbody>
 </table>
 <p>These correspond to the nine scatterplots in Figure <a href="lag-plots.html#fig:beerlagplot">2.9</a>. The autocorrelation coefficients are normally plotted to form the <em>autocorrelation function</em> or ACF. The plot is also known as a <em>correlogram</em>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggAcf</span>(beer2)</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">ggAcf</span>(beer2)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:beeracf"></span>
 <img src="fpp_files/figure-html/beeracf-1.png" alt="Autocorrelation function of quarterly beer production." width="90%" />
 <p class="caption">
@@ -359,15 +358,15 @@ Figure 2.10: Autocorrelation function of quarterly beer production.
 <p>When data have a trend, the autocorrelations for small lags tend to be large and positive because observations nearby in time are also nearby in size. So the ACF of trended time series tend to have positive values that slowly decrease as the lags increase.</p>
 <p>When data are seasonal, the autocorrelations will be larger for the seasonal lags (at multiples of the seasonal frequency) than for other lags.</p>
 <p>When data are both trended and seasonal, you see a combination of these effects, as illustrated in Figure <a href="autocorrelation.html#fig:acfelec">2.12</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">aelec &lt;-<span class="st"> </span><span class="kw">window</span>(elec, <span class="dt">start=</span><span class="dv">1980</span>)
-<span class="kw">autoplot</span>(aelec) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;GWh&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">aelec &lt;-<span class="st"> </span><span class="kw">window</span>(elec, <span class="dt">start=</span><span class="dv">1980</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw">autoplot</span>(aelec) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;GWh&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:aelec"></span>
 <img src="fpp_files/figure-html/aelec-1.png" alt="Monthly Australian electricity demand from 1980--1995." width="90%" />
 <p class="caption">
 Figure 2.11: Monthly Australian electricity demand from 1980–1995.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggAcf</span>(aelec, <span class="dt">lag=</span><span class="dv">48</span>)</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw">ggAcf</span>(aelec, <span class="dt">lag=</span><span class="dv">48</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:acfelec"></span>
 <img src="fpp_files/figure-html/acfelec-1.png" alt="ACF of monthly Australian electricity demand." width="90%" />
 <p class="caption">

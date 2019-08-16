@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.10 Exercises | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.10 Exercises | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -313,22 +312,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Download some data from <a href="extrafiles/tute1.csv">OTexts.org/fpp2/extrafiles/tute1.csv</a>. Open the file <code>tute1.csv</code> in Excel (or some other spreadsheet application) and review its contents. You should find four columns of information. Columns B through D each contain a quarterly series, labelled Sales, AdBudget and GDP. Sales contains the quarterly sales for a small company over the period 1981-2005. AdBudget is the advertising budget and GDP is the gross domestic product. All series have been adjusted for inflation.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>You can read the data into R with the following script:</p>
-<pre class="sourceCode r"><code class="sourceCode r">tute1 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;tute1.csv&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)
-<span class="kw">View</span>(tute1)</code></pre></li>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">tute1 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;tute1.csv&quot;</span>, <span class="dt">header=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw">View</span>(tute1)</a></code></pre></div></li>
 <li><p>Convert the data to time series</p>
-<pre class="sourceCode r"><code class="sourceCode r">mytimeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(tute1[,<span class="op">-</span><span class="dv">1</span>], <span class="dt">start=</span><span class="dv">1981</span>, <span class="dt">frequency=</span><span class="dv">4</span>)</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">mytimeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(tute1[,<span class="op">-</span><span class="dv">1</span>], <span class="dt">start=</span><span class="dv">1981</span>, <span class="dt">frequency=</span><span class="dv">4</span>)</a></code></pre></div>
 <p>(The <code>[,-1]</code> removes the first column which contains the quarters as we don’t need them now.)</p></li>
 <li><p>Construct time series plots of each of the three series</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(mytimeseries, <span class="dt">facets=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">autoplot</span>(mytimeseries, <span class="dt">facets=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <p>Check what happens when you don’t include <code>facets=TRUE</code>.</p></li>
 </ol></li>
 <li><p>Download some monthly Australian retail data from <a href="extrafiles/retail.xlsx">OTexts.org/fpp2/extrafiles/retail.xlsx</a>. These represent retail sales in various categories for different Australian states, and are stored in a MS-Excel file.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>You can read the data into R with the following script:</p>
-<pre class="sourceCode r"><code class="sourceCode r">retaildata &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&quot;retail.xlsx&quot;</span>, <span class="dt">skip=</span><span class="dv">1</span>)</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">retaildata &lt;-<span class="st"> </span>readxl<span class="op">::</span><span class="kw">read_excel</span>(<span class="st">&quot;retail.xlsx&quot;</span>, <span class="dt">skip=</span><span class="dv">1</span>)</a></code></pre></div>
 <p>You may need to first install the <code>readxl</code> package. The second argument (<code>skip=1</code>) is required because the Excel sheet has two header rows.</p></li>
 <li><p>Select one of the time series as follows (but replace the column name with your own chosen column):</p>
-<pre class="sourceCode r"><code class="sourceCode r">myts &lt;-<span class="st"> </span><span class="kw">ts</span>(retaildata[,<span class="st">&quot;A3349873A&quot;</span>], <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">1982</span>,<span class="dv">4</span>))</code></pre></li>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">myts &lt;-<span class="st"> </span><span class="kw">ts</span>(retaildata[,<span class="st">&quot;A3349873A&quot;</span>], <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">1982</span>,<span class="dv">4</span>))</a></code></pre></div></li>
 <li><p>Explore your chosen retail time series using the following functions:</p>
 <p><code>autoplot</code>, <code>ggseasonplot</code>, <code>ggsubseriesplot</code>, <code>gglagplot</code>, <code>ggAcf</code></p>
 <p>Can you spot any seasonality, cyclicity and trend? What do you learn about the series?</p></li>

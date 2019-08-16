@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.4 Evaluating forecast accuracy | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.4 Evaluating forecast accuracy | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -319,15 +318,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="functions-to-subset-a-time-series" class="section level3 unnumbered">
 <h3>Functions to subset a time series</h3>
 <p>The <code>window</code> function introduced in Chapter <a href="ch-graphics.html#ch-graphics">2</a> is very useful when extracting a portion of a time series, such as we need when creating training and test sets. In the <code>window</code> function, we specify the start and/or end of the portion of time series required using time values. For example,</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1995</span>)</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1995</span>)</a></code></pre></div>
 <p>extracts all data from 1995 onwards.</p>
 <p>Another useful function is <code>subset</code> which allows for more types of subsetting. A great advantage of this function is that it allows the use of indices to choose a subset. For example,</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(ausbeer, <span class="dt">start=</span><span class="kw">length</span>(ausbeer)<span class="op">-</span><span class="dv">4</span><span class="op">*</span><span class="dv">5</span>)</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">subset</span>(ausbeer, <span class="dt">start=</span><span class="kw">length</span>(ausbeer)<span class="op">-</span><span class="dv">4</span><span class="op">*</span><span class="dv">5</span>)</a></code></pre></div>
 <p>extracts the last 5 years of observations from <code>ausbeer</code>. It also allows extracting all values for a specific season. For example,</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">subset</span>(ausbeer, <span class="dt">quarter =</span> <span class="dv">1</span>)</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">subset</span>(ausbeer, <span class="dt">quarter =</span> <span class="dv">1</span>)</a></code></pre></div>
 <p>extracts the first quarters for all years.</p>
 <p>Finally, <code>head</code> and <code>tail</code> are useful for extracting the first few or last few observations. For example, the last 5 years of <code>ausbeer</code> can also be obtained using</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(ausbeer, <span class="dv">4</span><span class="op">*</span><span class="dv">5</span>)</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="kw">tail</span>(ausbeer, <span class="dv">4</span><span class="op">*</span><span class="dv">5</span>)</a></code></pre></div>
 </div>
 <div id="forecast-errors" class="section level3 unnumbered">
 <h3>Forecast errors</h3>
@@ -385,17 +384,17 @@ Similarly, the <em>mean squared scaled error</em> (MSSE) can be defined where th
 </div>
 <div id="examples-1" class="section level3 unnumbered">
 <h3>Examples</h3>
-<pre class="sourceCode r"><code class="sourceCode r">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))
-beerfit1 &lt;-<span class="st"> </span><span class="kw">meanf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
-beerfit2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
-beerfit3 &lt;-<span class="st"> </span><span class="kw">snaive</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)
-<span class="kw">autoplot</span>(<span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit3<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Seasonal naïve&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Megalitres&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Forecasts for quarterly beer production&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>,<span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb43-2" data-line-number="2">beerfit1 &lt;-<span class="st"> </span><span class="kw">meanf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb43-3" data-line-number="3">beerfit2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb43-4" data-line-number="4">beerfit3 &lt;-<span class="st"> </span><span class="kw">snaive</span>(beer2,<span class="dt">h=</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb43-5" data-line-number="5"><span class="kw">autoplot</span>(<span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-6" data-line-number="6"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-7" data-line-number="7"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-8" data-line-number="8"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(beerfit3<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Seasonal naïve&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;Megalitres&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-10" data-line-number="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Forecasts for quarterly beer production&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-11" data-line-number="11"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:beeraccuracy"></span>
 <img src="fpp_files/figure-html/beeraccuracy-1.png" alt="Forecasts of Australian quarterly beer production using data up to the end of 2007." width="90%" />
 <p class="caption">
@@ -403,10 +402,10 @@ Figure 3.8: Forecasts of Australian quarterly beer production using data up to t
 </p>
 </div>
 <p>Figure <a href="accuracy.html#fig:beeraccuracy">3.8</a> shows three forecast methods applied to the quarterly Australian beer production using data only to the end of 2007. The actual values for the period 2008–2010 are also shown. We compute the forecast accuracy measures for this period.</p>
-<pre class="sourceCode r"><code class="sourceCode r">beer3 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">2008</span>)
-<span class="kw">accuracy</span>(beerfit1, beer3)
-<span class="kw">accuracy</span>(beerfit2, beer3)
-<span class="kw">accuracy</span>(beerfit3, beer3)</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">beer3 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">2008</span>)</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="kw">accuracy</span>(beerfit1, beer3)</a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="kw">accuracy</span>(beerfit2, beer3)</a>
+<a class="sourceLine" id="cb44-4" data-line-number="4"><span class="kw">accuracy</span>(beerfit3, beer3)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -443,27 +442,27 @@ Figure 3.8: Forecasts of Australian quarterly beer production using data up to t
 </table>
 <p>It is obvious from the graph that the seasonal naïve method is best for these data, although it can still be improved, as we will discover later. Sometimes, different accuracy measures will lead to different results as to which forecast method is best. However, in this case, all of the results point to the seasonal naïve method as the best of these three methods for this data set.</p>
 <p>To take a non-seasonal example, consider the Dow Jones Index. The following graph shows the 250 observations ending on 15 July 1994, along with forecasts of the next 42 days obtained from three different methods.</p>
-<pre class="sourceCode r"><code class="sourceCode r">dj2 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">end=</span><span class="dv">250</span>)
-djfc1 &lt;-<span class="st"> </span><span class="kw">meanf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)
-djfc2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)
-djfc3 &lt;-<span class="st"> </span><span class="kw">rwf</span>(dj2, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">42</span>)
-<span class="kw">autoplot</span>(dj) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc3<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Drift&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Dow Jones Index (daily ending 15 Jul 94)&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">dj2 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">end=</span><span class="dv">250</span>)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2">djfc1 &lt;-<span class="st"> </span><span class="kw">meanf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb45-3" data-line-number="3">djfc2 &lt;-<span class="st"> </span><span class="kw">rwf</span>(dj2, <span class="dt">h=</span><span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb45-4" data-line-number="4">djfc3 &lt;-<span class="st"> </span><span class="kw">rwf</span>(dj2, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb45-5" data-line-number="5"><span class="kw">autoplot</span>(dj) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-6" data-line-number="6"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc1<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Mean&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-7" data-line-number="7"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc2<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Naïve&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-8" data-line-number="8"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(djfc3<span class="op">$</span>mean, <span class="dt">series=</span><span class="st">&quot;Drift&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-10" data-line-number="10"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Dow Jones Index (daily ending 15 Jul 94)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb45-11" data-line-number="11"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="kw">guide_legend</span>(<span class="dt">title=</span><span class="st">&quot;Forecast&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:djfc"></span>
 <img src="fpp_files/figure-html/djfc-1.png" alt="Forecasts of the Dow Jones Index from 16 July 1994." width="90%" />
 <p class="caption">
 Figure 3.9: Forecasts of the Dow Jones Index from 16 July 1994.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r">dj3 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">start=</span><span class="dv">251</span>)
-<span class="kw">accuracy</span>(djfc1, dj3)
-<span class="kw">accuracy</span>(djfc2, dj3)
-<span class="kw">accuracy</span>(djfc3, dj3)</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">dj3 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">start=</span><span class="dv">251</span>)</a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="kw">accuracy</span>(djfc1, dj3)</a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="kw">accuracy</span>(djfc2, dj3)</a>
+<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="kw">accuracy</span>(djfc3, dj3)</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -509,33 +508,33 @@ Figure 3.9: Forecasts of the Dow Jones Index from 16 July 1994.
 <p>With time series forecasting, one-step forecasts may not be as relevant as multi-step forecasts. In this case, the cross-validation procedure based on a rolling forecasting origin can be modified to allow multi-step errors to be used. Suppose that we are interested in models that produce good <span class="math inline">\(4\)</span>-step-ahead forecasts. Then the corresponding diagram is shown below.</p>
 <p><img src="fpp_files/figure-html/cv4-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>Time series cross validation is implemented with the <code>tsCV</code> function. In the following example, we compare the residual RMSE with the RMSE obtained via time series cross-validation.</p>
-<pre class="sourceCode r"><code class="sourceCode r">e &lt;-<span class="st"> </span><span class="kw">tsCV</span>(dj, rwf, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">1</span>)
-<span class="kw">sqrt</span>(<span class="kw">mean</span>(e<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))
-<span class="co">#&gt; [1] 22.7</span>
-<span class="kw">sqrt</span>(<span class="kw">mean</span>(<span class="kw">residuals</span>(<span class="kw">rwf</span>(dj, <span class="dt">drift=</span><span class="ot">TRUE</span>))<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))
-<span class="co">#&gt; [1] 22.5</span></code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">e &lt;-<span class="st"> </span><span class="kw">tsCV</span>(dj, rwf, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="kw">sqrt</span>(<span class="kw">mean</span>(e<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="co">#&gt; [1] 22.7</span></a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">sqrt</span>(<span class="kw">mean</span>(<span class="kw">residuals</span>(<span class="kw">rwf</span>(dj, <span class="dt">drift=</span><span class="ot">TRUE</span>))<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5"><span class="co">#&gt; [1] 22.5</span></a></code></pre></div>
 <p>As expected, the RMSE from the residuals is smaller, as the corresponding “forecasts” are based on a model fitted to the entire data set, rather than being true forecasts.</p>
 <p>A good way to choose the best forecasting model is to find the model with the smallest RMSE computed using time series cross-validation.</p>
 <p>The ugliness of the above R code makes this a good opportunity to introduce some alternative ways of stringing R functions together. In the above code, we are nesting functions within functions within functions, so you have to read the code from the inside out, making it difficult to understand what is being computed. Instead, we can use the pipe operator <code>%&gt;%</code> as follows</p>
-<pre class="sourceCode r"><code class="sourceCode r">dj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tsCV</span>(<span class="dt">forecastfunction=</span>rwf, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">1</span>) -&gt;<span class="st"> </span>e
-e<span class="op">^</span><span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(<span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sqrt</span>()
-dj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rwf</span>(<span class="dt">drift=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">residuals</span>() -&gt;<span class="st"> </span>res
-res<span class="op">^</span><span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(<span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sqrt</span>()</code></pre>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">dj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tsCV</span>(<span class="dt">forecastfunction=</span>rwf, <span class="dt">drift=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">1</span>) -&gt;<span class="st"> </span>e</a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">e<span class="op">^</span><span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(<span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sqrt</span>()</a>
+<a class="sourceLine" id="cb48-3" data-line-number="3">dj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rwf</span>(<span class="dt">drift=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">residuals</span>() -&gt;<span class="st"> </span>res</a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">res<span class="op">^</span><span class="dv">2</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(<span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sqrt</span>()</a></code></pre></div>
 <p>The left hand side of each pipe is passed as the first argument to the function on the right hand side. This is consistent with the way we read from left to right in English. A consequence of using pipes is that all other arguments must be named, which also helps readability. When using pipes, it is natural to use the right arrow assignment <code>-&gt;</code> rather than the left arrow. For example, the third line above can be read as “Take the <code>dj</code> series, pass it to <code>rwf</code> with <code>drift=TRUE</code>, compute the resulting residuals, and store them as <code>res</code>”.</p>
 <p>In the remainder of this book, we will use the pipe operator whenever it makes the code easier to read. In order to be consistent, we will always follow a function with parentheses to differentiate it from other objects, even if it has no arguments. See for example the use of <code>sqrt()</code> in the code above.</p>
 <p>###Example: using tsCV() {-}</p>
 <p>The <code>goog</code> data, plotted below, includes daily closing stock prices of Google Inc from the NASDAQ exchange, for 1000 consecutive trading days between 25 February 2013 and 13 February 2017.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(goog)</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">autoplot</span>(goog)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/tsCV-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>The code below evaluates the forecasting performance of 1- to 8-step-ahead naïve forecasts with <code>tsCV</code>, using MSE as the forecast error measure. The plot shows that the forecast error increases as the forecast horizon increases, as we would expect.</p>
-<pre class="sourceCode r"><code class="sourceCode r">e &lt;-<span class="st"> </span><span class="kw">tsCV</span>(goog, <span class="dt">forecastfunction=</span>naive, <span class="dt">h=</span><span class="dv">8</span>)
-  
-<span class="co"># Compute the MSE values and remove missing values</span>
-mse &lt;-<span class="st"> </span><span class="kw">colMeans</span>(e<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm =</span> T)
-
-<span class="co"># Plot the MSE values against the forecast horizon</span>
-<span class="kw">data.frame</span>(<span class="dt">h =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="dt">MSE =</span> mse) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> h, <span class="dt">y =</span> MSE)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">e &lt;-<span class="st"> </span><span class="kw">tsCV</span>(goog, <span class="dt">forecastfunction=</span>naive, <span class="dt">h=</span><span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">  </a>
+<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="co"># Compute the MSE values and remove missing values</span></a>
+<a class="sourceLine" id="cb50-4" data-line-number="4">mse &lt;-<span class="st"> </span><span class="kw">colMeans</span>(e<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm =</span> T)</a>
+<a class="sourceLine" id="cb50-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb50-6" data-line-number="6"><span class="co"># Plot the MSE values against the forecast horizon</span></a>
+<a class="sourceLine" id="cb50-7" data-line-number="7"><span class="kw">data.frame</span>(<span class="dt">h =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, <span class="dt">MSE =</span> mse) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb50-8" data-line-number="8"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> h, <span class="dt">y =</span> MSE)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
 <p><img src="fpp_files/figure-html/tsCVplot-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 </div>

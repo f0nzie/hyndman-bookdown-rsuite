@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.9 White noise | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.9 White noise | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -304,16 +303,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="wn" class="section level2">
 <h2><span class="header-section-number">2.9</span> White noise</h2>
 <p>Time series that show no autocorrelation are called “white noise”. Figure <a href="wn.html#fig:wnoise">2.13</a> gives an example of a white noise series.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">30</span>)
-y &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">rnorm</span>(<span class="dv">50</span>))
-<span class="kw">autoplot</span>(y) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;White noise&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">30</span>)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">rnorm</span>(<span class="dv">50</span>))</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw">autoplot</span>(y) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;White noise&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:wnoise"></span>
 <img src="fpp_files/figure-html/wnoise-1.png" alt="A white noise time series." width="90%" />
 <p class="caption">
 Figure 2.13: A white noise time series.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggAcf</span>(y)</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">ggAcf</span>(y)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:wnoiseacf"></span>
 <img src="fpp_files/figure-html/wnoiseacf-1.png" alt="Autocorrelation function for the white noise series." width="90%" />
 <p class="caption">

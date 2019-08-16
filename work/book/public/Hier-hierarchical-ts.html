@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.1 Hierarchical time series | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10.1 Hierarchical time series | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -401,31 +400,31 @@ where <span class="math inline">\(\bm{y}_t\)</span> is a <span class="math inlin
 </table>
 <p>In summary, we consider five zones for NSW, four zones for VIC, and three zones for each QLD, SAU and WAU. Note that Metro zones contain the capital cities and surrounding areas around these generally considered to be metro areas. For OTH we consider Metro (OTHMetro) and non-Metro (OTHNoMet) areas across the rest of Australia. For further details on these geographical areas please refer to Appendix C in <span class="citation">Wickramasuriya, Athanasopoulos, and Hyndman (<a href="#ref-Mint">2015</a>)</span>.</p>
 <p>To create a hierarchical time series we use the <code>hts</code> function as shown in the code below. The function requires as inputs the bottom-level time series and information about the hierarchical structure. <code>vn2</code> is a time series matrix containing the bottom-level series. There are alternative ways to pass to the function the structure of the hieararchy. In this case we are using the <code>characters</code> input. The first three characters of each column name of <code>vn2</code> capture the categories at the first level of the hierarchy (States). The following five characters capture the bottom-level categories (Zones).</p>
-<pre class="sourceCode r"><code class="sourceCode r">vn2 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;Ch10Data/vn2.csv&quot;</span>) 
-vn2 &lt;-<span class="st"> </span><span class="kw">ts</span>(vn2, <span class="dt">start =</span> <span class="dv">1998</span>, <span class="dt">frequency =</span> <span class="dv">4</span>)
-<span class="kw">require</span>(hts)
-tourism.hts &lt;-<span class="st"> </span><span class="kw">hts</span>(vn2, <span class="dt">characters =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>)) 
-<span class="co"># I keep vn2 here as we will only use this line when we add vn2 in the fpp2 package</span></code></pre>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb196-1" data-line-number="1">vn2 &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;Ch10Data/vn2.csv&quot;</span>) </a>
+<a class="sourceLine" id="cb196-2" data-line-number="2">vn2 &lt;-<span class="st"> </span><span class="kw">ts</span>(vn2, <span class="dt">start =</span> <span class="dv">1998</span>, <span class="dt">frequency =</span> <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb196-3" data-line-number="3"><span class="kw">require</span>(hts)</a>
+<a class="sourceLine" id="cb196-4" data-line-number="4">tourism.hts &lt;-<span class="st"> </span><span class="kw">hts</span>(vn2, <span class="dt">characters =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>)) </a>
+<a class="sourceLine" id="cb196-5" data-line-number="5"><span class="co"># I keep vn2 here as we will only use this line when we add vn2 in the fpp2 package</span></a></code></pre></div>
 <p>The top plot in Figure <a href="Hier-hierarchical-ts.html#fig:tourismStates">10.2</a> shows the total number of visitor nights for the total of Australia while the plots bellow show the visitor nights disaggregated by state. These reveal diverse and rich dynamics at the aggregate national level and the first level of disaggregation across each state. The <code>aggts</code> function extracts time series from a <code>hts</code> object for any level of aggregation.</p>
-<pre class="sourceCode r"><code class="sourceCode r">tourismL0 &lt;-<span class="st"> </span><span class="kw">aggts</span>(tourism.hts, <span class="dt">levels =</span> <span class="dv">0</span>)
-p1&lt;-<span class="kw">autoplot</span>(tourismL0) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Visitor nights (&#39;000)&quot;</span>)<span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Total&quot;</span>)
-
-tourismL1 &lt;-<span class="st"> </span><span class="kw">aggts</span>(tourism.hts, <span class="dt">levels =</span> <span class="dv">1</span>)
-p2&lt;-<span class="kw">autoplot</span>(tourismL1[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)]) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Visitor nights (&#39;000)&quot;</span>)<span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_colour_discrete</span>(<span class="dt">guide =</span> <span class="kw">guide_legend</span>(<span class="dt">title =</span> <span class="st">&quot;State&quot;</span>))
- 
-p3&lt;-<span class="kw">autoplot</span>(tourismL1[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>)]) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Visitor nights (&#39;000)&quot;</span>)<span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_colour_discrete</span>(<span class="dt">guide =</span> <span class="kw">guide_legend</span>(<span class="dt">title =</span> <span class="st">&quot;State&quot;</span>))
-
-lay=<span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))
-gridExtra<span class="op">::</span><span class="kw">grid.arrange</span>(p1, p2,p3, <span class="dt">layout_matrix=</span>lay)</code></pre>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb197-1" data-line-number="1">tourismL0 &lt;-<span class="st"> </span><span class="kw">aggts</span>(tourism.hts, <span class="dt">levels =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb197-2" data-line-number="2">p1&lt;-<span class="kw">autoplot</span>(tourismL0) <span class="op">+</span></a>
+<a class="sourceLine" id="cb197-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb197-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Visitor nights (&#39;000)&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb197-5" data-line-number="5"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Total&quot;</span>)</a>
+<a class="sourceLine" id="cb197-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb197-7" data-line-number="7">tourismL1 &lt;-<span class="st"> </span><span class="kw">aggts</span>(tourism.hts, <span class="dt">levels =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb197-8" data-line-number="8">p2&lt;-<span class="kw">autoplot</span>(tourismL1[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)]) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb197-9" data-line-number="9"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb197-10" data-line-number="10"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Visitor nights (&#39;000)&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb197-11" data-line-number="11"><span class="st">  </span><span class="kw">scale_colour_discrete</span>(<span class="dt">guide =</span> <span class="kw">guide_legend</span>(<span class="dt">title =</span> <span class="st">&quot;State&quot;</span>))</a>
+<a class="sourceLine" id="cb197-12" data-line-number="12"> </a>
+<a class="sourceLine" id="cb197-13" data-line-number="13">p3&lt;-<span class="kw">autoplot</span>(tourismL1[,<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>)]) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb197-14" data-line-number="14"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb197-15" data-line-number="15"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Visitor nights (&#39;000)&quot;</span>)<span class="op">+</span></a>
+<a class="sourceLine" id="cb197-16" data-line-number="16"><span class="st">  </span><span class="kw">scale_colour_discrete</span>(<span class="dt">guide =</span> <span class="kw">guide_legend</span>(<span class="dt">title =</span> <span class="st">&quot;State&quot;</span>))</a>
+<a class="sourceLine" id="cb197-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb197-18" data-line-number="18">lay=<span class="kw">rbind</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>),<span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb197-19" data-line-number="19">gridExtra<span class="op">::</span><span class="kw">grid.arrange</span>(p1, p2,p3, <span class="dt">layout_matrix=</span>lay)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:tourismStates"></span>
 <img src="fpp_files/figure-html/tourismStates-1.png" alt="Australian domestic visitor nights over the period 1998 Q1 to 2016 Q4 disaggregated by State." width="90%" />
 <p class="caption">

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.5 Prediction intervals | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.5 Prediction intervals | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -408,20 +407,20 @@ Similarly, an 80% prediction interval is given by
 <p><strong>Drift forecasts</strong>: <span class="math inline">\(\hat\sigma_h = \hat\sigma\sqrt{h(1+h/T)}\)</span>.</p>
 <p>Note that when <span class="math inline">\(h=1\)</span> and <span class="math inline">\(T\)</span> is large, these all give the same approximate value <span class="math inline">\(\hat\sigma\)</span>.</p>
 <p>Prediction intervals will be computed for you when using any of the benchmark forecasting methods. For example, here is the output when using the naïve method for the Dow-Jones index.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">naive</span>(dj2)
-<span class="co">#&gt;     Point Forecast Lo 80 Hi 80 Lo 95 Hi 95</span>
-<span class="co">#&gt; 251           3830  3802  3858  3787  3873</span>
-<span class="co">#&gt; 252           3830  3790  3870  3769  3891</span>
-<span class="co">#&gt; 253           3830  3781  3879  3755  3905</span>
-<span class="co">#&gt; 254           3830  3774  3886  3744  3916</span>
-<span class="co">#&gt; 255           3830  3767  3893  3734  3926</span>
-<span class="co">#&gt; 256           3830  3761  3899  3724  3936</span>
-<span class="co">#&gt; 257           3830  3755  3905  3716  3944</span>
-<span class="co">#&gt; 258           3830  3750  3910  3708  3952</span>
-<span class="co">#&gt; 259           3830  3745  3915  3701  3959</span>
-<span class="co">#&gt; 260           3830  3741  3919  3694  3966</span></code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">naive</span>(dj2)</a>
+<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="co">#&gt;     Point Forecast Lo 80 Hi 80 Lo 95 Hi 95</span></a>
+<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="co">#&gt; 251           3830  3802  3858  3787  3873</span></a>
+<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="co">#&gt; 252           3830  3790  3870  3769  3891</span></a>
+<a class="sourceLine" id="cb51-5" data-line-number="5"><span class="co">#&gt; 253           3830  3781  3879  3755  3905</span></a>
+<a class="sourceLine" id="cb51-6" data-line-number="6"><span class="co">#&gt; 254           3830  3774  3886  3744  3916</span></a>
+<a class="sourceLine" id="cb51-7" data-line-number="7"><span class="co">#&gt; 255           3830  3767  3893  3734  3926</span></a>
+<a class="sourceLine" id="cb51-8" data-line-number="8"><span class="co">#&gt; 256           3830  3761  3899  3724  3936</span></a>
+<a class="sourceLine" id="cb51-9" data-line-number="9"><span class="co">#&gt; 257           3830  3755  3905  3716  3944</span></a>
+<a class="sourceLine" id="cb51-10" data-line-number="10"><span class="co">#&gt; 258           3830  3750  3910  3708  3952</span></a>
+<a class="sourceLine" id="cb51-11" data-line-number="11"><span class="co">#&gt; 259           3830  3745  3915  3701  3959</span></a>
+<a class="sourceLine" id="cb51-12" data-line-number="12"><span class="co">#&gt; 260           3830  3741  3919  3694  3966</span></a></code></pre></div>
 <p>When plotted, the prediction intervals are shown as shaded region, with the strength of colour indicating the probability associated with the interval.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(<span class="kw">naive</span>(dj2))</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">autoplot</span>(<span class="kw">naive</span>(dj2))</a></code></pre></div>
 <p><img src="fpp_files/figure-html/djforecasts2-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="bootstrapped-prediction-intervals" class="section level3 unnumbered">
@@ -442,18 +441,18 @@ where <span class="math inline">\(\hat{y}_{T+1|T}\)</span> is the one-step forec
 where <span class="math inline">\(e_{T+2}\)</span> is another draw from the collection of residuals. Continuing in this way, we can simulate an entire set of future values for our time series.</p>
 <p>Doing this repeatedly, we obtain many possible futures. Then we can compute prediction intervals by calculating percentiles for each forecast horizon. The result is called a “bootstrapped” prediction interval. The name “bootstrap” is a reference to pulling ourselves up by our bootstraps, because the process allows us to measure future uncertainty by only using the historical data.</p>
 <p>To generate such intervals, we can simply add the <code>bootstrap</code> argument to our forecasting functions. For example:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">naive</span>(dj2, <span class="dt">bootstrap=</span><span class="ot">TRUE</span>)
-<span class="co">#&gt;     Point Forecast Lo 80 Hi 80 Lo 95 Hi 95</span>
-<span class="co">#&gt; 251           3830  3803  3854  3781  3871</span>
-<span class="co">#&gt; 252           3830  3790  3868  3763  3889</span>
-<span class="co">#&gt; 253           3830  3782  3877  3750  3900</span>
-<span class="co">#&gt; 254           3830  3775  3883  3735  3913</span>
-<span class="co">#&gt; 255           3830  3768  3888  3727  3922</span>
-<span class="co">#&gt; 256           3830  3761  3895  3718  3933</span>
-<span class="co">#&gt; 257           3830  3753  3901  3708  3941</span>
-<span class="co">#&gt; 258           3830  3749  3906  3698  3946</span>
-<span class="co">#&gt; 259           3830  3746  3912  3690  3957</span>
-<span class="co">#&gt; 260           3830  3740  3917  3687  3961</span></code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1"><span class="kw">naive</span>(dj2, <span class="dt">bootstrap=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="co">#&gt;     Point Forecast Lo 80 Hi 80 Lo 95 Hi 95</span></a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="co">#&gt; 251           3830  3803  3854  3781  3871</span></a>
+<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="co">#&gt; 252           3830  3790  3868  3763  3889</span></a>
+<a class="sourceLine" id="cb53-5" data-line-number="5"><span class="co">#&gt; 253           3830  3782  3877  3750  3900</span></a>
+<a class="sourceLine" id="cb53-6" data-line-number="6"><span class="co">#&gt; 254           3830  3775  3883  3735  3913</span></a>
+<a class="sourceLine" id="cb53-7" data-line-number="7"><span class="co">#&gt; 255           3830  3768  3888  3727  3922</span></a>
+<a class="sourceLine" id="cb53-8" data-line-number="8"><span class="co">#&gt; 256           3830  3761  3895  3718  3933</span></a>
+<a class="sourceLine" id="cb53-9" data-line-number="9"><span class="co">#&gt; 257           3830  3753  3901  3708  3941</span></a>
+<a class="sourceLine" id="cb53-10" data-line-number="10"><span class="co">#&gt; 258           3830  3749  3906  3698  3946</span></a>
+<a class="sourceLine" id="cb53-11" data-line-number="11"><span class="co">#&gt; 259           3830  3746  3912  3690  3957</span></a>
+<a class="sourceLine" id="cb53-12" data-line-number="12"><span class="co">#&gt; 260           3830  3740  3917  3687  3961</span></a></code></pre></div>
 <p>In this case, they are very similar (but not identical) to the prediction intervals based on the normal distribution.</p>
 </div>
 <div id="prediction-intervals-with-transformations" class="section level3 unnumbered">

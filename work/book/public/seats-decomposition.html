@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.5 SEATS decomposition | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.5 SEATS decomposition | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -305,10 +304,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">6.5</span> SEATS decomposition</h2>
 <p>“SEATS” stands for “Seasonal Extraction in ARIMA Time Series” (ARIMA models are discussed in Chapter <a href="ch-arima.html#ch-arima">8</a>). This procedure was developed at the Bank of Spain, and is now widely used by government agencies around the world. The procedure works only with quarterly and monthly data. So seasonality of other kinds, such as daily data, or hourly data, or weekly data, require an alternative approach.</p>
 <p>The details are beyond the scope of this book. However, a complete discussion of the method is available in <span class="citation">Dagum and Bianconcini (<a href="#ref-Dagum2016">2016</a>)</span>. Here we will only demonstrate how to use it via the <code>seasonal</code> package.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(seasonal)
-elecequip <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">seas</span>() <span class="op">%&gt;%</span>
-<span class="kw">autoplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;SEATS decomposition of electrical equipment index&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="kw">library</span>(seasonal)</a>
+<a class="sourceLine" id="cb100-2" data-line-number="2">elecequip <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">seas</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb100-3" data-line-number="3"><span class="kw">autoplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb100-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;SEATS decomposition of electrical equipment index&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:seats"></span>
 <img src="fpp_files/figure-html/seats-1.png" alt="A SEATS decomposition of the new orders index for electrical equipment." width="90%" />
 <p class="caption">

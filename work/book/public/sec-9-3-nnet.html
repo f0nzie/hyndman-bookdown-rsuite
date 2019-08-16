@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>11.4 Neural network models | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="11.4 Neural network models | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -367,8 +366,8 @@ telecommunication companies like to predict sunspot activity in order to
 plan for any future difficulties. Sunspots follow a cycle of length
 between 9 and 14 years. In Figure <a href="sec-9-3-nnet.html#fig:sunspotnnetar">11.3</a>, forecasts
 from an NNAR(9,5) are shown for the next 20 years.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">nnetar</span>(sunspotarea)
-<span class="kw">autoplot</span>(<span class="kw">forecast</span>(fit,<span class="dt">h=</span><span class="dv">20</span>))</code></pre>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb220-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">nnetar</span>(sunspotarea)</a>
+<a class="sourceLine" id="cb220-2" data-line-number="2"><span class="kw">autoplot</span>(<span class="kw">forecast</span>(fit,<span class="dt">h=</span><span class="dv">20</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:sunspotnnetar"></span>
 <img src="fpp_files/figure-html/sunspotnnetar-1.png" alt="Forecasts from a neural network with nine lagged inputs and one hidden layer containing five neurons." width="90%" />
 <p class="caption">
@@ -376,23 +375,23 @@ Figure 11.3: Forecasts from a neural network with nine lagged inputs and one hid
 </p>
 </div>
 <p>The forecasts actually go slightly negative, which is of course impossible. If we wanted to restrict the forecasts to remain positive, we could use a log transformation (specified by the Box-Cox parameter <span class="math inline">\(\lambda=0\)</span>):</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">nnetar</span>(sunspotarea, <span class="dt">lambda=</span><span class="dv">0</span>)
-<span class="kw">autoplot</span>(<span class="kw">forecast</span>(fit,<span class="dt">h=</span><span class="dv">20</span>))</code></pre>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb221-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">nnetar</span>(sunspotarea, <span class="dt">lambda=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb221-2" data-line-number="2"><span class="kw">autoplot</span>(<span class="kw">forecast</span>(fit,<span class="dt">h=</span><span class="dv">20</span>))</a></code></pre></div>
 <p><img src="fpp_files/figure-html/nnetarsunspots-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <div id="prediction-intervals-3" class="section level4 unnumbered">
 <h4>Prediction intervals</h4>
 <p>Unlike most of the methods considered in this book, neural networks are not based on a well-defined stochastic model, and so it is not straightforward to derive prediction intervals for the resultant forecasts. However, we can still do it using simulation where future sample paths are generated using bootstrapped residuals.</p>
 <p>Suppose we fit a NNETAR model to the famous Canadian <code>lynx</code> data:</p>
-<pre class="sourceCode r"><code class="sourceCode r">(fit &lt;-<span class="st"> </span><span class="kw">nnetar</span>(lynx, <span class="dt">lambda=</span><span class="fl">0.5</span>))
-<span class="co">#&gt; Series: lynx </span>
-<span class="co">#&gt; Model:  NNAR(8,4) </span>
-<span class="co">#&gt; Call:   nnetar(y = lynx, lambda = 0.5)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Average of 20 networks, each of which is</span>
-<span class="co">#&gt; a 8-4-1 network with 41 weights</span>
-<span class="co">#&gt; options were - linear output units </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 96.3</span></code></pre>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb222-1" data-line-number="1">(fit &lt;-<span class="st"> </span><span class="kw">nnetar</span>(lynx, <span class="dt">lambda=</span><span class="fl">0.5</span>))</a>
+<a class="sourceLine" id="cb222-2" data-line-number="2"><span class="co">#&gt; Series: lynx </span></a>
+<a class="sourceLine" id="cb222-3" data-line-number="3"><span class="co">#&gt; Model:  NNAR(8,4) </span></a>
+<a class="sourceLine" id="cb222-4" data-line-number="4"><span class="co">#&gt; Call:   nnetar(y = lynx, lambda = 0.5)</span></a>
+<a class="sourceLine" id="cb222-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb222-6" data-line-number="6"><span class="co">#&gt; Average of 20 networks, each of which is</span></a>
+<a class="sourceLine" id="cb222-7" data-line-number="7"><span class="co">#&gt; a 8-4-1 network with 41 weights</span></a>
+<a class="sourceLine" id="cb222-8" data-line-number="8"><span class="co">#&gt; options were - linear output units </span></a>
+<a class="sourceLine" id="cb222-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb222-10" data-line-number="10"><span class="co">#&gt; sigma^2 estimated as 96.3</span></a></code></pre></div>
 <p>We have used a Box-Cox transformation with <span class="math inline">\(\lambda=0.5\)</span> to ensure the residuals will be roughly homoscedastic (i.e., have constant variance).</p>
 <p>The model can be written as
 <span class="math display">\[
@@ -410,15 +409,15 @@ is one possible draw from the forecast distribution for <span class="math inline
   y^*_{T+2} = f(\boldsymbol{y}^*_{T+1}) + \varepsilon^*_{T+2}.
 \]</span>
 In this way, we can iteratively simulate a future sample path. By repeatedly simulating sample paths, we build up knowledge of the distribution for all future values based on the fitted neural network. Here is a simulation of 9 possible future sample paths for the lynx data. Each sample path covers the next 20 years after the observed data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">sim &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">20</span>, <span class="dt">ncol=</span><span class="dv">9</span>), <span class="dt">start=</span><span class="kw">end</span>(lynx)[<span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">9</span>))
-  sim[,i] &lt;-<span class="st"> </span><span class="kw">simulate</span>(fit, <span class="dt">nsim=</span><span class="dv">20</span>)
-
-<span class="kw">autoplot</span>(lynx) <span class="op">+</span><span class="st"> </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(sim)</code></pre>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb223-1" data-line-number="1">sim &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">matrix</span>(<span class="dv">0</span>, <span class="dt">nrow=</span><span class="dv">20</span>, <span class="dt">ncol=</span><span class="dv">9</span>), <span class="dt">start=</span><span class="kw">end</span>(lynx)[<span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb223-2" data-line-number="2"><span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">9</span>))</a>
+<a class="sourceLine" id="cb223-3" data-line-number="3">  sim[,i] &lt;-<span class="st"> </span><span class="kw">simulate</span>(fit, <span class="dt">nsim=</span><span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb223-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb223-5" data-line-number="5"><span class="kw">autoplot</span>(lynx) <span class="op">+</span><span class="st"> </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(sim)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/nnetarsim-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>If we do this a few hundred or thousand times, we can get a very good picture of the forecast distributions. This is how the <code>forecast.nnetar</code> function produces prediction intervals:</p>
-<pre class="sourceCode r"><code class="sourceCode r">fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">PI=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">20</span>)
-<span class="kw">autoplot</span>(fcast)</code></pre>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb224-1" data-line-number="1">fcast &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit, <span class="dt">PI=</span><span class="ot">TRUE</span>, <span class="dt">h=</span><span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb224-2" data-line-number="2"><span class="kw">autoplot</span>(fcast)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/unnamed-chunk-20-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>Because it is a little slow, <code>PI=FALSE</code> is the default, so prediction intervals are not computed unless requested. The <code>npaths</code> argument in <code>forecast.nnetar</code> controls how many simulations are done (default 1000). By default, the errors are drawn from a normal distribution. The <code>bootstrap</code> argument allows the errors to be “bootstrapped” (i.e., randomly drawn from the historical errors).</p>
 </div>

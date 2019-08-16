@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8.11 Exercises | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8.11 Exercises | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -337,10 +336,10 @@ Figure 8.25: Left: ACF for a white noise series of 36 numbers. Middle: ACF for a
 <ol style="list-style-type: lower-alpha">
 <li>Use the following R code to generate data from an AR(1) model with <span class="math inline">\(\phi_{1} = 0.6\)</span> and <span class="math inline">\(\sigma^2=1\)</span>. The process starts with <span class="math inline">\(y_1=0\)</span>.</li>
 </ol>
-<pre class="sourceCode r"><code class="sourceCode r">    y &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">numeric</span>(<span class="dv">100</span>))
-    e &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)
-    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">100</span>)
-       y[i] &lt;-<span class="st"> </span><span class="fl">0.6</span><span class="op">*</span>y[i<span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span>e[i]</code></pre>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb174-1" data-line-number="1">    y &lt;-<span class="st"> </span><span class="kw">ts</span>(<span class="kw">numeric</span>(<span class="dv">100</span>))</a>
+<a class="sourceLine" id="cb174-2" data-line-number="2">    e &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb174-3" data-line-number="3">    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb174-4" data-line-number="4">       y[i] &lt;-<span class="st"> </span><span class="fl">0.6</span><span class="op">*</span>y[i<span class="dv">-1</span>] <span class="op">+</span><span class="st"> </span>e[i]</a></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Produce a time plot for the series. How does the plot change as you change <span class="math inline">\(\phi_1\)</span>?</li>
 <li>Write your own code to generate data from an MA(1) model with <span class="math inline">\(\theta_{1} = 0.6\)</span> and <span class="math inline">\(\sigma^2=1\)</span>.</li>

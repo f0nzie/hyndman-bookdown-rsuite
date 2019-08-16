@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>10.5 Top-down approaches | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="10.5 Top-down approaches | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -320,7 +319,7 @@ Note that for all top-down approaches the top-level coherent forecasts are equal
 \]</span>
 for <span class="math inline">\(j=1,\dots,m\)</span>. Each proportion <span class="math inline">\(p_j\)</span> reflects the average of the historical proportions of the bottom-level series <span class="math inline">\(y_{j,t}\)</span> over the period <span class="math inline">\(t=1,\dots,T\)</span> relative to the total aggregate <span class="math inline">\(y_t\)</span>.</p>
 <p>This approach is implemented in the <code>forecast</code> package by setting</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(...,<span class="dt">method =</span> <span class="st">&quot;tdgsa&quot;</span>,...). </code></pre>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb201-1" data-line-number="1"><span class="kw">forecast</span>(...,<span class="dt">method =</span> <span class="st">&quot;tdgsa&quot;</span>,...). </a></code></pre></div>
 </div>
 <div id="proportions-of-the-historical-averages" class="section level3 unnumbered">
 <h3>Proportions of the historical averages</h3>
@@ -329,7 +328,7 @@ for <span class="math inline">\(j=1,\dots,m\)</span>. Each proportion <span clas
 \]</span>
 for <span class="math inline">\(j=1,\dots,m\)</span>. Each proportion <span class="math inline">\(p_j\)</span> captures the average historical value of the bottom-level series <span class="math inline">\(y_{j,t}\)</span> relative to the average value of the total aggregate <span class="math inline">\(y_t\)</span>.</p>
 <p>This approach is implemented in the <code>forecast</code> package by setting</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(..., <span class="dt">method =</span> <span class="st">&quot;tdgsf&quot;</span>, ...). </code></pre>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb202-1" data-line-number="1"><span class="kw">forecast</span>(..., <span class="dt">method =</span> <span class="st">&quot;tdgsf&quot;</span>, ...). </a></code></pre></div>
 <p>The greatest attribute of such top-down approaches is their simplicity to apply. One only needs to model and generate forecasts for the most aggregated top-level series. In general these approaches seem to produce quite reliable forecasts for the aggregate levels and they are very useful with low count data. On the other hand, their greatest disadvantage is the loss of information due to aggregation. Using such top-down approaches, we are unable to capture and take advantage of individual series characteristics such as time dynamics, special events, etc.</p>
 </div>
 <div id="forecast-proportions" class="section level3 unnumbered">
@@ -365,7 +364,7 @@ Consequently,
 \]</span>
 The other proportions can be similarly obtained. The greatest disadvantage of the top-down forecast proportions approach, which is a disadvantage of any top-down approach, is that they do not produce unbiased revised forecasts even if the base forecasts are unbiased as shown by <span class="citation">Hyndman et al. (<a href="#ref-HynEtAl2011">2011</a>)</span></p>
 <p>This approach is implemented in the <code>forecast</code> package by setting</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(..., <span class="dt">method =</span> <span class="st">&quot;tdfp&quot;</span>, ...). </code></pre>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb203-1" data-line-number="1"><span class="kw">forecast</span>(..., <span class="dt">method =</span> <span class="st">&quot;tdfp&quot;</span>, ...). </a></code></pre></div>
 </div>
 </div>
 <h3>References</h3>

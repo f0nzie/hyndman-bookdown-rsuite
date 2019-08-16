@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.9 One-step forecasts on test data | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.9 One-step forecasts on test data | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -307,18 +306,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>One solution to this issue is to obtain 1-step errors on the test data. That is, we still use the training data to estimate any parameters, but when we compute forecasts on the test data, we use all of the data preceding each observation (both training and test data). To be specific, suppose our training data are for times <span class="math inline">\(1,2,\dots,T-20\)</span>. We estimate the model on these data, but then compute <span class="math inline">\(\hat{y}_{T-20+h|T-21+h}\)</span>, for <span class="math inline">\(h=1,\dots,T-1\)</span>.
 Because the test data are not used to estimate the parameters, this still gives us a “fair” forecast. For the <code>ets</code>, <code>Arima</code>, <code>tbats</code> and <code>nnetar</code> functions, these calculations are easily carried out using the <code>model</code> argument.</p>
 <p>In the following example, we apply an ARIMA model to the Australian “eating out” monthly expenditure. The last five years are used as the test set.</p>
-<pre class="sourceCode r"><code class="sourceCode r">training &lt;-<span class="st"> </span><span class="kw">subset</span>(auscafe, <span class="dt">end=</span><span class="kw">length</span>(auscafe)<span class="op">-</span><span class="dv">61</span>)
-test &lt;-<span class="st"> </span><span class="kw">subset</span>(auscafe, <span class="dt">start=</span><span class="kw">length</span>(auscafe)<span class="op">-</span><span class="dv">60</span>)
-cafe.train &lt;-<span class="st"> </span><span class="kw">Arima</span>(training, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">lambda=</span><span class="dv">0</span>)
-cafe.train <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">60</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(test)</code></pre>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb238-1" data-line-number="1">training &lt;-<span class="st"> </span><span class="kw">subset</span>(auscafe, <span class="dt">end=</span><span class="kw">length</span>(auscafe)<span class="op">-</span><span class="dv">61</span>)</a>
+<a class="sourceLine" id="cb238-2" data-line-number="2">test &lt;-<span class="st"> </span><span class="kw">subset</span>(auscafe, <span class="dt">start=</span><span class="kw">length</span>(auscafe)<span class="op">-</span><span class="dv">60</span>)</a>
+<a class="sourceLine" id="cb238-3" data-line-number="3">cafe.train &lt;-<span class="st"> </span><span class="kw">Arima</span>(training, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">seasonal=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">lambda=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb238-4" data-line-number="4">cafe.train <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb238-5" data-line-number="5"><span class="st">  </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">60</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb238-6" data-line-number="6"><span class="st">  </span><span class="kw">autoplot</span>() <span class="op">+</span><span class="st"> </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(test)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/oosos-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>Now we apply the same model to the test data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">cafe.test &lt;-<span class="st"> </span><span class="kw">Arima</span>(test, <span class="dt">model=</span>cafe.train)
-<span class="kw">accuracy</span>(cafe.test)
-<span class="co">#&gt;                    ME   RMSE    MAE    MPE MAPE MASE   ACF1</span>
-<span class="co">#&gt; Training set -0.00262 0.0459 0.0341 -0.073    1 0.19 -0.057</span></code></pre>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb239-1" data-line-number="1">cafe.test &lt;-<span class="st"> </span><span class="kw">Arima</span>(test, <span class="dt">model=</span>cafe.train)</a>
+<a class="sourceLine" id="cb239-2" data-line-number="2"><span class="kw">accuracy</span>(cafe.test)</a>
+<a class="sourceLine" id="cb239-3" data-line-number="3"><span class="co">#&gt;                    ME   RMSE    MAE    MPE MAPE MASE   ACF1</span></a>
+<a class="sourceLine" id="cb239-4" data-line-number="4"><span class="co">#&gt; Training set -0.00262 0.0459 0.0341 -0.073    1 0.19 -0.057</span></a></code></pre></div>
 <p>Note that the second call to <code>Arima</code> does not involve the model being re-estimated. Instead, the model obtained in the first call is applied to the test data in the second call.</p>
 <p>Because the model was not re-estimated, the “residuals” obtained here are actually one-step forecast errors. Consequently, the results produced from the <code>accuracy</code> command are actually on the test set (despite the output saying “Training set”).</p>
 </div>

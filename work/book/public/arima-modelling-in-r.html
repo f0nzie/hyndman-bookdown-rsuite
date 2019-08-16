@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8.7 ARIMA modelling in R | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8.7 ARIMA modelling in R | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -362,15 +361,15 @@ Figure 8.11: General process for forecasting using an ARIMA model.
 <div id="example-seasonally-adjusted-electrical-equipment-orders" class="section level3 unnumbered">
 <h3>Example: Seasonally adjusted electrical equipment orders</h3>
 <p>We will apply this procedure to the seasonally adjusted electrical equipment orders data shown in Figure <a href="arima-modelling-in-r.html#fig:ee1">8.12</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">elecequip <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">stl</span>(<span class="dt">s.window=</span><span class="st">&#39;periodic&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">seasadj</span>() -&gt;<span class="st"> </span>eeadj 
-<span class="kw">autoplot</span>(eeadj)</code></pre>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1">elecequip <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">stl</span>(<span class="dt">s.window=</span><span class="st">&#39;periodic&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">seasadj</span>() -&gt;<span class="st"> </span>eeadj </a>
+<a class="sourceLine" id="cb141-2" data-line-number="2"><span class="kw">autoplot</span>(eeadj)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ee1"></span>
 <img src="fpp_files/figure-html/ee1-1.png" alt="Seasonally adjusted electrical equipment orders index in the Euro area." width="90%" />
 <p class="caption">
 Figure 8.12: Seasonally adjusted electrical equipment orders index in the Euro area.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r">eeadj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggtsdisplay</span>(<span class="dt">main=</span><span class="st">&quot;&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1">eeadj <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">diff</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ggtsdisplay</span>(<span class="dt">main=</span><span class="st">&quot;&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ee2"></span>
 <img src="fpp_files/figure-html/ee2-1.png" alt="Time plot and ACF and PACF plots for the differenced seasonally adjusted electrical equipment data." width="90%" />
 <p class="caption">
@@ -383,24 +382,24 @@ Figure 8.13: Time plot and ACF and PACF plots for the differenced seasonally adj
 <li>The data are clearly non-stationary, as the series wanders up and down for long periods. Consequently, we will take a first difference of the data. The differenced data are shown in Figure <a href="arima-modelling-in-r.html#fig:ee2">8.13</a>. These look stationary, and so we will not consider further differences.</li>
 <li>The PACF shown in Figure <a href="arima-modelling-in-r.html#fig:ee2">8.13</a> is suggestive of an AR(3) model. So an initial candidate model is an ARIMA(3,1,0). There are no other obvious candidate models.</li>
 <li><p>We fit an ARIMA(3,1,0) model along with variations including ARIMA(4,1,0), ARIMA(2,1,0), ARIMA(3,1,1), etc. Of these, the ARIMA(3,1,1) has a slightly smaller AICc value.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw">Arima</span>(eeadj, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>))
-<span class="kw">summary</span>(fit)
-<span class="co">#&gt; Series: eeadj </span>
-<span class="co">#&gt; ARIMA(3,1,1) </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ar1    ar2    ar3     ma1</span>
-<span class="co">#&gt;       0.004  0.092  0.370  -0.392</span>
-<span class="co">#&gt; s.e.  0.220  0.098  0.067   0.243</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 9.58:  log likelihood=-493</span>
-<span class="co">#&gt; AIC=995   AICc=996   BIC=1012</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Training set error measures:</span>
-<span class="co">#&gt;                  ME RMSE  MAE      MPE MAPE  MASE    ACF1</span>
-<span class="co">#&gt; Training set 0.0329 3.05 2.36 -0.00647 2.48 0.288 0.00898</span></code></pre></li>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb143-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw">Arima</span>(eeadj, <span class="dt">order=</span><span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb143-2" data-line-number="2"><span class="kw">summary</span>(fit)</a>
+<a class="sourceLine" id="cb143-3" data-line-number="3"><span class="co">#&gt; Series: eeadj </span></a>
+<a class="sourceLine" id="cb143-4" data-line-number="4"><span class="co">#&gt; ARIMA(3,1,1) </span></a>
+<a class="sourceLine" id="cb143-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb143-6" data-line-number="6"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb143-7" data-line-number="7"><span class="co">#&gt;         ar1    ar2    ar3     ma1</span></a>
+<a class="sourceLine" id="cb143-8" data-line-number="8"><span class="co">#&gt;       0.004  0.092  0.370  -0.392</span></a>
+<a class="sourceLine" id="cb143-9" data-line-number="9"><span class="co">#&gt; s.e.  0.220  0.098  0.067   0.243</span></a>
+<a class="sourceLine" id="cb143-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb143-11" data-line-number="11"><span class="co">#&gt; sigma^2 estimated as 9.58:  log likelihood=-493</span></a>
+<a class="sourceLine" id="cb143-12" data-line-number="12"><span class="co">#&gt; AIC=995   AICc=996   BIC=1012</span></a>
+<a class="sourceLine" id="cb143-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb143-14" data-line-number="14"><span class="co">#&gt; Training set error measures:</span></a>
+<a class="sourceLine" id="cb143-15" data-line-number="15"><span class="co">#&gt;                  ME RMSE  MAE      MPE MAPE  MASE    ACF1</span></a>
+<a class="sourceLine" id="cb143-16" data-line-number="16"><span class="co">#&gt; Training set 0.0329 3.05 2.36 -0.00647 2.48 0.288 0.00898</span></a></code></pre></div></li>
 <li><p>The ACF plot of the residuals from the ARIMA(3,1,1) model shows that all correlations are within the threshold limits, indicating that the residuals are behaving like white noise. A portmanteau test returns a large p-value, also suggesting that the residuals are white noise.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(fit)</code></pre>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1"><span class="kw">checkresiduals</span>(fit)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/eeadj2-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; 
 #&gt;  Ljung-Box test
@@ -410,7 +409,7 @@ Figure 8.13: Time plot and ACF and PACF plots for the differenced seasonally adj
 #&gt; 
 #&gt; Model df: 4.   Total lags used: 24</code></pre></li>
 <li><p>Forecasts from the chosen model are shown in Figure <a href="arima-modelling-in-r.html#fig:ee4">8.14</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(<span class="kw">forecast</span>(fit))</code></pre>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1"><span class="kw">autoplot</span>(<span class="kw">forecast</span>(fit))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ee4"></span>
 <img src="fpp_files/figure-html/ee4-1.png" alt="Forecasts for the seasonally adjusted electrical orders index." width="90%" />
 <p class="caption">
@@ -448,7 +447,7 @@ where <span class="math inline">\(c = \mu(1-\phi_1 - \cdots - \phi_p )\)</span> 
 where <span class="math inline">\(\phi(B)= (1-\phi_1B - \cdots - \phi_p B^p)\)</span> is a <span class="math inline">\(p\)</span>th order polynomial in <span class="math inline">\(B\)</span> and <span class="math inline">\(\theta(B) = (1 + \theta_1 B + \cdots + \theta_q B^q)\)</span> is a <span class="math inline">\(q\)</span>th order polynomial in <span class="math inline">\(B\)</span>.</p>
 <p>The stationarity conditions for the model are that the <span class="math inline">\(p\)</span> complex roots of <span class="math inline">\(\phi(B)\)</span> lie outside the unit circle, and the invertibility conditions are that the <span class="math inline">\(q\)</span> complex roots of <span class="math inline">\(\theta(B)\)</span> lie outside the unit circle. So we can see whether the model is close to invertibility or stationarity by a plot of the roots in relation to the complex unit circle.</p>
 <p>It is easier to plot the inverse roots instead, as they should all lie <em>within</em> the unit circle. This is easily done in R. For the ARIMA(3,1,1) model fitted to the seasonally adjusted electrical equipment index, we obtain the following plot.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(fit)</code></pre>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" data-line-number="1"><span class="kw">autoplot</span>(fit)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/armaroots-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>The three red dots in the left hand plot correspond to the roots of the polynomials <span class="math inline">\(\phi(B)\)</span>, while the red dot in the right hand plot corresponds to the root of <span class="math inline">\(\theta(B)\)</span>. They are all inside the unit circle, as we would expect because R ensures the fitted model is both stationary and invertible. Any roots close to the unit circle may be numerically unstable, and the corresponding model will not be good for forecasting.</p>
 <p>The <code>Arima</code> function will never return a model with inverse roots outside the unit circle. The <code>auto.arima</code> function is even stricter and will not select a model with roots close to the unit circle either.</p>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.3 Residual diagnostics | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.3 Residual diagnostics | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -347,32 +346,32 @@ In both cases, there is a parameter to be estimated from the data. The “hat”
   e_{t} = y_{t} - \hat{y}_{t} = y_{t} - y_{t-1}.
 \]</span></p>
 <p>The following graphs show the Dow Jones Index (DJI), and the residuals obtained from forecasting the DJI using the naïve method.</p>
-<pre class="sourceCode r"><code class="sourceCode r">dj2 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">end=</span><span class="dv">250</span>)
-<span class="kw">autoplot</span>(dj2) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Dow Jones Index (daily ending 15 Jul 94)&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">dj2 &lt;-<span class="st"> </span><span class="kw">window</span>(dj, <span class="dt">end=</span><span class="dv">250</span>)</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="kw">autoplot</span>(dj2) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Dow Jones Index (daily ending 15 Jul 94)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:DJautoplot"></span>
 <img src="fpp_files/figure-html/DJautoplot-1.png" alt="The Dow Jones Index measured daily to 15 July 1994." width="90%" />
 <p class="caption">
 Figure 3.4: The Dow Jones Index measured daily to 15 July 1994.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw">residuals</span>(<span class="kw">naive</span>(dj2))
-<span class="kw">autoplot</span>(res) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Residuals from naïve method&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">residuals</span>(<span class="kw">naive</span>(dj2))</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="kw">autoplot</span>(res) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Day&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Residuals from naïve method&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:DJresid"></span>
 <img src="fpp_files/figure-html/DJresid-1.png" alt="Residuals from forecasting the Dow Jones Index using the naïve method." width="90%" />
 <p class="caption">
 Figure 3.5: Residuals from forecasting the Dow Jones Index using the naïve method.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">gghistogram</span>(res) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Histogram of residuals&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">gghistogram</span>(res) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Histogram of residuals&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:DJhist"></span>
 <img src="fpp_files/figure-html/DJhist-1.png" alt="Histogram of the residuals from the naïve method applied to the Dow Jones Index. The left tail is a little too long for a normal distribution." width="90%" />
 <p class="caption">
 Figure 3.6: Histogram of the residuals from the naïve method applied to the Dow Jones Index. The left tail is a little too long for a normal distribution.
 </p>
 </div>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggAcf</span>(res) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;ACF of residuals&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">ggAcf</span>(res) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;ACF of residuals&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:DJacf"></span>
 <img src="fpp_files/figure-html/DJacf-1.png" alt="ACF of the residuals from the naïve method applied to the Dow Jones Index. The lack of correlation suggesting the forecasts are good." width="90%" />
 <p class="caption">
@@ -398,23 +397,23 @@ where <span class="math inline">\(h\)</span> is the maximum lag being considered
 <p>Again, large values of <span class="math inline">\(Q^*\)</span> suggest that the autocorrelations do not come from a white noise series.</p>
 <p>How large is too large? If the autocorrelations did come from a white noise series, then both <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q^*\)</span> would have a <span class="math inline">\(\chi^2\)</span> distribution with <span class="math inline">\((h - K)\)</span> degrees of freedom, where <span class="math inline">\(K\)</span> is the number of parameters in the model. If they are calculated from raw data (rather than the residuals from a model), then set <span class="math inline">\(K=0\)</span>.</p>
 <p>For the Dow-Jones example, the naïve model has no parameters, so <span class="math inline">\(K=0\)</span> in that case also.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># lag=h and fitdf=K</span>
-<span class="kw">Box.test</span>(res, <span class="dt">lag=</span><span class="dv">10</span>, <span class="dt">fitdf=</span><span class="dv">0</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  Box-Pierce test</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; data:  res</span>
-<span class="co">#&gt; X-squared = 11, df = 10, p-value = 0.4</span>
-
-<span class="kw">Box.test</span>(res,<span class="dt">lag=</span><span class="dv">10</span>, <span class="dt">fitdf=</span><span class="dv">0</span>, <span class="dt">type=</span><span class="st">&quot;Lj&quot;</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  Box-Ljung test</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; data:  res</span>
-<span class="co">#&gt; X-squared = 11, df = 10, p-value = 0.4</span></code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="co"># lag=h and fitdf=K</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">Box.test</span>(res, <span class="dt">lag=</span><span class="dv">10</span>, <span class="dt">fitdf=</span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="co">#&gt;  Box-Pierce test</span></a>
+<a class="sourceLine" id="cb36-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb36-6" data-line-number="6"><span class="co">#&gt; data:  res</span></a>
+<a class="sourceLine" id="cb36-7" data-line-number="7"><span class="co">#&gt; X-squared = 11, df = 10, p-value = 0.4</span></a>
+<a class="sourceLine" id="cb36-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb36-9" data-line-number="9"><span class="kw">Box.test</span>(res,<span class="dt">lag=</span><span class="dv">10</span>, <span class="dt">fitdf=</span><span class="dv">0</span>, <span class="dt">type=</span><span class="st">&quot;Lj&quot;</span>)</a>
+<a class="sourceLine" id="cb36-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb36-11" data-line-number="11"><span class="co">#&gt;  Box-Ljung test</span></a>
+<a class="sourceLine" id="cb36-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb36-13" data-line-number="13"><span class="co">#&gt; data:  res</span></a>
+<a class="sourceLine" id="cb36-14" data-line-number="14"><span class="co">#&gt; X-squared = 11, df = 10, p-value = 0.4</span></a></code></pre></div>
 <p>For both <span class="math inline">\(Q\)</span> and <span class="math inline">\(Q^*\)</span>, the results are not significant (i.e., the <span class="math inline">\(p\)</span>-values are relatively large). Thus, we can conclude that the residuals are not distinguishable from a white noise series.</p>
 <p>All of these methods for checking residuals are conveniently packaged into one R function, which will produce a time plot, ACF plot and histogram of the residuals (with an overlayed normal distribution for comparison), and do a Ljung-Box test with the correct degrees of freedom:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(<span class="kw">naive</span>(dj2))</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">checkresiduals</span>(<span class="kw">naive</span>(dj2))</a></code></pre></div>
 <p><img src="fpp_files/figure-html/checkresiduals-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; 
 #&gt;  Ljung-Box test

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>6.2 Moving averages | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="6.2 Moving averages | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -311,8 +310,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   \hat{T}_{t} = \frac{1}{m} \sum_{j=-k}^k y_{t+j},
 \]</span>
 where <span class="math inline">\(m=2k+1\)</span>. That is, the estimate of the trend-cycle at time <span class="math inline">\(t\)</span> is obtained by averaging values of the time series within <span class="math inline">\(k\)</span> periods of <span class="math inline">\(t\)</span>. Observations that are nearby in time are also likely to be close in value, and the average eliminates some of the randomness in the data, leaving a smooth trend-cycle component. We call this an “<span class="math inline">\(m\)</span>-MA”, meaning a moving average of order <span class="math inline">\(m\)</span>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(elecsales) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;GWh&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Annual electricity sales: South Australia&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="kw">autoplot</span>(elecsales) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;GWh&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb91-2" data-line-number="2"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Annual electricity sales: South Australia&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ressales1"></span>
 <img src="fpp_files/figure-html/ressales1-1.png" alt="Residential electricity sales (excluding hot water) for South Australia: 1989--2008." width="90%" />
 <p class="caption">
@@ -320,7 +319,7 @@ Figure 6.4: Residential electricity sales (excluding hot water) for South Austra
 </p>
 </div>
 <p>For example, consider Figure <a href="moving-averages.html#fig:ressales1">6.4</a> which shows the volume of electricity sold to residential customers in South Australia each year from 1989 to 2008 (hot water sales have been excluded). The data are also shown in Table <a href="moving-averages.html#tab:elecsales">6.1</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">ma5 &lt;-<span class="st"> </span><span class="kw">ma</span>(elecsales, <span class="dv">5</span>)</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">ma5 &lt;-<span class="st"> </span><span class="kw">ma</span>(elecsales, <span class="dv">5</span>)</a></code></pre></div>
 <table>
 <caption><span id="tab:elecsales">Table 6.1: </span>Annual electricity sales to residential customers in South Australia. 1989–2008.</caption>
 <thead>
@@ -435,12 +434,12 @@ Figure 6.4: Residential electricity sales (excluding hot water) for South Austra
 </table>
 <p>In the second column of this table, a moving average of order 5 is shown, providing an estimate of the trend-cycle. The first value in this column is the average of the first five observations (1989–1993); the second value in the 5-MA column is the average of the values for 1990–1994; and so on. Each value in the 5-MA column is the average of the observations in the five year period centered on the corresponding year. There are no values for either the first two years or the last two years, because we do not have two observations on either side. In the formula above, column
 5-MA contains the values of <span class="math inline">\(\hat{T}_{t}\)</span> with <span class="math inline">\(k=2\)</span>. To see what the trend-cycle estimate looks like, we plot it along with the original data in Figure <a href="moving-averages.html#fig:ressales2">6.5</a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(elecsales, <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">ma</span>(elecsales,<span class="dv">5</span>), <span class="dt">series=</span><span class="st">&quot;5-MA&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;GWh&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Annual electricity sales: South Australia&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>=<span class="st">&quot;grey50&quot;</span>,<span class="st">&quot;5-MA&quot;</span>=<span class="st">&quot;red&quot;</span>),
-                     <span class="dt">breaks=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>,<span class="st">&quot;5-MA&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">autoplot</span>(elecsales, <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-2" data-line-number="2"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">ma</span>(elecsales,<span class="dv">5</span>), <span class="dt">series=</span><span class="st">&quot;5-MA&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;GWh&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Annual electricity sales: South Australia&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>=<span class="st">&quot;grey50&quot;</span>,<span class="st">&quot;5-MA&quot;</span>=<span class="st">&quot;red&quot;</span>),</a>
+<a class="sourceLine" id="cb93-6" data-line-number="6">                     <span class="dt">breaks=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>,<span class="st">&quot;5-MA&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ressales2"></span>
 <img src="fpp_files/figure-html/ressales2-1.png" alt="Residential electricity sales (black) along with the 5-MA estimate of the trend-cycle (red)." width="90%" />
 <p class="caption">
@@ -461,9 +460,9 @@ Figure 6.6: Different moving averages applied to the residential electricity sal
 <h3>Moving averages of moving averages</h3>
 <p>It is possible to apply a moving average to a moving average. One reason for doing this is to make an even-order moving average symmetric.</p>
 <p>For example, we might take a moving average of order 4, and then apply another moving average of order 2 to the results. In the following table, this has been done for the first few years of the Australian quarterly beer production data.</p>
-<pre class="sourceCode r"><code class="sourceCode r">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>)
-ma4 &lt;-<span class="st"> </span><span class="kw">ma</span>(beer2, <span class="dt">order=</span><span class="dv">4</span>, <span class="dt">centre=</span><span class="ot">FALSE</span>)
-ma2x4 &lt;-<span class="st"> </span><span class="kw">ma</span>(beer2, <span class="dt">order=</span><span class="dv">4</span>, <span class="dt">centre=</span><span class="ot">TRUE</span>)</code></pre>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer,<span class="dt">start=</span><span class="dv">1992</span>)</a>
+<a class="sourceLine" id="cb94-2" data-line-number="2">ma4 &lt;-<span class="st"> </span><span class="kw">ma</span>(beer2, <span class="dt">order=</span><span class="dv">4</span>, <span class="dt">centre=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb94-3" data-line-number="3">ma2x4 &lt;-<span class="st"> </span><span class="kw">ma</span>(beer2, <span class="dt">order=</span><span class="dv">4</span>, <span class="dt">centre=</span><span class="ot">TRUE</span>)</a></code></pre></div>
 <table>
 <caption><span id="tab:matable">Table 6.2: </span>A moving average of order 4 applied to the quarterly beer data, followed by a moving average of order 2.</caption>
 <thead>
@@ -646,12 +645,12 @@ When applied to quarterly data, each quarter of the year is given equal weight a
 <p>In general, a <span class="math inline">\(2\times m\)</span>-MA is equivalent to a weighted moving average of order <span class="math inline">\(m+1\)</span> where all observations take the weight <span class="math inline">\(1/m\)</span>, except for the first and last terms which take weights <span class="math inline">\(1/(2m)\)</span>. So, if the seasonal period is even and of order <span class="math inline">\(m\)</span>, use a <span class="math inline">\(2\times m\)</span>-MA to estimate the trend-cycle. If the seasonal period is odd and of order <span class="math inline">\(m\)</span>, use a <span class="math inline">\(m\)</span>-MA to estimate the trend-cycle. For example, a <span class="math inline">\(2\times 12\)</span>-MA can be used to estimate the trend-cycle of monthly data and a 7-MA can be used to estimate the trend-cycle of daily data with a weekly seasonality.</p>
 <p>Other choices for the order of the MA will usually result in trend-cycle estimates being contaminated by the seasonality in the data.</p>
 <p>###Example: Electrical equipment manufacturing {-}</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(elecequip, <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">ma</span>(elecequip, <span class="dv">12</span>), <span class="dt">series=</span><span class="st">&quot;12-MA&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;New orders index&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Electrical equipment manufacturing (Euro area)&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>=<span class="st">&quot;grey&quot;</span>,<span class="st">&quot;12-MA&quot;</span>=<span class="st">&quot;red&quot;</span>),
-    <span class="dt">breaks=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>,<span class="st">&quot;12-MA&quot;</span>))</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw">autoplot</span>(elecequip, <span class="dt">series=</span><span class="st">&quot;Data&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-2" data-line-number="2"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">ma</span>(elecequip, <span class="dv">12</span>), <span class="dt">series=</span><span class="st">&quot;12-MA&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;New orders index&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Electrical equipment manufacturing (Euro area)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>=<span class="st">&quot;grey&quot;</span>,<span class="st">&quot;12-MA&quot;</span>=<span class="st">&quot;red&quot;</span>),</a>
+<a class="sourceLine" id="cb95-6" data-line-number="6">    <span class="dt">breaks=</span><span class="kw">c</span>(<span class="st">&quot;Data&quot;</span>,<span class="st">&quot;12-MA&quot;</span>))</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:elecequip2"></span>
 <img src="fpp_files/figure-html/elecequip2-1.png" alt="A 2x12-MA applied to the electrical equipment orders index." width="90%" />
 <p class="caption">

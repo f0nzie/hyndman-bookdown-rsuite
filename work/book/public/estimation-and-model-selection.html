@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>7.6 Estimation and model selection | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="7.6 Estimation and model selection | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -332,9 +331,9 @@ and the Bayesian Information Criterion (BIC) is
 <h3>The <code>ets()</code> function in R</h3>
 <p>The models can be estimated in R using the <code>ets()</code> function in the forecast package. Unlike the <code>ses</code>, <code>holt</code> and <code>hw</code> functions, the <code>ets</code> function does not produce forecasts. Rather, it estimates the model parameters and returns information about the fitted model.</p>
 <p>The R code below shows the most important arguments that this function can take, and their default values. If only the time series is specified, and all other arguments are left at their default values, then an appropriate model will be selected automatically. We explain the arguments below. See the help file for a more complete description.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ets</span>(y, <span class="dt">model=</span><span class="st">&quot;ZZZ&quot;</span>, <span class="dt">damped=</span><span class="ot">NULL</span>, <span class="dt">alpha=</span><span class="ot">NULL</span>, <span class="dt">beta=</span><span class="ot">NULL</span>, <span class="dt">gamma=</span><span class="ot">NULL</span>,
-    <span class="dt">phi=</span><span class="ot">NULL</span>, <span class="dt">lambda=</span><span class="ot">NULL</span>, <span class="dt">biasadj=</span><span class="ot">FALSE</span>, <span class="dt">additive.only=</span><span class="ot">FALSE</span>,
-    <span class="dt">restrict=</span><span class="ot">TRUE</span>, <span class="dt">allow.multiplicative.trend=</span><span class="ot">FALSE</span>)</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1"><span class="kw">ets</span>(y, <span class="dt">model=</span><span class="st">&quot;ZZZ&quot;</span>, <span class="dt">damped=</span><span class="ot">NULL</span>, <span class="dt">alpha=</span><span class="ot">NULL</span>, <span class="dt">beta=</span><span class="ot">NULL</span>, <span class="dt">gamma=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb118-2" data-line-number="2">    <span class="dt">phi=</span><span class="ot">NULL</span>, <span class="dt">lambda=</span><span class="ot">NULL</span>, <span class="dt">biasadj=</span><span class="ot">FALSE</span>, <span class="dt">additive.only=</span><span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb118-3" data-line-number="3">    <span class="dt">restrict=</span><span class="ot">TRUE</span>, <span class="dt">allow.multiplicative.trend=</span><span class="ot">FALSE</span>)</a></code></pre></div>
 <dl>
 <dt><code>y</code></dt>
 <dd>The time series to be forecast.
@@ -398,32 +397,32 @@ and the Bayesian Information Criterion (BIC) is
 <div id="example-international-tourist-visitor-nights-in-australia-1" class="section level3 unnumbered">
 <h3>Example: International tourist visitor nights in Australia</h3>
 <p>We now employ the ETS statistical framework to forecast tourist visitor nights in Australia by international arrivals over the period 2016–2019. We let the <code>ets()</code> function select the model by minimizing the AICc.</p>
-<pre class="sourceCode r"><code class="sourceCode r">aust &lt;-<span class="st"> </span><span class="kw">window</span>(austourists, <span class="dt">start=</span><span class="dv">2005</span>)
-fit &lt;-<span class="st"> </span><span class="kw">ets</span>(aust)
-<span class="kw">summary</span>(fit)
-<span class="co">#&gt; ETS(M,A,M) </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt;  ets(y = aust) </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   Smoothing parameters:</span>
-<span class="co">#&gt;     alpha = 0.1908 </span>
-<span class="co">#&gt;     beta  = 0.0392 </span>
-<span class="co">#&gt;     gamma = 2e-04 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   Initial states:</span>
-<span class="co">#&gt;     l = 32.3679 </span>
-<span class="co">#&gt;     b = 0.9281 </span>
-<span class="co">#&gt;     s = 1.02 0.963 0.768 1.25</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   sigma:  0.0383</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;  AIC AICc  BIC </span>
-<span class="co">#&gt;  225  230  241 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Training set error measures:</span>
-<span class="co">#&gt;                  ME RMSE  MAE    MPE MAPE  MASE  ACF1</span>
-<span class="co">#&gt; Training set 0.0484 1.67 1.25 -0.185 2.69 0.409 0.201</span></code></pre>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1">aust &lt;-<span class="st"> </span><span class="kw">window</span>(austourists, <span class="dt">start=</span><span class="dv">2005</span>)</a>
+<a class="sourceLine" id="cb119-2" data-line-number="2">fit &lt;-<span class="st"> </span><span class="kw">ets</span>(aust)</a>
+<a class="sourceLine" id="cb119-3" data-line-number="3"><span class="kw">summary</span>(fit)</a>
+<a class="sourceLine" id="cb119-4" data-line-number="4"><span class="co">#&gt; ETS(M,A,M) </span></a>
+<a class="sourceLine" id="cb119-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb119-6" data-line-number="6"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb119-7" data-line-number="7"><span class="co">#&gt;  ets(y = aust) </span></a>
+<a class="sourceLine" id="cb119-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb119-9" data-line-number="9"><span class="co">#&gt;   Smoothing parameters:</span></a>
+<a class="sourceLine" id="cb119-10" data-line-number="10"><span class="co">#&gt;     alpha = 0.1908 </span></a>
+<a class="sourceLine" id="cb119-11" data-line-number="11"><span class="co">#&gt;     beta  = 0.0392 </span></a>
+<a class="sourceLine" id="cb119-12" data-line-number="12"><span class="co">#&gt;     gamma = 2e-04 </span></a>
+<a class="sourceLine" id="cb119-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb119-14" data-line-number="14"><span class="co">#&gt;   Initial states:</span></a>
+<a class="sourceLine" id="cb119-15" data-line-number="15"><span class="co">#&gt;     l = 32.3679 </span></a>
+<a class="sourceLine" id="cb119-16" data-line-number="16"><span class="co">#&gt;     b = 0.9281 </span></a>
+<a class="sourceLine" id="cb119-17" data-line-number="17"><span class="co">#&gt;     s = 1.02 0.963 0.768 1.25</span></a>
+<a class="sourceLine" id="cb119-18" data-line-number="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb119-19" data-line-number="19"><span class="co">#&gt;   sigma:  0.0383</span></a>
+<a class="sourceLine" id="cb119-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb119-21" data-line-number="21"><span class="co">#&gt;  AIC AICc  BIC </span></a>
+<a class="sourceLine" id="cb119-22" data-line-number="22"><span class="co">#&gt;  225  230  241 </span></a>
+<a class="sourceLine" id="cb119-23" data-line-number="23"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb119-24" data-line-number="24"><span class="co">#&gt; Training set error measures:</span></a>
+<a class="sourceLine" id="cb119-25" data-line-number="25"><span class="co">#&gt;                  ME RMSE  MAE    MPE MAPE  MASE  ACF1</span></a>
+<a class="sourceLine" id="cb119-26" data-line-number="26"><span class="co">#&gt; Training set 0.0484 1.67 1.25 -0.185 2.69 0.409 0.201</span></a></code></pre></div>
 <p>The model selected is ETS(M,A,M):</p>
 <p><span class="math display">\[\begin{align*}
 y_{t} &amp;= (\ell_{t-1} + b_{t-1})s_{t-m}(1 + \varepsilon_t)\\
@@ -433,7 +432,7 @@ s_t &amp;=  s_{t-m}(1+ \gamma \varepsilon_t).
 \end{align*}\]</span></p>
 <p>The parameter estimates are <span class="math inline">\(\alpha=0.1908\)</span>, <span class="math inline">\(\beta=0.03919\)</span>, and <span class="math inline">\(\gamma=0.0001917\)</span>. The output also returns the estimates for the initial states <span class="math inline">\(\ell_0\)</span>, <span class="math inline">\(b_0\)</span>, <span class="math inline">\(s_{0}\)</span>, <span class="math inline">\(s_{-1}\)</span>, <span class="math inline">\(s_{-2}\)</span> and <span class="math inline">\(s_{-3}.\)</span> Compare these with the values obtained for the Holt-Winters method with multiplicative seasonality presented in Table <a href="sec-7-Taxonomy.html#tab:tab76">7.5</a>. Although this model gives equivalent point forecasts to a multiplicative Holt-Winters’ method, the parameters have been estimated differently. With the <code>ets()</code> function, the default estimation method is maximum likelihood rather than minimum sum of squares.</p>
 <p>Figure <a href="estimation-and-model-selection.html#fig:MAMstates">7.9</a> shows the states over time, while Figure <a href="forecasting-with-ets-models.html#fig:MAMforecasts">7.11</a> shows point forecasts and prediction intervals generated from the model. The small values of <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\gamma\)</span> mean that the slope and seasonal components change very little over time. The narrow prediction intervals indicate that the series is relatively easy to forecast due to the strong trend and seasonality.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(fit)</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="kw">autoplot</span>(fit)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:MAMstates"></span>
 <img src="fpp_files/figure-html/MAMstates-1.png" alt="Graphical representation of the estimated states over time." width="90%" />
 <p class="caption">
@@ -441,9 +440,9 @@ Figure 7.9: Graphical representation of the estimated states over time.
 </p>
 </div>
 <p>Because this model has multiplicative errors, the residuals are not equivalent to the one-step forecast errors. The residuals are given by <span class="math inline">\(\hat{\varepsilon}_t\)</span>, while the one-step forecast errors are defined as <span class="math inline">\(y_t - \hat{y}_{t|t-1}\)</span>. We can obtain both using the <code>residuals</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cbind</span>(<span class="st">&#39;Residuals&#39;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit),
-      <span class="st">&#39;Forecast errors&#39;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1"><span class="kw">cbind</span>(<span class="st">&#39;Residuals&#39;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit),</a>
+<a class="sourceLine" id="cb121-2" data-line-number="2">      <span class="st">&#39;Forecast errors&#39;</span> =<span class="st"> </span><span class="kw">residuals</span>(fit, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb121-3" data-line-number="3"><span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:MAMresiduals"></span>
 <img src="fpp_files/figure-html/MAMresiduals-1.png" alt="Residuals and one-step forecast errors from the ETS(M,A,M) model." width="90%" />
 <p class="caption">

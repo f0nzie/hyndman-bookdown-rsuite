@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>11.1 Complex seasonality | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="11.1 Complex seasonality | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -309,13 +308,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To deal with such series, we will use the <code>msts</code> class which handles multiple seasonality time series. Then you can specify all of the frequencies that might be relevant. It is also flexible enough to handle non-integer frequencies.</p>
 <p>You won’t necessarily want to include all of these frequencies — just the ones that are likely to be present in the data. For example, if you have only 180 days of data, you can probably ignore the annual seasonality. If the data are measurements of a natural phenomenon (e.g., temperature), you might also be able to ignore the weekly seasonality.</p>
 <p>Figure <a href="sec-complexseasonality.html#fig:calls">11.1</a> shows the number of retail banking call arrivals per 5-minute interval between 7:00am and 9:05pm each weekday over a 33 week period. There is a strong daily seasonal pattern with frequency 169, and a weak weekly seasonal pattern with frequency <span class="math inline">\(169 \times 5=845\)</span>. (Call volumes on Mondays tend to be higher than the rest of the week.) If a longer series of data were available, there may also be an annual seasonal pattern.</p>
-<pre class="sourceCode r"><code class="sourceCode r">p1 &lt;-<span class="st"> </span><span class="kw">autoplot</span>(calls) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Call volume&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Weeks&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">33</span>,<span class="dt">by=</span><span class="dv">2</span>))
-p2 &lt;-<span class="st"> </span><span class="kw">autoplot</span>(<span class="kw">window</span>(calls, <span class="dt">end=</span><span class="dv">4</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Call volume&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Weeks&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dt">by=</span><span class="fl">0.2</span>))
-gridExtra<span class="op">::</span><span class="kw">grid.arrange</span>(p1,p2)</code></pre>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb207-1" data-line-number="1">p1 &lt;-<span class="st"> </span><span class="kw">autoplot</span>(calls) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-2" data-line-number="2"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Call volume&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Weeks&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-3" data-line-number="3"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">33</span>,<span class="dt">by=</span><span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb207-4" data-line-number="4">p2 &lt;-<span class="st"> </span><span class="kw">autoplot</span>(<span class="kw">window</span>(calls, <span class="dt">end=</span><span class="dv">4</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-5" data-line-number="5"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Call volume&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Weeks&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb207-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks =</span> <span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dt">by=</span><span class="fl">0.2</span>))</a>
+<a class="sourceLine" id="cb207-7" data-line-number="7">gridExtra<span class="op">::</span><span class="kw">grid.arrange</span>(p1,p2)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:calls"></span>
 <img src="fpp_files/figure-html/calls-1.png" alt="Five-minute call volume handled on weekdays between 7am and 9:05pm in a large North American commercial bank. Top panel shows data from 3 March 2003 to 23 May 2003. Bottom panel shows only the first three weeks." width="90%" />
 <p class="caption">
@@ -333,35 +332,35 @@ Figure 11.1: Five-minute call volume handled on weekdays between 7am and 9:05pm 
 \]</span>
 for <span class="math inline">\(k=1,2,\dots\)</span>. The <code>fourier</code> function can generate these for you.</p>
 <p>We will fit a dynamic regression model with an ARMA error structure. The total number of Fourier terms for each seasonal period have been chosen to minimize the AICc. We will use a log transformation (<code>lambda=0</code>) to ensure the forecasts and prediction intervals remain positive.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#fit &lt;- auto.arima(calls, seasonal=FALSE, lambda=0,</span>
-<span class="co">#         xreg=fourier(calls, K=c(10,10)))</span>
-<span class="co">#fc &lt;- forecast(fit, xreg=fourier(calls, K=c(10,10), h=2*169))</span>
-<span class="co">#autoplot(fc, include=5*169) +</span>
-<span class="co">#  ylab(&quot;Call volume&quot;) + xlab(&quot;Weeks&quot;)</span></code></pre>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb208-1" data-line-number="1"><span class="co">#fit &lt;- auto.arima(calls, seasonal=FALSE, lambda=0,</span></a>
+<a class="sourceLine" id="cb208-2" data-line-number="2"><span class="co">#         xreg=fourier(calls, K=c(10,10)))</span></a>
+<a class="sourceLine" id="cb208-3" data-line-number="3"><span class="co">#fc &lt;- forecast(fit, xreg=fourier(calls, K=c(10,10), h=2*169))</span></a>
+<a class="sourceLine" id="cb208-4" data-line-number="4"><span class="co">#autoplot(fc, include=5*169) +</span></a>
+<a class="sourceLine" id="cb208-5" data-line-number="5"><span class="co">#  ylab(&quot;Call volume&quot;) + xlab(&quot;Weeks&quot;)</span></a></code></pre></div>
 <p>This is a very large model (containing 120+??=?? parameters).</p>
 </div>
 <div id="tbats-models" class="section level3 unnumbered">
 <h3>TBATS models</h3>
 <p>An alternative approach developed by <span class="citation">De Livera, Hyndman, and Snyder (<a href="#ref-DHS11">2011</a>)</span> uses a combination of Fourier terms with an exponential smoothing state space model and a Box-Cox transformation, in a completed automated manner. As with any automated modelling framework, it does not always work, but it can be a useful approach in some circumstances.</p>
 <p>A TBATS model differs from dynamic harmonic regression in that the seasonality is allowed to change slowly over time in a TBATS model, while harmonic regression terms force the seasonal patterns to repeat periodically without changing. One drawback of TBATS models is that they can be very slow to estimate, especially with long time series. So we will consider a subset of the <code>calls</code> data to save time.</p>
-<pre class="sourceCode r"><code class="sourceCode r">calls <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">subset</span>(<span class="dt">start=</span><span class="kw">length</span>(calls)<span class="op">-</span><span class="dv">1000</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span>tbats -&gt;<span class="st"> </span>fit2
-fc2 &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit2, <span class="dt">h=</span><span class="dv">2</span><span class="op">*</span><span class="dv">169</span>)
-<span class="kw">autoplot</span>(fc2, <span class="dt">include=</span><span class="dv">5</span><span class="op">*</span><span class="dv">169</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Call volume&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Weeks&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb209-1" data-line-number="1">calls <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb209-2" data-line-number="2"><span class="st">  </span><span class="kw">subset</span>(<span class="dt">start=</span><span class="kw">length</span>(calls)<span class="op">-</span><span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb209-3" data-line-number="3"><span class="st">  </span>tbats -&gt;<span class="st"> </span>fit2</a>
+<a class="sourceLine" id="cb209-4" data-line-number="4">fc2 &lt;-<span class="st"> </span><span class="kw">forecast</span>(fit2, <span class="dt">h=</span><span class="dv">2</span><span class="op">*</span><span class="dv">169</span>)</a>
+<a class="sourceLine" id="cb209-5" data-line-number="5"><span class="kw">autoplot</span>(fc2, <span class="dt">include=</span><span class="dv">5</span><span class="op">*</span><span class="dv">169</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb209-6" data-line-number="6"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Call volume&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Weeks&quot;</span>)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/callstbats-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="complex-seasonality-with-covariates" class="section level3 unnumbered">
 <h3>Complex seasonality with covariates</h3>
 <p>TBATS models do not allow for covariates, although they can be included in dynamic harmonic regression models. One common application of such models is electricity demand modelling.</p>
 <p>Figure <a href="sec-complexseasonality.html#fig:elecdemand">11.2</a> shows half-hourly electricity demand in Victoria, Australia, during 2014, along with temperatures in the same period.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(elecdemand[,<span class="kw">c</span>(<span class="st">&quot;Demand&quot;</span>,<span class="st">&quot;Temperature&quot;</span>)], <span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks=</span><span class="ot">NULL</span>,
-    <span class="dt">breaks=</span><span class="dv">2014</span><span class="op">+</span><span class="kw">cumsum</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">31</span>,<span class="dv">28</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>))<span class="op">/</span><span class="dv">365</span>,
-    <span class="dt">labels=</span>month.abb) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Time&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)
-<span class="co">#&gt; Warning: Ignoring unknown parameters: series</span></code></pre>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb210-1" data-line-number="1"><span class="kw">autoplot</span>(elecdemand[,<span class="kw">c</span>(<span class="st">&quot;Demand&quot;</span>,<span class="st">&quot;Temperature&quot;</span>)], <span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-2" data-line-number="2"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">minor_breaks=</span><span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb210-3" data-line-number="3">    <span class="dt">breaks=</span><span class="dv">2014</span><span class="op">+</span><span class="kw">cumsum</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">31</span>,<span class="dv">28</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>))<span class="op">/</span><span class="dv">365</span>,</a>
+<a class="sourceLine" id="cb210-4" data-line-number="4">    <span class="dt">labels=</span>month.abb) <span class="op">+</span></a>
+<a class="sourceLine" id="cb210-5" data-line-number="5"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Time&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>)</a>
+<a class="sourceLine" id="cb210-6" data-line-number="6"><span class="co">#&gt; Warning: Ignoring unknown parameters: series</span></a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:elecdemand"></span>
 <img src="fpp_files/figure-html/elecdemand-1.png" alt="Half-hourly electricity demand and corresponding temperatures in 2014, Victoria, Australia." width="90%" />
 <p class="caption">
@@ -369,24 +368,24 @@ Figure 11.2: Half-hourly electricity demand and corresponding temperatures in 20
 </p>
 </div>
 <p>Plotting electricity demand against temperature shows that there is a nonlinear relationship between the two, with demand increasing for low temperatures (due to heating) and increasing for high temperatures (due to cooling).</p>
-<pre class="sourceCode r"><code class="sourceCode r">elecdemand <span class="op">%&gt;%</span>
-<span class="st">  </span>as.data.frame <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Temperature, <span class="dt">y=</span>Demand)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Temperature (degrees Celsius)&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Demand (GW)&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb211-1" data-line-number="1">elecdemand <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb211-2" data-line-number="2"><span class="st">  </span>as.data.frame <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb211-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Temperature, <span class="dt">y=</span>Demand)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb211-4" data-line-number="4"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Temperature (degrees Celsius)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb211-5" data-line-number="5"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Demand (GW)&quot;</span>)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/elecdemand2-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>We will fit a regression model with a piecewise linear function of temperature (containing a knot at 18 degrees), and harmonic regression terms to allow for the daily seasonal pattern.</p>
-<pre class="sourceCode r"><code class="sourceCode r">cooling &lt;-<span class="st"> </span><span class="kw">pmax</span>(elecdemand[,<span class="st">&quot;Temperature&quot;</span>], <span class="dv">18</span>)
-fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(elecdemand[,<span class="st">&quot;Demand&quot;</span>],
-         <span class="dt">xreg =</span> <span class="kw">cbind</span>(<span class="kw">fourier</span>(elecdemand, <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">0</span>)),
-               <span class="dt">heating=</span>elecdemand[,<span class="st">&quot;Temperature&quot;</span>],
-               <span class="dt">cooling=</span>cooling))</code></pre>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb212-1" data-line-number="1">cooling &lt;-<span class="st"> </span><span class="kw">pmax</span>(elecdemand[,<span class="st">&quot;Temperature&quot;</span>], <span class="dv">18</span>)</a>
+<a class="sourceLine" id="cb212-2" data-line-number="2">fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(elecdemand[,<span class="st">&quot;Demand&quot;</span>],</a>
+<a class="sourceLine" id="cb212-3" data-line-number="3">         <span class="dt">xreg =</span> <span class="kw">cbind</span>(<span class="kw">fourier</span>(elecdemand, <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">0</span>)),</a>
+<a class="sourceLine" id="cb212-4" data-line-number="4">               <span class="dt">heating=</span>elecdemand[,<span class="st">&quot;Temperature&quot;</span>],</a>
+<a class="sourceLine" id="cb212-5" data-line-number="5">               <span class="dt">cooling=</span>cooling))</a></code></pre></div>
 <p>Forecasting with such models is difficult because we require future values of the predictor variables. Future values of the Fourier terms are easy to compute, but future temperatures are, of course, unknown. We could use temperature forecasts obtain from a meteorological model if we are only interested in forecasting up to a week ahead. Alternatively, we could use scenario forecasting and plug in possible temperature patterns. In the following example, we have used a repeat of the last week of temperatures to generate future possible demand values.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#temps &lt;- subset(elecdemand[,&quot;Temperature&quot;], start=NROW(elecdemand)-7*48-1)</span>
-<span class="co">#fc &lt;- forecast(fit, xreg=cbind(fourier(temps, c(10,10,0)),</span>
-<span class="co">#                           heating=temps, cooling=pmax(temps,18)))</span>
-<span class="co">#autoplot(fc)</span></code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#checkresiduals(fc)</span></code></pre>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb213-1" data-line-number="1"><span class="co">#temps &lt;- subset(elecdemand[,&quot;Temperature&quot;], start=NROW(elecdemand)-7*48-1)</span></a>
+<a class="sourceLine" id="cb213-2" data-line-number="2"><span class="co">#fc &lt;- forecast(fit, xreg=cbind(fourier(temps, c(10,10,0)),</span></a>
+<a class="sourceLine" id="cb213-3" data-line-number="3"><span class="co">#                           heating=temps, cooling=pmax(temps,18)))</span></a>
+<a class="sourceLine" id="cb213-4" data-line-number="4"><span class="co">#autoplot(fc)</span></a></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb214-1" data-line-number="1"><span class="co">#checkresiduals(fc)</span></a></code></pre></div>
 </div>
 </div>
 <h3>References</h3>

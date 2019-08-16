@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.1 The linear model | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.1 The linear model | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -320,8 +319,8 @@ Figure 5.1: An example of data from a linear regression model.
 <div id="example-us-consumption-expenditure" class="section level4 unnumbered">
 <h4>Example: US consumption expenditure</h4>
 <p>Figure <a href="Regr-Intro.html#fig:ConsInc">5.2</a> shows time series of quarterly percentage changes (growth rates) of real personal consumption expenditure (<span class="math inline">\(y\)</span>) and real personal disposable income (<span class="math inline">\(x\)</span>) for the US from 1970 Q1 to 2016 Q3.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(uschange[,<span class="kw">c</span>(<span class="st">&quot;Consumption&quot;</span>,<span class="st">&quot;Income&quot;</span>)]) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;% change&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">autoplot</span>(uschange[,<span class="kw">c</span>(<span class="st">&quot;Consumption&quot;</span>,<span class="st">&quot;Income&quot;</span>)]) <span class="op">+</span></a>
+<a class="sourceLine" id="cb62-2" data-line-number="2"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;% change&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ConsInc"></span>
 <img src="fpp_files/figure-html/ConsInc-1.png" alt="Percentage changes in personal consumption expenditure and personal income for the US." width="90%" />
 <p class="caption">
@@ -333,13 +332,13 @@ Figure 5.2: Percentage changes in personal consumption expenditure and personal 
   \hat{y}_t=0.55 + 0.28x_t.
 \]</span>
 (We put a “hat” above the <span class="math inline">\(y\)</span> to indicate this is an estimate or prediction.)</p>
-<pre class="sourceCode r"><code class="sourceCode r">uschange <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Income, <span class="dt">y=</span>Consumption)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Consumption (quarterly % change)&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Income (quarterly % change)&quot;</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">se=</span><span class="ot">FALSE</span>)</code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">uschange <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb63-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Income, <span class="dt">y=</span>Consumption)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb63-4" data-line-number="4"><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Consumption (quarterly % change)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb63-5" data-line-number="5"><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Income (quarterly % change)&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb63-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb63-7" data-line-number="7"><span class="st">    </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">se=</span><span class="ot">FALSE</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ConsInc2"></span>
 <img src="fpp_files/figure-html/ConsInc2-1.png" alt="Scatterplot of consumption versus income and the fitted regression line." width="90%" />
 <p class="caption">
@@ -347,14 +346,14 @@ Figure 5.3: Scatterplot of consumption versus income and the fitted regression l
 </p>
 </div>
 <p>This equation is estimated in R using the <code>tslm</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>uschange)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt; tslm(formula = Consumption ~ Income, data = uschange)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt; (Intercept)       Income  </span>
-<span class="co">#&gt;       0.545        0.281</span></code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">tslm</span>(Consumption <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>uschange)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb64-3" data-line-number="3"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb64-4" data-line-number="4"><span class="co">#&gt; tslm(formula = Consumption ~ Income, data = uschange)</span></a>
+<a class="sourceLine" id="cb64-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb64-6" data-line-number="6"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb64-7" data-line-number="7"><span class="co">#&gt; (Intercept)       Income  </span></a>
+<a class="sourceLine" id="cb64-8" data-line-number="8"><span class="co">#&gt;       0.545        0.281</span></a></code></pre></div>
 <p>We will discuss how <code>tslm</code> computes the coefficients in Section <a href="Regr-LSprinciple.html#Regr-LSprinciple">5.2</a>.</p>
 <p>The fitted line has a positive slope, reflecting the positive relationship between income and consumption. The slope coefficient shows that a one unit increase in <span class="math inline">\(x\)</span> (a 1% increase in personal disposable income) results on average in 0.28 units increase in <span class="math inline">\(y\)</span> (an average 0.28% increase in personal consumption expenditure). Alternatively the estimated equation shows that a value of 1 for <span class="math inline">\(x\)</span> (the percentage increase in personal disposable income) will result in a forecast value of <span class="math inline">\(0.55 + 0.28 \times 1 = 0.83\)</span> for <span class="math inline">\(y\)</span> (the percentage increase in personal consumption expenditure).</p>
 <p>The interpretation of the intercept requires that a value of <span class="math inline">\(x=0\)</span> makes sense. In this case when <span class="math inline">\(x=0\)</span> (i.e., when there is no change in personal disposable income since the last quarter) the predicted value of <span class="math inline">\(y\)</span> is 0.55 (i.e., an average increase in personal consumption expenditure of 0.55%). Even when <span class="math inline">\(x=0\)</span> does not make sense, the intercept is an important part of the model. Without it, the slope coefficient can be distorted unnecessarily. The intercept should always be included unless the requirement is to force the regression line “through the origin”. In what follows we assume that an intercept is always included in the model.</p>
@@ -378,12 +377,9 @@ Figure 5.4: Quarterly percentage changes in industrial production and personal s
 </p>
 </div>
 <p>The first column of Figure <a href="Regr-Intro.html#fig:ScatterMatrix">5.5</a> below shows the relationships between consumption and each of the predictors. The scatterplots show positive relationships with income and industrial production, and negative relationships with savings and unemployment. The strength of these relationships are shown by the correlation coefficients across the first row. The remaining scatterplots and correlation coefficients show the relationships between the predictors.</p>
-<pre class="sourceCode r"><code class="sourceCode r">uschange <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>()
-<span class="co">#&gt; Registered S3 method overwritten by &#39;GGally&#39;:</span>
-<span class="co">#&gt;   method from   </span>
-<span class="co">#&gt;   +.gg   ggplot2</span></code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">uschange <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="st">  </span><span class="kw">as.data.frame</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb65-3" data-line-number="3"><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>()</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:ScatterMatrix"></span>
 <img src="fpp_files/figure-html/ScatterMatrix-1.png" alt="A scatterplot matrix of US consumption expenditure and the four predictors." width="90%" />
 <p class="caption">

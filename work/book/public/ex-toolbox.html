@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.7 Exercises | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.7 Exercises | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -314,13 +313,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Why is a Box-Cox transformation unhelpful for the <code>cangas</code> data?</p></li>
 <li><p>What Box-Cox transformation would you select for your retail data (from Exercise 3 in Section <a href="ex-graphics.html#ex-graphics">2.10</a>)?</p></li>
 <li><p>Calculate the residuals from a seasonal naïve forecast applied to the quarterly Australian beer production data from 1992. The following code will help.</p>
-<pre class="sourceCode r"><code class="sourceCode r">beer &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)
-fc &lt;-<span class="st"> </span><span class="kw">snaive</span>(beer)
-<span class="kw">autoplot</span>(fc)
-res &lt;-<span class="st"> </span><span class="kw">residuals</span>(fc)
-<span class="kw">autoplot</span>(res)</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">beer &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">fc &lt;-<span class="st"> </span><span class="kw">snaive</span>(beer)</a>
+<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="kw">autoplot</span>(fc)</a>
+<a class="sourceLine" id="cb55-4" data-line-number="4">res &lt;-<span class="st"> </span><span class="kw">residuals</span>(fc)</a>
+<a class="sourceLine" id="cb55-5" data-line-number="5"><span class="kw">autoplot</span>(res)</a></code></pre></div>
 <p>Test if the residuals are white noise and normally distributed.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(fc)</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="kw">checkresiduals</span>(fc)</a></code></pre></div>
 <p>What do you conclude?</p></li>
 <li><p>Repeat the exercise for the <code>WWWusage</code> and <code>bricksq</code> data. Use whichever of <code>naive</code> or <code>snaive</code> is more appropriate in each case.</p></li>
 <li><p>Are the following statements true or false? Explain your answer.</p>
@@ -334,16 +333,16 @@ res &lt;-<span class="st"> </span><span class="kw">residuals</span>(fc)
 <li><p>For your retail time series (from Exercise 3 in Section <a href="ex-graphics.html#ex-graphics">2.10</a>):</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Split the data into two parts using</p>
-<pre class="sourceCode r"><code class="sourceCode r">x1 &lt;-<span class="st"> </span><span class="kw">window</span>(myts, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2010</span>,<span class="dv">12</span>))
-x2 &lt;-<span class="st"> </span><span class="kw">window</span>(myts, <span class="dt">start=</span><span class="dv">2011</span>)</code></pre></li>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">x1 &lt;-<span class="st"> </span><span class="kw">window</span>(myts, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2010</span>,<span class="dv">12</span>))</a>
+<a class="sourceLine" id="cb57-2" data-line-number="2">x2 &lt;-<span class="st"> </span><span class="kw">window</span>(myts, <span class="dt">start=</span><span class="dv">2011</span>)</a></code></pre></div></li>
 <li><p>Check that your data have been split appropriately by producing the following plot.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(<span class="kw">cbind</span>(x1,x2))</code></pre></li>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">autoplot</span>(<span class="kw">cbind</span>(x1,x2))</a></code></pre></div></li>
 <li><p>Calculate forecasts using <code>snaive</code> applied to <code>x1</code>.</p></li>
 <li><p>Compare the accuracy of your forecasts against the actual values stored in <code>x2</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">f1 &lt;-<span class="st"> </span><span class="kw">snaive</span>(x1)
-<span class="kw">accuracy</span>(f1,x2)</code></pre></li>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">f1 &lt;-<span class="st"> </span><span class="kw">snaive</span>(x1)</a>
+<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="kw">accuracy</span>(f1,x2)</a></code></pre></div></li>
 <li><p>Check the residuals.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">checkresiduals</span>(f1)</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">checkresiduals</span>(f1)</a></code></pre></div>
 <p>Do the residuals appear to be uncorrelated and normally distributed?</p></li>
 <li><p>How sensitive are the accuracy measures to the training/test split?</p></li>
 </ol></li>

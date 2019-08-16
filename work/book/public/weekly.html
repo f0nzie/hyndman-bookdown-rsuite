@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.1 Weekly, daily and sub-daily data | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.1 Weekly, daily and sub-daily data | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -308,18 +307,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Weekly data</h3>
 <p>Weekly data is difficult because the seasonal period (the number of weeks in a year) is both large and non-integer. The average number of weeks in a year is 52.18. Most of the methods we have considered require the seasonal period to be an integer. Even if we approximate it by 52, most of the methods will not handle such a large seasonal period efficiently.</p>
 <p>The simplest approach is to use a dynamic harmonic regression model, as discussed in Section <a href="sec-dhr.html#sec-dhr">9.5</a>. Here is an example using weekly data on US finished motor gasoline products supplied (in thousands of barrels per day) from February 1991 to May 2005. The number of Fourier terms was selected by minimizing the AICc. The order of the ARIMA model is also selected by minimizing the AICc, although that is done within the <code>auto.arima()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r">bestfit &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">aicc=</span><span class="ot">Inf</span>)
-<span class="cf">for</span>(K <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">25</span>))
-{
-  fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(gasoline, <span class="dt">xreg=</span><span class="kw">fourier</span>(gasoline, <span class="dt">K=</span>K), <span class="dt">seasonal=</span><span class="ot">FALSE</span>)
-  <span class="cf">if</span>(fit<span class="op">$</span>aicc <span class="op">&lt;</span><span class="st"> </span>bestfit<span class="op">$</span>aicc)
-  {
-    bestfit &lt;-<span class="st"> </span>fit
-    bestK &lt;-<span class="st"> </span>K
-  }
-}
-fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(bestfit, <span class="dt">xreg=</span><span class="kw">fourier</span>(gasoline, <span class="dt">K=</span>bestK, <span class="dt">h=</span><span class="dv">104</span>))
-<span class="kw">autoplot</span>(fc)</code></pre>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb225-1" data-line-number="1">bestfit &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">aicc=</span><span class="ot">Inf</span>)</a>
+<a class="sourceLine" id="cb225-2" data-line-number="2"><span class="cf">for</span>(K <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">25</span>))</a>
+<a class="sourceLine" id="cb225-3" data-line-number="3">{</a>
+<a class="sourceLine" id="cb225-4" data-line-number="4">  fit &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(gasoline, <span class="dt">xreg=</span><span class="kw">fourier</span>(gasoline, <span class="dt">K=</span>K), <span class="dt">seasonal=</span><span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb225-5" data-line-number="5">  <span class="cf">if</span>(fit<span class="op">$</span>aicc <span class="op">&lt;</span><span class="st"> </span>bestfit<span class="op">$</span>aicc)</a>
+<a class="sourceLine" id="cb225-6" data-line-number="6">  {</a>
+<a class="sourceLine" id="cb225-7" data-line-number="7">    bestfit &lt;-<span class="st"> </span>fit</a>
+<a class="sourceLine" id="cb225-8" data-line-number="8">    bestK &lt;-<span class="st"> </span>K</a>
+<a class="sourceLine" id="cb225-9" data-line-number="9">  }</a>
+<a class="sourceLine" id="cb225-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb225-11" data-line-number="11">fc &lt;-<span class="st"> </span><span class="kw">forecast</span>(bestfit, <span class="dt">xreg=</span><span class="kw">fourier</span>(gasoline, <span class="dt">K=</span>bestK, <span class="dt">h=</span><span class="dv">104</span>))</a>
+<a class="sourceLine" id="cb225-12" data-line-number="12"><span class="kw">autoplot</span>(fc)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/gasweekly-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <p>The fitted model has 18 pairs of Fourier terms and can be written as:</p>
 <p><span class="math display">\[

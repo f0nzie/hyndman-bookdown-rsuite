@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>12.10 Multi-step forecasts on training data | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="12.10 Multi-step forecasts on training data | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -305,8 +304,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">12.10</span> Multi-step forecasts on training data</h2>
 <p>Just as it is useful to obtain one-step forecasts on the test set, it is sometimes useful to compute multi-step forecasts on the training set. We normally define fitted values to be one-step forecasts on the training set (see Section <a href="residuals.html#residuals">3.3</a>), but a similar idea can be used for multi-step forecasts. The <code>fitted()</code> function has an <code>h</code> argument to allow for <span class="math inline">\(h\)</span>-step “fitted values” on the training set.</p>
 <p>Here is a plot of 12-step (one year) forecasts on the training set used for the model of Australian eating-out expenditure in the previous section. Because the model involves both seasonal (lag 12) and first (lag 1) differencing, it is not possible to compute these forecasts for the first 25 observations.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(training, <span class="dt">series=</span><span class="st">&quot;Training data&quot;</span>) <span class="op">+</span>
-<span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(cafe.train, <span class="dt">h=</span><span class="dv">12</span>), <span class="dt">series=</span><span class="st">&quot;12-step fitted values&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb240-1" data-line-number="1"><span class="kw">autoplot</span>(training, <span class="dt">series=</span><span class="st">&quot;Training data&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb240-2" data-line-number="2"><span class="st">  </span>forecast<span class="op">::</span><span class="kw">autolayer</span>(<span class="kw">fitted</span>(cafe.train, <span class="dt">h=</span><span class="dv">12</span>), <span class="dt">series=</span><span class="st">&quot;12-step fitted values&quot;</span>)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/isms-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
             </section>

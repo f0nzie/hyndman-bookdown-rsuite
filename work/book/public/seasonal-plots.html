@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.4 Seasonal plots | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.4 Seasonal plots | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -304,8 +303,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="seasonal-plots" class="section level2">
 <h2><span class="header-section-number">2.4</span> Seasonal plots</h2>
 <p>A seasonal plot is similar to a time plot except that the data are plotted against the individual “seasons” in which the data were observed. An example is given below showing the antidiabetic drug sales.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggseasonplot</span>(a10, <span class="dt">year.labels=</span><span class="ot">TRUE</span>, <span class="dt">year.labels.left=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;$ million&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Seasonal plot: antidiabetic drug sales&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">ggseasonplot</span>(a10, <span class="dt">year.labels=</span><span class="ot">TRUE</span>, <span class="dt">year.labels.left=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;$ million&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Seasonal plot: antidiabetic drug sales&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:seasonplot1"></span>
 <img src="fpp_files/figure-html/seasonplot1-1.png" alt="Seasonal plot of monthly antidiabetic drug sales in Australia." width="90%" />
 <p class="caption">
@@ -315,8 +314,8 @@ Figure 2.4: Seasonal plot of monthly antidiabetic drug sales in Australia.
 <p>These are exactly the same data as were shown earlier, but now the data from each season are overlapped. A seasonal plot allows the underlying seasonal pattern to be seen more clearly, and is especially useful in identifying years in which the pattern changes.</p>
 <p>In this case, it is clear that there is a large jump in sales in January each year. Actually, these are probably sales in late December as customers stockpile before the end of the calendar year, but the sales are not registered with the government until a week or two later. The graph also shows that there was an unusually small number of sales in March 2008 (most other years show an increase between February and March). The small number of sales in June 2008 is probably due to incomplete counting of sales at the time the data were collected.</p>
 <p>A useful variation on the seasonal plot uses polar coordinates. Setting <code>polar=TRUE</code> makes the time series axis circular rather than horizontal, as shown below.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggseasonplot</span>(a10, <span class="dt">polar=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;$ million&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Polar seasonal plot: antidiabetic drug sales&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">ggseasonplot</span>(a10, <span class="dt">polar=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;$ million&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Polar seasonal plot: antidiabetic drug sales&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:seasonplot2"></span>
 <img src="fpp_files/figure-html/seasonplot2-1.png" alt="Polar seasonal plot of monthly antidiabetic drug sales in Australia." width="90%" />
 <p class="caption">

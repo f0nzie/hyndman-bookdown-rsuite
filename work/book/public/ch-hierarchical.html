@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 Forecasting hierarchical or grouped time series | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 Forecasting hierarchical or grouped time series | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -308,10 +307,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="the-hts-package" class="section level3 unnumbered">
 <h3>The hts package</h3>
 <p>Forecasting hierarchical and grouped time series is implemented using the <strong>hts</strong> package. Forecasts are simply obtained as usual with the <code>forecast</code> function. The R code below shows the possible arguments that this function takes when applied to a hierarchical or grouped time series.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">forecast</span>(object, <span class="dt">h =</span> <span class="kw">ifelse</span>(<span class="kw">frequency</span>(object<span class="op">$</span>bts)<span class="op">&gt;</span><span class="dv">1</span>, <span class="dv">2</span><span class="op">*</span><span class="kw">frequency</span>(object<span class="op">$</span>bts), <span class="dv">10</span>), 
-<span class="dt">fmethod =</span> <span class="kw">c</span>(<span class="st">&quot;ets&quot;</span>, <span class="st">&quot;arima&quot;</span>, <span class="st">&quot;rw&quot;</span>),
-<span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;comb&quot;</span>, <span class="st">&quot;bu&quot;</span>, <span class="st">&quot;mo&quot;</span>, <span class="st">&quot;tdgsa&quot;</span>, <span class="st">&quot;tdgsf&quot;</span>, <span class="st">&quot;tdfp&quot;</span>), 
-<span class="dt">weights =</span> <span class="kw">c</span>(<span class="st">&quot;wls&quot;</span>, <span class="st">&quot;ols&quot;</span>, <span class="st">&quot;mint&quot;</span>, <span class="st">&quot;nseries&quot;</span>), ...)</code></pre>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb195-1" data-line-number="1"><span class="kw">forecast</span>(object, <span class="dt">h =</span> <span class="kw">ifelse</span>(<span class="kw">frequency</span>(object<span class="op">$</span>bts)<span class="op">&gt;</span><span class="dv">1</span>, <span class="dv">2</span><span class="op">*</span><span class="kw">frequency</span>(object<span class="op">$</span>bts), <span class="dv">10</span>), </a>
+<a class="sourceLine" id="cb195-2" data-line-number="2"><span class="dt">fmethod =</span> <span class="kw">c</span>(<span class="st">&quot;ets&quot;</span>, <span class="st">&quot;arima&quot;</span>, <span class="st">&quot;rw&quot;</span>),</a>
+<a class="sourceLine" id="cb195-3" data-line-number="3"><span class="dt">method =</span> <span class="kw">c</span>(<span class="st">&quot;comb&quot;</span>, <span class="st">&quot;bu&quot;</span>, <span class="st">&quot;mo&quot;</span>, <span class="st">&quot;tdgsa&quot;</span>, <span class="st">&quot;tdgsf&quot;</span>, <span class="st">&quot;tdfp&quot;</span>), </a>
+<a class="sourceLine" id="cb195-4" data-line-number="4"><span class="dt">weights =</span> <span class="kw">c</span>(<span class="st">&quot;wls&quot;</span>, <span class="st">&quot;ols&quot;</span>, <span class="st">&quot;mint&quot;</span>, <span class="st">&quot;nseries&quot;</span>), ...)</a></code></pre></div>
 <p>We explain each of the arguments in the sections that follow in detail. Below is a brief introduction.</p>
 <dl>
 <dt><code>object</code></dt>

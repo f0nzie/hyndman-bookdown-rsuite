@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>8.10 ARIMA vs ETS | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="8.10 ARIMA vs ETS | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -367,48 +366,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="example-comparing-auto.arima-and-ets-on-non-seasonal-data" class="section level3 unnumbered">
 <h3>Example: Comparing <code>auto.arima()</code> and <code>ets()</code> on non-seasonal data</h3>
 <p>We can use time series cross-validation to compare an ARIMA model and an ETS model. The code below provides functions that return forecast objects from <code>auto.arima()</code> and <code>ets()</code> respectively.</p>
-<pre class="sourceCode r"><code class="sourceCode r">fets &lt;-<span class="st"> </span><span class="cf">function</span>(x, h) {
-  <span class="kw">forecast</span>(<span class="kw">ets</span>(x), <span class="dt">h =</span> h)
-}
-farima &lt;-<span class="st"> </span><span class="cf">function</span>(x, h) {
-  <span class="kw">forecast</span>(<span class="kw">auto.arima</span>(x), <span class="dt">h=</span>h)
-}</code></pre>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb163-1" data-line-number="1">fets &lt;-<span class="st"> </span><span class="cf">function</span>(x, h) {</a>
+<a class="sourceLine" id="cb163-2" data-line-number="2">  <span class="kw">forecast</span>(<span class="kw">ets</span>(x), <span class="dt">h =</span> h)</a>
+<a class="sourceLine" id="cb163-3" data-line-number="3">}</a>
+<a class="sourceLine" id="cb163-4" data-line-number="4">farima &lt;-<span class="st"> </span><span class="cf">function</span>(x, h) {</a>
+<a class="sourceLine" id="cb163-5" data-line-number="5">  <span class="kw">forecast</span>(<span class="kw">auto.arima</span>(x), <span class="dt">h=</span>h)</a>
+<a class="sourceLine" id="cb163-6" data-line-number="6">}</a></code></pre></div>
 <p>The returned objects can then be passed into <code>tsCV</code>. Let’s consider ARIMA models and ETS models for the <code>air</code> data as introduced in Section <a href="sec-7-trendmethods.html#sec-7-trendmethods">7.2</a> where, <code>air &lt;- window(ausair, start=1990)</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Compute CV errors for ETS as e1</span>
-e1 &lt;-<span class="st"> </span><span class="kw">tsCV</span>(air, fets, <span class="dt">h=</span><span class="dv">1</span>)
-<span class="co"># Compute CV errors for ARIMA as e2</span>
-e2 &lt;-<span class="st"> </span><span class="kw">tsCV</span>(air, farima, <span class="dt">h=</span><span class="dv">1</span>)
-<span class="co"># Find MSE of each model class</span>
-<span class="kw">mean</span>(e1<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-<span class="co">#&gt; [1] 7.86</span>
-<span class="kw">mean</span>(e2<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)
-<span class="co">#&gt; [1] 9.62</span></code></pre>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1"><span class="co"># Compute CV errors for ETS as e1</span></a>
+<a class="sourceLine" id="cb164-2" data-line-number="2">e1 &lt;-<span class="st"> </span><span class="kw">tsCV</span>(air, fets, <span class="dt">h=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb164-3" data-line-number="3"><span class="co"># Compute CV errors for ARIMA as e2</span></a>
+<a class="sourceLine" id="cb164-4" data-line-number="4">e2 &lt;-<span class="st"> </span><span class="kw">tsCV</span>(air, farima, <span class="dt">h=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb164-5" data-line-number="5"><span class="co"># Find MSE of each model class</span></a>
+<a class="sourceLine" id="cb164-6" data-line-number="6"><span class="kw">mean</span>(e1<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb164-7" data-line-number="7"><span class="co">#&gt; [1] 7.86</span></a>
+<a class="sourceLine" id="cb164-8" data-line-number="8"><span class="kw">mean</span>(e2<span class="op">^</span><span class="dv">2</span>, <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb164-9" data-line-number="9"><span class="co">#&gt; [1] 9.62</span></a></code></pre></div>
 <p>In this case the ets model has a lower tsCV statistic based on MSEs. Below we generate and plot forecasts for the next 5 years generated from an ets model.</p>
-<pre class="sourceCode r"><code class="sourceCode r">air <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ets</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb165-1" data-line-number="1">air <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ets</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</a></code></pre></div>
 <p><img src="fpp_files/figure-html/airetsplot-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="example-comparing-auto.arima-and-ets-on-seasonal-data" class="section level3 unnumbered">
 <h3>Example: Comparing <code>auto.arima()</code> and <code>ets()</code> on seasonal data</h3>
 <p>In this case we want to compare seasonal ARIMA and ETS models applied to the quarterly cement production data <code>qcement</code>. Because the series is very long, we can afford to use a training and a test set rather than time series cross-validation. The advantage is that this is much faster. We create a training set from the beginning of 1988 to the end of 2007 and select an ARIMA and an ETS model using the <code>auto.arima</code> and <code>ets</code> functions.</p>
 <!-- I tried ausbeer, euretail also here but qcement gave the most interesting and straight forward example - so left this here - in all cases ets was best?? -->
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Consider the qcement data beginning in 1988</span>
-cement &lt;-<span class="st"> </span><span class="kw">window</span>(qcement, <span class="dt">start=</span><span class="dv">1988</span>)
-<span class="co"># Use 20 years of the data as the training set</span>
-train &lt;-<span class="st"> </span><span class="kw">window</span>(cement, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))</code></pre>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb166-1" data-line-number="1"><span class="co"># Consider the qcement data beginning in 1988</span></a>
+<a class="sourceLine" id="cb166-2" data-line-number="2">cement &lt;-<span class="st"> </span><span class="kw">window</span>(qcement, <span class="dt">start=</span><span class="dv">1988</span>)</a>
+<a class="sourceLine" id="cb166-3" data-line-number="3"><span class="co"># Use 20 years of the data as the training set</span></a>
+<a class="sourceLine" id="cb166-4" data-line-number="4">train &lt;-<span class="st"> </span><span class="kw">window</span>(cement, <span class="dt">end=</span><span class="kw">c</span>(<span class="dv">2007</span>,<span class="dv">4</span>))</a></code></pre></div>
 <p>The output below shows the ARIMA model selected and estimated by <code>auto.arima</code>. The ARIMA model does well in capturing all the dynamics in the data as the residuals seem to be white noise.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Fit an ARIMA model to the training data</span>
-(fit.arima &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(train))
-<span class="co">#&gt; Series: train </span>
-<span class="co">#&gt; ARIMA(1,0,1)(2,1,1)[4] with drift </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Coefficients:</span>
-<span class="co">#&gt;         ar1     ma1   sar1    sar2    sma1  drift</span>
-<span class="co">#&gt;       0.889  -0.237  0.081  -0.235  -0.898  0.010</span>
-<span class="co">#&gt; s.e.  0.084   0.133  0.157   0.139   0.178  0.003</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; sigma^2 estimated as 0.0115:  log likelihood=61.5</span>
-<span class="co">#&gt; AIC=-109   AICc=-107   BIC=-92.6</span>
-<span class="kw">checkresiduals</span>(fit.arima)</code></pre>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" data-line-number="1"><span class="co"># Fit an ARIMA model to the training data</span></a>
+<a class="sourceLine" id="cb167-2" data-line-number="2">(fit.arima &lt;-<span class="st"> </span><span class="kw">auto.arima</span>(train))</a>
+<a class="sourceLine" id="cb167-3" data-line-number="3"><span class="co">#&gt; Series: train </span></a>
+<a class="sourceLine" id="cb167-4" data-line-number="4"><span class="co">#&gt; ARIMA(1,0,1)(2,1,1)[4] with drift </span></a>
+<a class="sourceLine" id="cb167-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb167-6" data-line-number="6"><span class="co">#&gt; Coefficients:</span></a>
+<a class="sourceLine" id="cb167-7" data-line-number="7"><span class="co">#&gt;         ar1     ma1   sar1    sar2    sma1  drift</span></a>
+<a class="sourceLine" id="cb167-8" data-line-number="8"><span class="co">#&gt;       0.889  -0.237  0.081  -0.235  -0.898  0.010</span></a>
+<a class="sourceLine" id="cb167-9" data-line-number="9"><span class="co">#&gt; s.e.  0.084   0.133  0.157   0.139   0.178  0.003</span></a>
+<a class="sourceLine" id="cb167-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb167-11" data-line-number="11"><span class="co">#&gt; sigma^2 estimated as 0.0115:  log likelihood=61.5</span></a>
+<a class="sourceLine" id="cb167-12" data-line-number="12"><span class="co">#&gt; AIC=-109   AICc=-107   BIC=-92.6</span></a>
+<a class="sourceLine" id="cb167-13" data-line-number="13"><span class="kw">checkresiduals</span>(fit.arima)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/qcement2-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; 
 #&gt;  Ljung-Box test
@@ -418,26 +417,26 @@ train &lt;-<span class="st"> </span><span class="kw">window</span>(cement, <span
 #&gt; 
 #&gt; Model df: 6.   Total lags used: 9</code></pre>
 <p>The output below also shows the ETS model selected and estimated by <code>ets</code>. This models also does well in capturing all the dynamics in the data as the residuals also seem to be white noise.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Fit an ETS model to the training data</span>
-(fit.ets &lt;-<span class="st"> </span><span class="kw">ets</span>(train))
-<span class="co">#&gt; ETS(M,N,M) </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Call:</span>
-<span class="co">#&gt;  ets(y = train) </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   Smoothing parameters:</span>
-<span class="co">#&gt;     alpha = 0.7341 </span>
-<span class="co">#&gt;     gamma = 1e-04 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   Initial states:</span>
-<span class="co">#&gt;     l = 1.6439 </span>
-<span class="co">#&gt;     s = 1.03 1.04 1.01 0.915</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   sigma:  0.0581</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;    AIC   AICc    BIC </span>
-<span class="co">#&gt; -2.197 -0.641 14.477</span>
-<span class="kw">checkresiduals</span>(fit.ets)</code></pre>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1"><span class="co"># Fit an ETS model to the training data</span></a>
+<a class="sourceLine" id="cb169-2" data-line-number="2">(fit.ets &lt;-<span class="st"> </span><span class="kw">ets</span>(train))</a>
+<a class="sourceLine" id="cb169-3" data-line-number="3"><span class="co">#&gt; ETS(M,N,M) </span></a>
+<a class="sourceLine" id="cb169-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb169-5" data-line-number="5"><span class="co">#&gt; Call:</span></a>
+<a class="sourceLine" id="cb169-6" data-line-number="6"><span class="co">#&gt;  ets(y = train) </span></a>
+<a class="sourceLine" id="cb169-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb169-8" data-line-number="8"><span class="co">#&gt;   Smoothing parameters:</span></a>
+<a class="sourceLine" id="cb169-9" data-line-number="9"><span class="co">#&gt;     alpha = 0.7341 </span></a>
+<a class="sourceLine" id="cb169-10" data-line-number="10"><span class="co">#&gt;     gamma = 1e-04 </span></a>
+<a class="sourceLine" id="cb169-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb169-12" data-line-number="12"><span class="co">#&gt;   Initial states:</span></a>
+<a class="sourceLine" id="cb169-13" data-line-number="13"><span class="co">#&gt;     l = 1.6439 </span></a>
+<a class="sourceLine" id="cb169-14" data-line-number="14"><span class="co">#&gt;     s = 1.03 1.04 1.01 0.915</span></a>
+<a class="sourceLine" id="cb169-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb169-16" data-line-number="16"><span class="co">#&gt;   sigma:  0.0581</span></a>
+<a class="sourceLine" id="cb169-17" data-line-number="17"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb169-18" data-line-number="18"><span class="co">#&gt;    AIC   AICc    BIC </span></a>
+<a class="sourceLine" id="cb169-19" data-line-number="19"><span class="co">#&gt; -2.197 -0.641 14.477</span></a>
+<a class="sourceLine" id="cb169-20" data-line-number="20"><span class="kw">checkresiduals</span>(fit.ets)</a></code></pre></div>
 <p><img src="fpp_files/figure-html/qcement3-1.png" width="90%" style="display: block; margin: auto;" /></p>
 <pre><code>#&gt; 
 #&gt;  Ljung-Box test
@@ -447,18 +446,18 @@ train &lt;-<span class="st"> </span><span class="kw">window</span>(cement, <span
 #&gt; 
 #&gt; Model df: 6.   Total lags used: 9</code></pre>
 <p>The output below evaluates the forecasting performance of the two competing models over the test set. In this case the ETS model seems to be the slighlty more accuarate model based on the test set RMSE, MAPE and MASE.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate forecasts and compare accuracy over the test set</span>
-fit.arima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="dv">4</span><span class="op">*</span>(<span class="dv">2013-2007</span>)<span class="op">+</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">accuracy</span>(qcement)
-<span class="co">#&gt;                    ME RMSE    MAE   MPE MAPE  MASE    ACF1 Theil&#39;s U</span>
-<span class="co">#&gt; Training set -0.00621  0.1 0.0799 -0.67 4.37 0.546 -0.0113        NA</span>
-<span class="co">#&gt; Test set     -0.15884  0.2 0.1688 -7.33 7.72 1.153  0.2917     0.728</span>
-fit.ets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="dv">4</span><span class="op">*</span>(<span class="dv">2013-2007</span>)<span class="op">+</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">accuracy</span>(qcement)
-<span class="co">#&gt;                   ME  RMSE    MAE    MPE MAPE  MASE    ACF1 Theil&#39;s U</span>
-<span class="co">#&gt; Training set  0.0141 0.102 0.0796  0.494 4.37 0.544 -0.0335        NA</span>
-<span class="co">#&gt; Test set     -0.1350 0.184 0.1540 -6.251 6.99 1.052  0.5344     0.681</span></code></pre>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb171-1" data-line-number="1"><span class="co"># Generate forecasts and compare accuracy over the test set</span></a>
+<a class="sourceLine" id="cb171-2" data-line-number="2">fit.arima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="dv">4</span><span class="op">*</span>(<span class="dv">2013-2007</span>)<span class="op">+</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">accuracy</span>(qcement)</a>
+<a class="sourceLine" id="cb171-3" data-line-number="3"><span class="co">#&gt;                    ME RMSE    MAE   MPE MAPE  MASE    ACF1 Theil&#39;s U</span></a>
+<a class="sourceLine" id="cb171-4" data-line-number="4"><span class="co">#&gt; Training set -0.00621  0.1 0.0799 -0.67 4.37 0.546 -0.0113        NA</span></a>
+<a class="sourceLine" id="cb171-5" data-line-number="5"><span class="co">#&gt; Test set     -0.15884  0.2 0.1688 -7.33 7.72 1.153  0.2917     0.728</span></a>
+<a class="sourceLine" id="cb171-6" data-line-number="6">fit.ets <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h =</span> <span class="dv">4</span><span class="op">*</span>(<span class="dv">2013-2007</span>)<span class="op">+</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">accuracy</span>(qcement)</a>
+<a class="sourceLine" id="cb171-7" data-line-number="7"><span class="co">#&gt;                   ME  RMSE    MAE    MPE MAPE  MASE    ACF1 Theil&#39;s U</span></a>
+<a class="sourceLine" id="cb171-8" data-line-number="8"><span class="co">#&gt; Training set  0.0141 0.102 0.0796  0.494 4.37 0.544 -0.0335        NA</span></a>
+<a class="sourceLine" id="cb171-9" data-line-number="9"><span class="co">#&gt; Test set     -0.1350 0.184 0.1540 -6.251 6.99 1.052  0.5344     0.681</span></a></code></pre></div>
 <p>Below we generate and plot forecasts from an ets model for the next 3 years.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Generate forecasts from an ETS model </span>
-cement <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ets</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</code></pre>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb172-1" data-line-number="1"><span class="co"># Generate forecasts from an ETS model </span></a>
+<a class="sourceLine" id="cb172-2" data-line-number="2">cement <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ets</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">forecast</span>(<span class="dt">h=</span><span class="dv">12</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">autoplot</span>()</a></code></pre></div>
 <p><img src="fpp_files/figure-html/qcement5-1.png" width="90%" style="display: block; margin: auto;" /></p>
 </div>
 </div>

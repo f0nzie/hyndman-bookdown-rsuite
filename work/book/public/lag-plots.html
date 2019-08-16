@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.7 Lag plots | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.7 Lag plots | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -304,8 +303,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="lag-plots" class="section level2">
 <h2><span class="header-section-number">2.7</span> Lag plots</h2>
 <p>Figure <a href="lag-plots.html#fig:beerlagplot">2.9</a> displays scatterplots of quarterly Australian beer production, where the horizontal axis shows lagged values of the time series. Each graph shows <span class="math inline">\(y_{t}\)</span> plotted against <span class="math inline">\(y_{t-k}\)</span> for different values of <span class="math inline">\(k\)</span>.</p>
-<pre class="sourceCode r"><code class="sourceCode r">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)
-<span class="kw">gglagplot</span>(beer2)</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">beer2 &lt;-<span class="st"> </span><span class="kw">window</span>(ausbeer, <span class="dt">start=</span><span class="dv">1992</span>)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">gglagplot</span>(beer2)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:beerlagplot"></span>
 <img src="fpp_files/figure-html/beerlagplot-1.png" alt="Lagged scatterplots for quarterly beer production." width="90%" />
 <p class="caption">

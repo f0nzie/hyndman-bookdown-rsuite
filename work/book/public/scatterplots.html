@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.6 Scatterplots | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.6 Scatterplots | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -305,13 +304,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.6</span> Scatterplots</h2>
 <p>The graphs discussed so far are useful for visualizing individual time series. It is also useful to explore relationships <em>between</em> time series.</p>
 <p>Figure <a href="scatterplots.html#fig:edemand">2.7</a> shows two time series: half-hourly electricity demand (in GigaWatts) and temperature (in degrees Celsius), for 2014 in Victoria, Australia. The temperatures are for Melbourne, the largest city in Victoria, while the demand values are for the entire state.</p>
-<pre class="sourceCode r"><code class="sourceCode r">month.breaks &lt;-<span class="st"> </span><span class="kw">cumsum</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">31</span>,<span class="dv">28</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>)<span class="op">*</span><span class="dv">48</span>)
-<span class="kw">autoplot</span>(elecdemand[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)], <span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year: 2014&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Half-hourly electricity demand: Victoria, Australia&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="dv">2014</span><span class="op">+</span>month.breaks<span class="op">/</span><span class="kw">max</span>(month.breaks), 
-    <span class="dt">minor_breaks=</span><span class="ot">NULL</span>, <span class="dt">labels=</span><span class="kw">c</span>(month.abb,month.abb[<span class="dv">1</span>]))
-<span class="co">#&gt; Warning: Ignoring unknown parameters: series</span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">month.breaks &lt;-<span class="st"> </span><span class="kw">cumsum</span>(<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">31</span>,<span class="dv">28</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">30</span>,<span class="dv">31</span>)<span class="op">*</span><span class="dv">48</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">autoplot</span>(elecdemand[,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)], <span class="dt">facet=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year: 2014&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Half-hourly electricity demand: Victoria, Australia&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks=</span><span class="dv">2014</span><span class="op">+</span>month.breaks<span class="op">/</span><span class="kw">max</span>(month.breaks), </a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">    <span class="dt">minor_breaks=</span><span class="ot">NULL</span>, <span class="dt">labels=</span><span class="kw">c</span>(month.abb,month.abb[<span class="dv">1</span>]))</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; Warning: Ignoring unknown parameters: series</span></a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:edemand"></span>
 <img src="fpp_files/figure-html/edemand-1.png" alt="Half hourly electricity demand and temperatures in Victoria, Australia, for 2014." width="90%" />
 <p class="caption">
@@ -319,8 +318,8 @@ Figure 2.7: Half hourly electricity demand and temperatures in Victoria, Austral
 </p>
 </div>
 <p>We can study the relationship between demand and temperature by plotting one series against the other.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qplot</span>(Temperature, Demand, <span class="dt">data=</span><span class="kw">as.data.frame</span>(elecdemand)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Demand (GW)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Temperature (Celsius)&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">qplot</span>(Temperature, Demand, <span class="dt">data=</span><span class="kw">as.data.frame</span>(elecdemand)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Demand (GW)&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Temperature (Celsius)&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:edemand2"></span>
 <img src="fpp_files/figure-html/edemand2-1.png" alt="Half-hourly electricity demand plotted against temperature for 2014 in Victoria, Australia." width="90%" />
 <p class="caption">
@@ -331,10 +330,10 @@ Figure 2.8: Half-hourly electricity demand plotted against temperature for 2014 
 <div id="scatterplot-matrices" class="section level3 unnumbered">
 <h3>Scatterplot matrices</h3>
 <p>When there are several potential predictor variables, it is useful to plot each variable against each other variable. Consider the eight time series shown in Figure <a href="#fig:vntimeplots"><strong>??</strong></a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># autoplot(vn, facets=TRUE) +</span>
-<span class="co">#   ylab(&quot;Number of visitor nights each quarter&quot;)</span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># autoplot(vn, facets=TRUE) +</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#   ylab(&quot;Number of visitor nights each quarter&quot;)</span></a></code></pre></div>
 <p>To see the relationships between these eight time series, we can plot each time series against the others. These plots can be arranged in a scatterplot matrix, as shown in Figure <a href="#fig:ScatterMatrixch2"><strong>??</strong></a>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># vn %&gt;% as.data.frame() %&gt;% GGally::ggpairs()</span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># vn %&gt;% as.data.frame() %&gt;% GGally::ggpairs()</span></a></code></pre></div>
 <p>For each panel, the variable on the vertical axis is given by the variable name in that row, and the variable on the horizontal axis is given by the variable name in that column. There are many options available to produce different plots within each panel. In the default version, the correlations are shown in the upper right half of the plot, while the scatterplots are shown in the lower half. On the diagonal are shown density plots.</p>
 <p>The value of the scatterplot matrix is that it enables a quick view of the relationships between all pairs of variables. Outliers can also be seen. In this example, there is one unusually high quarter for Sydney, corresponding to the 2000 Sydney Olympics.</p>
 </div>

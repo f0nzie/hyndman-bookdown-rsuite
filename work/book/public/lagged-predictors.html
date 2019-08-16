@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>9.6 Lagged predictors | Forecasting: Principles and Practice</title>
   <meta name="description" content="2nd edition" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="9.6 Lagged predictors | Forecasting: Principles and Practice" />
   <meta property="og:type" content="book" />
@@ -69,7 +69,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -312,9 +311,9 @@ where <span class="math inline">\(n_t\)</span> is an ARIMA process. The value of
 <div id="example-tv-advertising-and-insurance-quotations" class="section level3 unnumbered">
 <h3>Example: TV advertising and insurance quotations</h3>
 <p>A US insurance company advertises on national television in an attempt to increase the number of insurance quotations provided (and consequently the number of new policies). Figure <a href="lagged-predictors.html#fig:tvadvert">9.9</a> shows the number of quotations and the expenditure on television advertising for the company each month from January 2002 to April 2005.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(insurance, <span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Insurance advertising and quotations&quot;</span>)</code></pre>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb191-1" data-line-number="1"><span class="kw">autoplot</span>(insurance, <span class="dt">facets=</span><span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb191-2" data-line-number="2"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Year&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb191-3" data-line-number="3"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Insurance advertising and quotations&quot;</span>)</a></code></pre></div>
 <div class="figure" style="text-align: center"><span id="fig:tvadvert"></span>
 <img src="fpp_files/figure-html/tvadvert-1.png" alt="Numbers of insurance quotations provided per month and the expenditure on advertising per month." width="90%" />
 <p class="caption">
@@ -322,23 +321,23 @@ Figure 9.9: Numbers of insurance quotations provided per month and the expenditu
 </p>
 </div>
 <p>We will consider including advertising expenditure for up to four months; that is, the model may include advertising expenditure in the current month, and the three months before that. When comparing models, it is important that they all use the same training set. In the following code, we exclude the first three months in order to make fair comparisons. The best model is the one with the smallest AICc value.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Lagged predictors. Test 0, 1, 2 or 3 lags.</span>
-<span class="co"># Advert &lt;- cbind(</span>
-<span class="co">#   AdLag0 = insurance[,&quot;TV.advert&quot;],</span>
-<span class="co">#   AdLag1 = lag(insurance[,&quot;TV.advert&quot;],-1),</span>
-<span class="co">#   AdLag2 = lag(insurance[,&quot;TV.advert&quot;],-2),</span>
-<span class="co">#   AdLag3 = lag(insurance[,&quot;TV.advert&quot;],-3))[1:NROW(insurance),]</span>
-
-<span class="co"># Choose optimal lag length for advertising based on AICc</span>
-<span class="co"># Restrict data so models use same fitting period</span>
-<span class="co"># fit1 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1], d=0)</span>
-<span class="co"># fit2 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:2], d=0)</span>
-<span class="co"># fit3 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:3], d=0)</span>
-<span class="co"># fit4 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:4], d=0)</span>
-
-<span class="co"># Best model fitted to all data (based on AICc)</span>
-<span class="co"># Refit using all data</span>
-<span class="co"># (fit &lt;- auto.arima(insurance[,1], xreg=Advert[,1:2], d=0))</span></code></pre>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb192-1" data-line-number="1"><span class="co"># Lagged predictors. Test 0, 1, 2 or 3 lags.</span></a>
+<a class="sourceLine" id="cb192-2" data-line-number="2"><span class="co"># Advert &lt;- cbind(</span></a>
+<a class="sourceLine" id="cb192-3" data-line-number="3"><span class="co">#   AdLag0 = insurance[,&quot;TV.advert&quot;],</span></a>
+<a class="sourceLine" id="cb192-4" data-line-number="4"><span class="co">#   AdLag1 = lag(insurance[,&quot;TV.advert&quot;],-1),</span></a>
+<a class="sourceLine" id="cb192-5" data-line-number="5"><span class="co">#   AdLag2 = lag(insurance[,&quot;TV.advert&quot;],-2),</span></a>
+<a class="sourceLine" id="cb192-6" data-line-number="6"><span class="co">#   AdLag3 = lag(insurance[,&quot;TV.advert&quot;],-3))[1:NROW(insurance),]</span></a>
+<a class="sourceLine" id="cb192-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb192-8" data-line-number="8"><span class="co"># Choose optimal lag length for advertising based on AICc</span></a>
+<a class="sourceLine" id="cb192-9" data-line-number="9"><span class="co"># Restrict data so models use same fitting period</span></a>
+<a class="sourceLine" id="cb192-10" data-line-number="10"><span class="co"># fit1 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1], d=0)</span></a>
+<a class="sourceLine" id="cb192-11" data-line-number="11"><span class="co"># fit2 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:2], d=0)</span></a>
+<a class="sourceLine" id="cb192-12" data-line-number="12"><span class="co"># fit3 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:3], d=0)</span></a>
+<a class="sourceLine" id="cb192-13" data-line-number="13"><span class="co"># fit4 &lt;- auto.arima(insurance[4:40,1], xreg=Advert[4:40,1:4], d=0)</span></a>
+<a class="sourceLine" id="cb192-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb192-15" data-line-number="15"><span class="co"># Best model fitted to all data (based on AICc)</span></a>
+<a class="sourceLine" id="cb192-16" data-line-number="16"><span class="co"># Refit using all data</span></a>
+<a class="sourceLine" id="cb192-17" data-line-number="17"><span class="co"># (fit &lt;- auto.arima(insurance[,1], xreg=Advert[,1:2], d=0))</span></a></code></pre></div>
 <p>The chosen model includes advertising only in the current month and the previous month, and has AR(3) errors. The model can be written as
 <span class="math display">\[
   y_t = NA +
@@ -353,10 +352,10 @@ where <span class="math inline">\(y_t\)</span> is the number of quotations provi
 \]</span>
 and <span class="math inline">\(e_t\)</span> is white noise.</p>
 <p>We can calculate forecasts using this model if we assume future values for the advertising variable. If we set the future monthly advertising to 8 units, we get the following forecasts.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fc8 &lt;- forecast(fit, h=20,</span>
-<span class="co">#   xreg=cbind(AdLag0=rep(8,20), AdLag1=c(Advert[40,1],rep(8,19))))</span>
-<span class="co"># autoplot(fc8) + ylab(&quot;Quotes&quot;) +</span>
-<span class="co">#   ggtitle(&quot;Forecast quotes with future advertising set to 8&quot;)</span></code></pre>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb193-1" data-line-number="1"><span class="co"># fc8 &lt;- forecast(fit, h=20,</span></a>
+<a class="sourceLine" id="cb193-2" data-line-number="2"><span class="co">#   xreg=cbind(AdLag0=rep(8,20), AdLag1=c(Advert[40,1],rep(8,19))))</span></a>
+<a class="sourceLine" id="cb193-3" data-line-number="3"><span class="co"># autoplot(fc8) + ylab(&quot;Quotes&quot;) +</span></a>
+<a class="sourceLine" id="cb193-4" data-line-number="4"><span class="co">#   ggtitle(&quot;Forecast quotes with future advertising set to 8&quot;)</span></a></code></pre></div>
 <!-- ## Restaurant bookings
 
 ## Online shopping?
